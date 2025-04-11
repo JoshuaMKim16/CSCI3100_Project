@@ -12,11 +12,11 @@ const commentSchema = new mongoose.Schema({
     required: true
   },
   // Reference to the associated tour site from the location model (Site) - to be under the category of each location/site
-  // location: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Site', // Updated reference to match the model exported from location.model.js
-  //   required: true
-  // },
+  location: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Site', // Updated reference to match the model exported from location.model.js
+    required: true
+  },
 
   // For nested/threaded comments (optional)
   parentComment: {
