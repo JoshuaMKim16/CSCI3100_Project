@@ -1,10 +1,11 @@
-// server.js
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user.route.js');
 const commentRoute = require('./routes/comment.route.js');
 const locationRoute = require('./routes/location.route.js'); // import Location routes
 const app = express();
+app.use(cors());
 
 // Import Models (for reference)
 const User = require('./models/user.model.js');
@@ -13,6 +14,7 @@ const Location = require('./models/location.model.js'); // this is your location
 // Middleware configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static('public'));
 
 // .env file configuration
 const dotenv = require('dotenv');
