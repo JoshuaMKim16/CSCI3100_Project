@@ -1,28 +1,32 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const userRoute = require('./routes/user.route.js')
-const app = express()
+const express = require('express');
+const mongoose = require('mongoose');
+const userRoute = require('./routes/user.route.js');
+const commentRoute = require('./routes/comment.route.js');
+const app = express();
 
-// Import Models
-const User = require('./models/user.model.js')
-const Location = require('./models/location.model.js')
+// Import Models (for reference)
+const User = require('./models/user.model.js');
+// The site model is imported as "Site" from the location.model.js file
+const Site = require('./models/location.model.js');
 
-// Middleware configureation
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+// Middleware configuration
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // .env file configuration
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 dotenv.config();
 const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@backenddb.vhwzsyd.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB`;
 
-// routes
-app.use("/api/users", userRoute)
+// Routes configuration
+app.use("/api/users", userRoute);
+app.use("/api/comments", commentRoute);
 
 app.get('/', (req, res) => {
-    res.send('Hello from Node Server Updated')
+    res.send('Hello from Node Server Updated');
 });
 
+// Connect to MongoDB and start the server
 mongoose.connect(connectionString)
     .then(() => {
         console.log('Connected to database');
@@ -31,5 +35,5 @@ mongoose.connect(connectionString)
         });
     })
     .catch(() => {
-        console.log('Connection Failed')
-    })
+        console.log('Connection Failed');
+    });
