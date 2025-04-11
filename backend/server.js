@@ -5,9 +5,9 @@ const commentRoute = require('./routes/comment.route.js');
 const app = express();
 
 // Import Models (for reference)
+// The Location model is imported from the location.model.js file
 const User = require('./models/user.model.js');
-// The site model is imported as "Site" from the location.model.js file
-const Site = require('./models/location.model.js');
+const Location = require('./models/location.model.js');
 
 // Middleware configuration
 app.use(express.json());
