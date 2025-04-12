@@ -1,0 +1,1533 @@
+[
+    {
+        "site_id": "0000000000000a47",
+        "name": "Temple of the Queen of Heaven",
+        "location": {
+            "lat": 22.465992,
+            "lng": 114.528804
+        },
+        "address": "FG8H+9GV, Longgang, Shenzhen",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3zl_.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000668",
+        "name": "Wong Ngau Shan (604m)",
+        "location": {
+            "lat": 22.372976,
+            "lng": 114.232192
+        },
+        "address": "Ma On Shan",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "park",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0AhZ.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000055c",
+        "name": "Yim Hing Temple",
+        "location": {
+            "lat": 22.2520997,
+            "lng": 113.8862215
+        },
+        "address": "大嶼山",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ18Z5.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000003bb",
+        "name": "Youpaotai",
+        "location": {
+            "lat": 22.480663,
+            "lng": 113.882379
+        },
+        "address": "FVJJ+7X6, Nanshan, Shenzhen",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2PWd.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000482",
+        "name": "Liutang Park",
+        "location": {
+            "lat": 22.5824393,
+            "lng": 113.8923799
+        },
+        "address": "HVJR+XXC, Qian Jin Er Lu, Bao An Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ16Me.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000002f4a",
+        "name": "The Foreign Correspondents’ Club, Hong Kong",
+        "location": {
+            "lat": 22.2803881,
+            "lng": 114.1559798
+        },
+        "address": "North, 2 Lower Albert Road, Central",
+        "opening_hour": [
+            "Monday: 7:30 AM – 12:00 AM",
+            "Tuesday: 7:30 AM – 12:00 AM",
+            "Wednesday: 7:30 AM – 12:00 AM",
+            "Thursday: 7:30 AM – 2:00 AM",
+            "Friday: 7:30 AM – 2:00 AM",
+            "Saturday: 7:30 AM – 2:00 AM",
+            "Sunday: 10:00 AM – 12:00 AM"
+        ],
+        "price": "0",
+        "description": "International cuisine, cocktails & speaking events at a foreign press center in a former ice house..",
+        "type": [
+            "tourist_attraction",
+            "night_club",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3kBM.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000058c",
+        "name": "Shayuyong Port",
+        "location": {
+            "lat": 22.613127,
+            "lng": 114.4018562
+        },
+        "address": "JC72+7P5, 盐葵公路, Long Gang Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": null
+    },
+    {
+        "site_id": "0000000000000722",
+        "name": "Tai Tam Country Park",
+        "location": {
+            "lat": 22.2541596,
+            "lng": 114.2072313
+        },
+        "address": "Tai Tam",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": "Large park with a series of scenic mountain overlooks & hiking trails, plus picnic & play areas.",
+        "type": [
+            "tourist_attraction",
+            "park",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1Veu.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000006ae",
+        "name": "Tung Chung Battery",
+        "location": {
+            "lat": 22.2871386,
+            "lng": 113.9355672
+        },
+        "address": "402 Tung Chung Road North, Lantau Island",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1SVx.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000766",
+        "name": "Hong Kong Disneyland",
+        "location": {
+            "lat": 22.3129666,
+            "lng": 114.0412819
+        },
+        "address": "Lantau Island",
+        "opening_hour": null,
+        "price": "0",
+        "description": "Famous theme park complex featuring 7 areas with rides, shows and welcoming costumed characters.",
+        "type": [
+            "tourist_attraction",
+            "amusement_park",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2Opp.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000003a2",
+        "name": "The Center",
+        "location": {
+            "lat": 22.2846202,
+            "lng": 114.1547347
+        },
+        "address": "99 Queen's Road Central",
+        "opening_hour": [
+            "Monday: 9:00 AM – 6:00 PM",
+            "Tuesday: 9:00 AM – 6:00 PM",
+            "Wednesday: 9:00 AM – 6:00 PM",
+            "Thursday: 9:00 AM – 6:00 PM",
+            "Friday: 9:00 AM – 6:00 PM",
+            "Saturday: Closed",
+            "Sunday: Closed"
+        ],
+        "price": "0",
+        "description": "Sleek, steel skyscraper, 73 stories high, known for its futuristic lobby and colorful neon lights.",
+        "type": [
+            "landmark",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0Oba.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000639",
+        "name": "Avenue of Stars HK",
+        "location": {
+            "lat": 22.2930046,
+            "lng": 114.1741517
+        },
+        "address": "Avenue of Stars, Tsim Sha Tsui",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": "Promenade with handprints & plaques honoring Hong Kong film stars, plus a Bruce Lee statue.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0CDZ.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000928",
+        "name": "Hong Kong Cultural Centre",
+        "location": {
+            "lat": 22.29384959999999,
+            "lng": 114.1703232
+        },
+        "address": "Hong Kong Cultural Centre, L5, Auditoria Building, 10 Salisbury Road, Tsim Sha Tsui",
+        "opening_hour": [
+            "Monday: 9:00 AM – 11:00 PM",
+            "Tuesday: 9:00 AM – 11:00 PM",
+            "Wednesday: 9:00 AM – 11:00 PM",
+            "Thursday: 9:00 AM – 11:00 PM",
+            "Friday: 9:00 AM – 11:00 PM",
+            "Saturday: 9:00 AM – 11:00 PM",
+            "Sunday: 9:00 AM – 11:00 PM"
+        ],
+        "price": "0",
+        "description": "Cultural centre with a huge concert hall & a 3-tiered theatre, plus a studio theatre & gallery.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1-Qm.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000007d8",
+        "name": "Hong Kong Wetland Park",
+        "location": {
+            "lat": 22.4700585,
+            "lng": 114.0065831
+        },
+        "address": "Wetland Park Road, Tin Shui Wai",
+        "opening_hour": [
+            "Monday: 10:00 AM – 5:00 PM",
+            "Tuesday: Closed",
+            "Wednesday: 10:00 AM – 5:00 PM",
+            "Thursday: 10:00 AM – 5:00 PM",
+            "Friday: 10:00 AM – 5:00 PM",
+            "Saturday: 10:00 AM – 5:00 PM",
+            "Sunday: 10:00 AM – 5:00 PM"
+        ],
+        "price": "0",
+        "description": "Large wetland reserve with a visitor center featuring educational exhibits, a cafe & souvenir shop.",
+        "type": [
+            "tourist_attraction",
+            "park",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1veg.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000087e",
+        "name": "Tai Tong Organic EcoPark",
+        "location": {
+            "lat": 22.410233,
+            "lng": 114.0258901
+        },
+        "address": "Tai Tong Shan Road, Yuen Long",
+        "opening_hour": [
+            "Monday: 9:00 AM – 6:00 PM",
+            "Tuesday: 9:00 AM – 6:00 PM",
+            "Wednesday: 9:00 AM – 6:00 PM",
+            "Thursday: 9:00 AM – 6:00 PM",
+            "Friday: 9:00 AM – 6:00 PM",
+            "Saturday: 9:00 AM – 6:00 PM",
+            "Sunday: 9:00 AM – 6:00 PM"
+        ],
+        "price": "0",
+        "description": "Valley parkland with farm animals, horseback rides & strawberry picking amid lychee forests.",
+        "type": [
+            "park",
+            "tourist_attraction",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3SJu.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000920",
+        "name": "Hong Kong Heritage Museum",
+        "location": {
+            "lat": 22.3766464,
+            "lng": 114.1856267
+        },
+        "address": "1 Man Lam Road, Sha Tin",
+        "opening_hour": [
+            "Monday: 10:00 AM – 6:00 PM",
+            "Tuesday: Closed",
+            "Wednesday: 10:00 AM – 6:00 PM",
+            "Thursday: 10:00 AM – 6:00 PM",
+            "Friday: 10:00 AM – 6:00 PM",
+            "Saturday: 10:00 AM – 7:00 PM",
+            "Sunday: 10:00 AM – 7:00 PM"
+        ],
+        "price": "0",
+        "description": "Local museum with various displays about Hong Kong heritage, including opera, design & Bruce Lee.",
+        "type": [
+            "tourist_attraction",
+            "museum",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2HhQ.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000006a9",
+        "name": "Fung Ying Seen Koon",
+        "location": {
+            "lat": 22.4904208,
+            "lng": 114.1384962
+        },
+        "address": "66 Pak Wo Road, Fanling",
+        "opening_hour": [
+            "Monday: 8:30 AM – 4:30 PM",
+            "Tuesday: 8:30 AM – 4:30 PM",
+            "Wednesday: 8:30 AM – 4:30 PM",
+            "Thursday: 8:30 AM – 4:30 PM",
+            "Friday: 8:30 AM – 4:30 PM",
+            "Saturday: 8:30 AM – 4:30 PM",
+            "Sunday: 8:30 AM – 4:30 PM"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "place_of_worship",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1N7O.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000007e3",
+        "name": "Hong Kong Space Museum",
+        "location": {
+            "lat": 22.294288,
+            "lng": 114.171901
+        },
+        "address": "Hong Kong Space Museum, 10 Salisbury Road, Tsim Sha Tsui",
+        "opening_hour": [
+            "Monday: 1:00 – 9:00 PM",
+            "Tuesday: Closed",
+            "Wednesday: 1:00 – 9:00 PM",
+            "Thursday: 1:00 – 9:00 PM",
+            "Friday: 1:00 – 9:00 PM",
+            "Saturday: 10:00 AM – 9:00 PM",
+            "Sunday: 10:00 AM – 9:00 PM"
+        ],
+        "price": "0",
+        "description": "Waterside egg-shaped building with planetarium and Omnimax films, plus space and astronomy exhibits.",
+        "type": [
+            "tourist_attraction",
+            "museum",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3tU1.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000537",
+        "name": "Tian Tan Buddha",
+        "location": {
+            "lat": 22.2539847,
+            "lng": 113.904984
+        },
+        "address": "Ngong Ping Road, Lantau Island",
+        "opening_hour": [
+            "Monday: 10:00 AM – 5:30 PM",
+            "Tuesday: 10:00 AM – 5:30 PM",
+            "Wednesday: 10:00 AM – 5:30 PM",
+            "Thursday: 10:00 AM – 5:30 PM",
+            "Friday: 10:00 AM – 5:30 PM",
+            "Saturday: 10:00 AM – 5:30 PM",
+            "Sunday: 10:00 AM – 5:30 PM"
+        ],
+        "price": "0",
+        "description": "Over 260 steps lead to this immense bronze Buddha, with a carved bell, museum & relics beneath it.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0cj0.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000007a1",
+        "name": "Xiantong Sports Park",
+        "location": {
+            "lat": 22.56177599999999,
+            "lng": 114.183776
+        },
+        "address": "H56M+PG6, 莲塘梧桐山, Wu Tong Shan Nan Lu, Luo Hu Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0DW4.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000743",
+        "name": "The HKFYG Organic Farm",
+        "location": {
+            "lat": 22.408842,
+            "lng": 114.073705
+        },
+        "address": "1號, 河背水塘家樂徑, 八鄉",
+        "opening_hour": [
+            "Monday: 9:00 AM – 5:00 PM",
+            "Tuesday: Closed",
+            "Wednesday: 9:00 AM – 5:00 PM",
+            "Thursday: 9:00 AM – 5:00 PM",
+            "Friday: 9:00 AM – 5:00 PM",
+            "Saturday: 9:00 AM – 5:00 PM",
+            "Sunday: 9:00 AM – 5:00 PM"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "grocery_or_supermarket",
+            "store",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2B3b.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000259d8",
+        "name": "海滨生态公园",
+        "location": {
+            "lat": 22.522416,
+            "lng": 114.000329
+        },
+        "address": "G2C2+X48, 滨河大道, Fu Tian Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3Vk_.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000632",
+        "name": "Yueliangwan Park",
+        "location": {
+            "lat": 22.50132,
+            "lng": 113.89722
+        },
+        "address": "GV2W+GVH, Qian Hai Lu, Nan Shan Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1Kj1.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000476",
+        "name": "The Peak Tram",
+        "location": {
+            "lat": 22.2776827,
+            "lng": 114.1591909
+        },
+        "address": "",
+        "opening_hour": [
+            "Monday: 7:30 AM – 11:00 PM",
+            "Tuesday: 7:30 AM – 11:00 PM",
+            "Wednesday: 7:30 AM – 11:00 PM",
+            "Thursday: 7:30 AM – 11:00 PM",
+            "Friday: 7:30 AM – 11:00 PM",
+            "Saturday: 7:30 AM – 11:00 PM",
+            "Sunday: 7:30 AM – 11:00 PM"
+        ],
+        "price": "0",
+        "description": "Victorian-era train taking visitors to the highest peak on Hong Kong island for views of the city.",
+        "type": [
+            "tourist_attraction",
+            "museum",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1VQc.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000054d",
+        "name": "Central Market",
+        "location": {
+            "lat": 22.2840679,
+            "lng": 114.1554835
+        },
+        "address": "93 Queen's Road Central, Central",
+        "opening_hour": [
+            "Monday: 10:00 AM – 10:00 PM",
+            "Tuesday: 10:00 AM – 10:00 PM",
+            "Wednesday: 10:00 AM – 10:00 PM",
+            "Thursday: 10:00 AM – 10:00 PM",
+            "Friday: 10:00 AM – 10:00 PM",
+            "Saturday: 10:00 AM – 10:00 PM",
+            "Sunday: 10:00 AM – 10:00 PM"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "shopping_mall",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ06T0.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000013422",
+        "name": "盆景园",
+        "location": {
+            "lat": 22.58141,
+            "lng": 114.178874
+        },
+        "address": "H5JH+HG9, Luohu District, Shenzhen",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2_At.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000680",
+        "name": "Shabing Relic Site",
+        "location": {
+            "lat": 22.589075,
+            "lng": 114.458268
+        },
+        "address": "HFQ5+J8C, Longgang, Shenzhen",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1-sS.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000776",
+        "name": "Hong Kong Arts Centre",
+        "location": {
+            "lat": 22.2801697,
+            "lng": 114.1708311
+        },
+        "address": "2 Harbour Road, Wan Chai",
+        "opening_hour": [
+            "Monday: 8:00 AM – 11:00 PM",
+            "Tuesday: 8:00 AM – 11:00 PM",
+            "Wednesday: 8:00 AM – 11:00 PM",
+            "Thursday: 8:00 AM – 11:00 PM",
+            "Friday: 8:00 AM – 11:00 PM",
+            "Saturday: 8:00 AM – 11:00 PM",
+            "Sunday: 8:00 AM – 11:00 PM"
+        ],
+        "price": "0",
+        "description": "Modern cultural facility promoting contemporary arts with exhibitions & educational programs.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0dJU.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000001026",
+        "name": "Shenzhen Fenghuangshan National Mining Park",
+        "location": {
+            "lat": 22.7010386,
+            "lng": 114.1369207
+        },
+        "address": "P42P+CQ7, Feng Huang Da Dao, Long Gang Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0Pa3.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000623",
+        "name": "The Victoria Peak",
+        "location": {
+            "lat": 22.2703965,
+            "lng": 114.1499227
+        },
+        "address": "118 Peak Road, The Peak",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3j6P.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000a45",
+        "name": "Lo Hon Monastery, Shek Mun Kap",
+        "location": {
+            "lat": 22.2667214,
+            "lng": 113.929325
+        },
+        "address": "石門甲村羅漢寺五觀堂, 東涌",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1CMW.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000001581",
+        "name": "Hong Kong Museum of The War of Resistance and Coastal Defence",
+        "location": {
+            "lat": 22.281805,
+            "lng": 114.23565
+        },
+        "address": "175號 Tung Hei Road, Shau Kei Wan",
+        "opening_hour": [
+            "Monday: 10:00 AM – 5:00 PM",
+            "Tuesday: 10:00 AM – 5:00 PM",
+            "Wednesday: 10:00 AM – 5:00 PM",
+            "Thursday: Closed",
+            "Friday: 10:00 AM – 5:00 PM",
+            "Saturday: 10:00 AM – 5:00 PM",
+            "Sunday: 10:00 AM – 5:00 PM"
+        ],
+        "price": "0",
+        "description": "Museum at the historic Lei Yue Mun Fort tracing 600 years of Hong Kong's coastal defenses.",
+        "type": [
+            "tourist_attraction",
+            "museum",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1N4o.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000082b",
+        "name": "Golden Bauhinia Square",
+        "location": {
+            "lat": 22.284425,
+            "lng": 114.1739009
+        },
+        "address": "1 Expo Drive, Wan Chai",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": "Gathering place with a daily flag-raising ceremony, a symbolic golden flower statue & harbour views.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1pN-.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000852",
+        "name": "Jenny Bakery Sheung Wan",
+        "location": {
+            "lat": 22.285103,
+            "lng": 114.1537285
+        },
+        "address": "號地舖, 15 Wing Wo Street, Sheung Wan",
+        "opening_hour": [
+            "Monday: 10:00 AM – 7:00 PM",
+            "Tuesday: 10:00 AM – 7:00 PM",
+            "Wednesday: 10:00 AM – 7:00 PM",
+            "Thursday: 10:00 AM – 7:00 PM",
+            "Friday: 10:00 AM – 7:00 PM",
+            "Saturday: 10:00 AM – 7:00 PM",
+            "Sunday: 10:00 AM – 7:00 PM"
+        ],
+        "price": "moderate",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "bakery",
+            "store",
+            "food",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1Mb2.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000009fe",
+        "name": "Longfeng Villa Video Resort",
+        "location": {
+            "lat": 22.713156,
+            "lng": 114.190436
+        },
+        "address": "P57R+757, 嘉辉中路, Dong Guan Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "park",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ03p1.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000b7e",
+        "name": "West Kowloon Cultural District",
+        "location": {
+            "lat": 22.3002469,
+            "lng": 114.1559029
+        },
+        "address": "West Kowloon, Yau Ma Tei",
+        "opening_hour": [
+            "Monday: 6:00 AM – 11:00 PM",
+            "Tuesday: 6:00 AM – 11:00 PM",
+            "Wednesday: 6:00 AM – 11:00 PM",
+            "Thursday: 6:00 AM – 11:00 PM",
+            "Friday: 6:00 AM – 11:00 PM",
+            "Saturday: 6:00 AM – 11:00 PM",
+            "Sunday: 6:00 AM – 11:00 PM"
+        ],
+        "price": "0",
+        "description": "Innovative art installations & edgy cultural events in an easygoing, waterfront setting.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2r9t.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000071c",
+        "name": "Stanley Main Street",
+        "location": {
+            "lat": 22.2186265,
+            "lng": 114.2110727
+        },
+        "address": "Stanley Main Street, Stanley",
+        "opening_hour": [
+            "Monday: 11:00 AM – 10:00 PM",
+            "Tuesday: 11:00 AM – 10:00 PM",
+            "Wednesday: 11:00 AM – 10:00 PM",
+            "Thursday: 11:00 AM – 10:00 PM",
+            "Friday: 11:00 AM – 10:00 PM",
+            "Saturday: 11:00 AM – 10:00 PM",
+            "Sunday: 11:00 AM – 10:00 PM"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2bMA.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000af9",
+        "name": "Our Lady of Mount Carmel Church",
+        "location": {
+            "lat": 22.2759236,
+            "lng": 114.1684822
+        },
+        "address": "1 Star Street, Admiralty",
+        "opening_hour": [
+            "Monday: 7:00 AM – 10:00 PM",
+            "Tuesday: 7:00 AM – 10:00 PM",
+            "Wednesday: 7:00 AM – 10:00 PM",
+            "Thursday: 7:00 AM – 10:00 PM",
+            "Friday: 7:00 AM – 10:00 PM",
+            "Saturday: 7:00 AM – 10:00 PM",
+            "Sunday: 7:00 AM – 10:00 PM"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "church",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3vL7.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000065b",
+        "name": "Sam Tung Uk Museum",
+        "location": {
+            "lat": 22.371966,
+            "lng": 114.1203184
+        },
+        "address": "二號, 三棟屋博物館, 2 古屋里, 荃灣",
+        "opening_hour": [
+            "Monday: 10:00 AM – 6:00 PM",
+            "Tuesday: Closed",
+            "Wednesday: 10:00 AM – 6:00 PM",
+            "Thursday: 10:00 AM – 6:00 PM",
+            "Friday: 10:00 AM – 6:00 PM",
+            "Saturday: 10:00 AM – 6:00 PM",
+            "Sunday: 10:00 AM – 6:00 PM"
+        ],
+        "price": "0",
+        "description": "Restored museum, opened in 1987, with interactive exhibits exploring life in a Hakka walled village.",
+        "type": [
+            "museum",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2hVS.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000007ca",
+        "name": "The Hong Kong Golf Club",
+        "location": {
+            "lat": 22.2463875,
+            "lng": 114.1864319
+        },
+        "address": "19 Island Road, Deep Water Bay",
+        "opening_hour": [
+            "Monday: 6:00 AM – 11:00 PM",
+            "Tuesday: 6:00 AM – 11:00 PM",
+            "Wednesday: 6:00 AM – 11:00 PM",
+            "Thursday: 6:00 AM – 11:00 PM",
+            "Friday: 6:00 AM – 11:00 PM",
+            "Saturday: 6:00 AM – 11:00 PM",
+            "Sunday: 6:00 AM – 11:00 PM"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3wgO.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000003f9",
+        "name": "Haibin Park",
+        "location": {
+            "lat": 22.587191,
+            "lng": 113.845791
+        },
+        "address": "HRPW+V8F, 塘东东一巷, Bao An Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0mwm.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000007e6",
+        "name": "Cheung Shan Monastery",
+        "location": {
+            "lat": 22.5291971,
+            "lng": 114.1756219
+        },
+        "address": "Wo Keng Shan Road, Ping Che",
+        "opening_hour": [
+            "Monday: 9:00 AM – 1:00 PM, 2:00 – 5:00 PM",
+            "Tuesday: 9:00 AM – 1:00 PM, 2:00 – 5:00 PM",
+            "Wednesday: 9:00 AM – 1:00 PM, 2:00 – 5:00 PM",
+            "Thursday: 9:00 AM – 1:00 PM, 2:00 – 5:00 PM",
+            "Friday: 9:00 AM – 1:00 PM, 2:00 – 5:00 PM",
+            "Saturday: 9:00 AM – 1:00 PM, 2:00 – 5:00 PM",
+            "Sunday: 9:00 AM – 1:00 PM, 2:00 – 5:00 PM"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "place_of_worship",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ07rs.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000753",
+        "name": "Victoria Peak Garden",
+        "location": {
+            "lat": 22.274287,
+            "lng": 114.1440778
+        },
+        "address": "Mount Austin Road, The Peak",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": "Quiet, secluded park & gardens popular for photos, picnics & panoramic views of the city.",
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1YZo.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000ef8",
+        "name": "Shenzhen Revolutionary Martyr Monument",
+        "location": {
+            "lat": 22.566894,
+            "lng": 114.069104
+        },
+        "address": "H389+QJ5, Bei Huan Da Dao, Fu Tian Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0SFo.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000002161f",
+        "name": "狂欢节广场",
+        "location": {
+            "lat": 22.535718,
+            "lng": 113.974724
+        },
+        "address": "GXPF+7VQ, Nanshan, Shenzhen",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0r7z.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000b86",
+        "name": "Sky 100 Hong Kong Observation Deck",
+        "location": {
+            "lat": 22.3034464,
+            "lng": 114.1603497
+        },
+        "address": "International Commerce Centre (ICC), 1 Austin Road West, Tsim Sha Tsui",
+        "opening_hour": [
+            "Monday: 10:00 AM – 8:30 PM",
+            "Tuesday: 10:00 AM – 8:30 PM",
+            "Wednesday: 10:00 AM – 8:30 PM",
+            "Thursday: 10:00 AM – 8:30 PM",
+            "Friday: 10:00 AM – 8:30 PM",
+            "Saturday: 10:00 AM – 8:30 PM",
+            "Sunday: 10:00 AM – 8:30 PM"
+        ],
+        "price": "0",
+        "description": "Indoor observation deck on the 100th floor with high-tech telescopes, interactive exhibits & a cafe.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1IdF.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000041f",
+        "name": "Nvwa Butian",
+        "location": {
+            "lat": 22.481596,
+            "lng": 113.91764
+        },
+        "address": "China",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3xmL.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000045c",
+        "name": "Dashahe Park",
+        "location": {
+            "lat": 22.555649,
+            "lng": 113.962594
+        },
+        "address": "8228 Bei Huan Da Dao, Nan Shan Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2570.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000007ce",
+        "name": "Red Brick House Market",
+        "location": {
+            "lat": 22.438387,
+            "lng": 114.064862
+        },
+        "address": "祠堂 村 旁, Kam Sheung Road, Kam Tin",
+        "opening_hour": [
+            "Monday: Closed",
+            "Tuesday: Closed",
+            "Wednesday: Closed",
+            "Thursday: Closed",
+            "Friday: Closed",
+            "Saturday: 10:00 AM – 7:00 PM",
+            "Sunday: 10:00 AM – 7:00 PM"
+        ],
+        "price": "0",
+        "description": "Vibrant marketplace in a covered factory with handicrafts, vintage clothing, gifts & casual dining.",
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0jOv.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000108e2",
+        "name": "天后宫",
+        "location": {
+            "lat": 22.48995099999999,
+            "lng": 113.885094
+        },
+        "address": "FVQP+X2Q, Nanshan, Shenzhen",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": null
+    },
+    {
+        "site_id": "000000000000047a",
+        "name": "Lixiang Park",
+        "location": {
+            "lat": 22.536985,
+            "lng": 113.929707
+        },
+        "address": "GWPH+QVW, 南光路, Nan Shan Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3sfQ.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000411",
+        "name": "Long Ke Tsai",
+        "location": {
+            "lat": 22.376081,
+            "lng": 114.382036
+        },
+        "address": "Sai Kung",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0U7j.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000020d32",
+        "name": "Wetland of Overseas Chinese Town （East Gate）",
+        "location": {
+            "lat": 22.52740739999999,
+            "lng": 113.9933093
+        },
+        "address": "GXGV+X87, Bai Shi Lu, 华侨城 Fu Tian Qu, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ3os9.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000460",
+        "name": "Ngong Ping 360",
+        "location": {
+            "lat": 22.2563163,
+            "lng": 113.9014163
+        },
+        "address": "Lantau Island",
+        "opening_hour": [
+            "Monday: 10:00 AM – 6:00 PM",
+            "Tuesday: 10:00 AM – 6:00 PM",
+            "Wednesday: 10:00 AM – 6:00 PM",
+            "Thursday: 10:00 AM – 6:00 PM",
+            "Friday: 10:00 AM – 6:00 PM",
+            "Saturday: 9:00 AM – 6:30 PM",
+            "Sunday: 9:00 AM – 6:30 PM"
+        ],
+        "price": "0",
+        "description": "25-minute cable-car ride to 'village' of tourist attractions and activities, shops and restaurants.",
+        "type": [
+            "tourist_attraction",
+            "transit_station",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0Ypx.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000071a",
+        "name": "Tai Lam Country Park",
+        "location": {
+            "lat": 22.3700315,
+            "lng": 114.0540155
+        },
+        "address": "",
+        "opening_hour": [
+            "Monday: Open 24 hours",
+            "Tuesday: Open 24 hours",
+            "Wednesday: Open 24 hours",
+            "Thursday: Open 24 hours",
+            "Friday: Open 24 hours",
+            "Saturday: Open 24 hours",
+            "Sunday: Open 24 hours"
+        ],
+        "price": "0",
+        "description": "Established in 1979, this 5,412-hectare wooded park offers a reservoir, hiking trails & campsites.",
+        "type": [
+            "tourist_attraction",
+            "park",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2amx.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000000ce8",
+        "name": "Hong Kong Museum of Medical Sciences",
+        "location": {
+            "lat": 22.28348420000001,
+            "lng": 114.1486498
+        },
+        "address": "2號 Caine Lane, Sheung Wan",
+        "opening_hour": [
+            "Monday: Closed",
+            "Tuesday: 10:00 AM – 5:00 PM",
+            "Wednesday: 10:00 AM – 5:00 PM",
+            "Thursday: 10:00 AM – 5:00 PM",
+            "Friday: 10:00 AM – 5:00 PM",
+            "Saturday: 10:00 AM – 5:00 PM",
+            "Sunday: 1:00 – 5:00 PM"
+        ],
+        "price": "0",
+        "description": "Exhibits exploring Chinese & Western medicine, plus traditional medical devices, in a 1906 building.",
+        "type": [
+            "museum",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ2yj9.jpg"
+        ]
+    },
+    {
+        "site_id": "000000000000047c",
+        "name": "Longhua Park",
+        "location": {
+            "lat": 22.657628,
+            "lng": 114.017416
+        },
+        "address": "M258+3X3, 公园路, 宝安区, Shen Zhen Shi",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ1c6w.jpg"
+        ]
+    },
+    {
+        "site_id": "00000000000008d0",
+        "name": "Hong Kong Railway Museum",
+        "location": {
+            "lat": 22.4475932,
+            "lng": 114.1643409
+        },
+        "address": "大埔墟, 13號 崇德街, 大埔",
+        "opening_hour": [
+            "Monday: 10:00 AM – 6:00 PM",
+            "Tuesday: Closed",
+            "Wednesday: 10:00 AM – 6:00 PM",
+            "Thursday: 10:00 AM – 6:00 PM",
+            "Friday: 10:00 AM – 6:00 PM",
+            "Saturday: 10:00 AM – 6:00 PM",
+            "Sunday: 10:00 AM – 6:00 PM"
+        ],
+        "price": "0",
+        "description": "Visitors can board vintage carriages at this 1913 station museum housing photographs & model trains.",
+        "type": [
+            "tourist_attraction",
+            "museum",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ13e7.jpg"
+        ]
+    },
+    {
+        "site_id": "0000000000029a60",
+        "name": "观海湾大沙滩",
+        "location": {
+            "lat": 22.601004,
+            "lng": 114.428608
+        },
+        "address": "JC2H+CC5, Longgang, Shenzhen",
+        "opening_hour": null,
+        "price": "0",
+        "description": null,
+        "type": [
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": null
+    },
+    {
+        "site_id": "0000000000000a77",
+        "name": "Wong Nai Chung Reservoir Park",
+        "location": {
+            "lat": 22.2570954,
+            "lng": 114.1949798
+        },
+        "address": "Hong Kong",
+        "opening_hour": [
+            "Monday: 9:00 AM – 6:00 PM",
+            "Tuesday: 9:00 AM – 6:00 PM",
+            "Wednesday: 9:00 AM – 6:00 PM",
+            "Thursday: 9:00 AM – 6:00 PM",
+            "Friday: 9:00 AM – 6:00 PM",
+            "Saturday: 9:00 AM – 6:00 PM",
+            "Sunday: 9:00 AM – 6:00 PM"
+        ],
+        "price": "0",
+        "description": "Leisure area with an artificial lake, boat rentals & walking trails, plus scenic city views.",
+        "type": [
+            "park",
+            "tourist_attraction",
+            "point_of_interest",
+            "establishment"
+        ],
+        "picture": [
+            "attraction_photos/0_AUy1YQ0wQq.jpg"
+        ]
+    }
+]
