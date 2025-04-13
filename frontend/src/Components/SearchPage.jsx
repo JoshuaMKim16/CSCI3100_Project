@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'; // Reuse the existing styles
+import './searchpage.css'; // Reuse the existing styles
 
 const SearchPage = () => {
   // State for search input, filters, sorting criteria, and locations
@@ -13,9 +13,9 @@ const SearchPage = () => {
   const fetchLocations = async () => {
     try {
       const response = await fetch('http://localhost:3000/api/locations');
-      console.log(response)
+      console.log(response);
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       setLocations(data);
       setFilteredLocations(data); // Initially, filtered locations are the same
     } catch (error) {
@@ -25,36 +25,36 @@ const SearchPage = () => {
     }
   };
 
-// Apply search, filter, and sort on the client side
-const applySearchFilterSort = (input, filterValue, sortCriteria) => {
-  let result = [...locations];
+  // Apply search, filter, and sort on the client side
+  const applySearchFilterSort = (input, filterValue, sortCriteria) => {
+    let result = [...locations];
 
-  // Apply search
-  if (input) {
-    const searchQuery = input.toLowerCase();
-    result = result.filter(location =>
-      (location.name || "").toLowerCase().includes(searchQuery) ||
-      (location.description || "").toLowerCase().includes(searchQuery) ||
-      (location.category || "").toLowerCase().includes(searchQuery)
-    );
-  }
+    // Apply search
+    if (input) {
+      const searchQuery = input.toLowerCase();
+      result = result.filter(location =>
+        (location.name || "").toLowerCase().includes(searchQuery) ||
+        (location.description || "").toLowerCase().includes(searchQuery) ||
+        (location.category || "").toLowerCase().includes(searchQuery)
+      );
+    }
 
-  // Apply filter
-  if (filterValue !== 'all') {
-    result = result.filter(location =>
-      (location.category || "").toLowerCase() === filterValue.toLowerCase()
-    );
-  }
+    // Apply filter
+    if (filterValue !== 'all') {
+      result = result.filter(location =>
+        (location.category || "").toLowerCase() === filterValue.toLowerCase()
+      );
+    }
 
-  // Apply sort
-  if (sortCriteria === 'name') {
-    result.sort((a, b) => (a.name || "").localeCompare((b.name || "")));
-  } else if (sortCriteria === 'relevance') {
-    // Keep the original order from the JSON file
-  }
+    // Apply sort
+    if (sortCriteria === 'name') {
+      result.sort((a, b) => (a.name || "").localeCompare((b.name || "")));
+    } else if (sortCriteria === 'relevance') {
+      // Keep the original order from the JSON file
+    }
 
-  setFilteredLocations(result);
-};
+    setFilteredLocations(result);
+  };
 
   // Handle search input change
   const handleSearchChange = (e) => {
@@ -147,13 +147,6 @@ const applySearchFilterSort = (input, filterValue, sortCriteria) => {
                   alignItems: 'center',
                 }}
               >
-                {/* {location.photo && (
-                  <img
-                    src={`http://localhost:3000//api/locations${location.photo}`}
-                    alt={location.name}
-                    style={{ width: '100px', height: '100px', marginRight: '20px' }}
-                  />
-                )} */}
                 <div>
                   <h3>{location.name}</h3>
                   <p>{location.description}</p>
