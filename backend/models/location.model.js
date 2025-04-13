@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const siteSchema = new mongoose.Schema({
+const locationSchema = new mongoose.Schema({
   // Tour site name shown on the description page.
   name: {
     type: String,
@@ -47,15 +47,13 @@ const siteSchema = new mongoose.Schema({
   type: [{
     type: String
   }],
-  // Unique picture ID generated for Cloudinary APIs.
-  pictureId: {
-    type: Number,
-    unique: true,
+  // Field to store picture references.
+  picture: {
+    type: [String],
     required: true
-  }},
-  {
-    timestamps: true
   }
-);
+}, {
+  timestamps: true
+});
 
-module.exports = mongoose.model('Site', siteSchema);
+module.exports = mongoose.model('Location', locationSchema);
