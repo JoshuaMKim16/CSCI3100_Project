@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const userRoute = require('./routes/user.route.js');
 const commentRoute = require('./routes/comment.route.js');
 const locationRoute = require('./routes/location.route.js'); // import Location routes
+const authRoute = require('./routes/auth.route.js'); // import Authentication routes
 const app = express();
+
 app.use(cors());
 
 // Import Models (for reference)
@@ -25,6 +27,7 @@ const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env
 app.use("/api/users", userRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/locations", locationRoute); // add path for Location endpoints
+app.use("/auth", authRoute); // authentication routes
 
 app.get('/', (req, res) => {
     res.send('Hello from Node Server Updated');
