@@ -1,123 +1,69 @@
-import React, {useRef, useState, useEffect} from 'react'
-import '../styles/tour-details.css'
-import {Container, Row, Col, Form, ListGroup} from 'reactstrap'
+import React, { useState, useEffect } from 'react';
+import {Container, Row, Col, Form, ListGroup} from 'reactstrap';
 import {useParams} from 'react-router-dom'
-import tourData from '../assets/data/tours'
-import calculateAvgRating from '../utils/avgRating'
-import avatar from '../assets/images/avatar.jpg'
-import Booking from '../components/Booking/Booking'
+import '../styles/tour-details.css'; // Reuse the existing styles
 
 const TourDetails = () => {
+  const {id} = useParams();
+  const [location, setLocation] = useState([]);
+  const [error, setError] = useState(null);
 
-  const {site_id} = useParams()
-  const reviewMsgRef = useRef()
-  const [tourRating, setTourRating] = useState(null)
+  // Fetch locations from the backend
+  const fetchLocationByID = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/locations/${id}`);
+      console.log(response);
+      if(!response.ok){
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      };
+      const data = await response.json();
+      console.log(data);
+      setLocation(data);
+    } catch (error) {
+      console.error('Error fetching locations:', error);
+      setError('Failed to load location details.');
+    }}
 
-  const tour = tourData.find(tour => tour.site_id === site_id)
-  const {picture, name, desc, price, address, reviews, maxGroupSize, location} = tour
-  const {totalRating, avgRating} = calculateAvgRating(reviews)
-  const options = {day: 'numeric', month: 'long', year:'numeric'}
-
-  const [imageSrc, setImageSrc] = useState(null)
-  
     useEffect(() => {
-      const loadImage = async () => {
-        try {
-          const imageModule = await import(`../assets/site_data/${picture}`)
-          setImageSrc(imageModule.default)
-        } catch (error) {
-          console.error('Error loading the image:', error)
+        if(id){
+            fetchLocationByID(id);
         }
-      }
-      loadImage();
-    })
+    }, [id]);
 
-  const submitHandler = e => {
-    e.preventDefault()
-  const reviewText = reviewMsgRef.current.value
-  }
+    const [imageSrc, setImageSrc] = useState(null)
+        useEffect(() => {
+          const loadImage = async () => {
+            try {
+              const imageModule = await import(`../assets/site_data/${location.picture}`)
+              setImageSrc(imageModule.default)
+            } catch (error) {
+              console.error('Error loading the image:', error)
+            }
+          }
+          loadImage();
+        })
 
-  return (
-    <>
-      <section>
-        <Container>
-          <Row>
-            <Col lg='8'>
-              <div className='tour_content'>
-                {imageSrc && <img src={imageSrc} alt='tour-image' />}
-                <div className='tour_info'>
-                  <h2>{name}</h2>
-                  <div className='d-flex align-items-center gap-5'>
-                    <span className='tour_rating d-flex align-items-center gap-1'>
-                      <i class="ri-star-fill" style={{color: 'var(--secondary-color)'}}></i> {calculateAvgRating === 0 ? null:avgRating}
-                      {totalRating === 0 ? ('Not rated') : (<span>({reviews.length})</span>)}
-                    </span>
-                      <span>
-                        <i class="ri-map-pin-fill"></i>{address}
-                      </span>
-                  </div>
-                  <div className='tour_extra-details'>
-                    <span><i class="ri-map-pin-2-line"></i>{location}</span>
-                    <span><i class="ri-money-dollar-circle-line"></i>${price} /person</span>
-                    <span><i class="ri-group-line"></i>{maxGroupSize}</span>
-                  </div>
-                  <h5>Description</h5>
-                  <p>{desc}</p>
+        return (
+            <div className="p-4">
+              <h1 className="text-2xl font-bold mb-4">Location Details</h1>
+        
+              {/* Display error message if any */}
+              {error && <p className="text-red-500">{error}</p>}
+        
+              {/* Render location details */}
+              {location ? (
+                <div className="p-4 border border-gray-300 rounded-md shadow-md">
+                  <h2 className="text-xl font-semibold">{location.name}</h2>
+                  <p className="text-gray-600">Address: {location.address}</p>
+                  <p className="text-gray-600">
+                    Description: {location.description || 'No description available'}
+                  </p>
                 </div>
-
-                {/* =================tour reviews section start===============*/}
-                <div className='tour_reviews mt-4'>
-                  <h4>Reviews ({reviews?.length} reviews)</h4>
-
-                  <Form onSubmit={submitHandler}>
-                    <div className='d-flex align-items-center gap-3 mb-4 rating_group'>
-                      <span onClick={() => setTourRating(1)}>1 <i class="ri-star-s-fill"></i></span>
-                      <span onClick={() => setTourRating(2)}>2 <i class="ri-star-s-fill"></i></span>
-                      <span onClick={() => setTourRating(3)}>3 <i class="ri-star-s-fill"></i></span>
-                      <span onClick={() => setTourRating(4)}>4 <i class="ri-star-s-fill"></i></span>
-                      <span onClick={() => setTourRating(5)}>5 <i class="ri-star-s-fill"></i></span>
-                    </div>
-
-                    <div className='review_input'>
-                      <input tyoe='text' ref={reviewMsgRef} placeholder='Share your thoughts' required/>
-                      <button className='btn primary__btn text-white' type='submit'>Submit</button>
-                    </div>
-                  </Form>
-                  <ListGroup className='user_reviews'>
-                    {
-                      reviews?.map(review => (
-                      <div className='review_item'>
-                        <img src={avatar} alt=''/>
-
-                        <div className='w-100'>
-                          <div className='d-flex align-items-center justify-content-between'>
-                            <div>
-                              <h5>muhib</h5>
-                              <p>{new Date('01-18-2023').toLocaleDateString('en-US', options)}</p>
-                            </div>
-                            <span className='d-flex align-items-center'>
-                              5<i class='ri-star-s-fill'></i>
-                            </span>
-                          </div>
-
-                          <h6>Amazing tour</h6>
-                        </div>
-                      </div>))
-                    }
-                  </ListGroup>
-                </div>
-                {/* =================tour reviews section start===============*/}
-              </div>
-            </Col>
-
-            <Col lg='4'>
-              <Booking tour={tour} avgRating={avgRating}/>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </>
-  )
+              ) : (
+                !error && <p className="text-gray-500">Loading location details...</p>
+              )}
+            </div>
+          );
 }
 
 export default TourDetails
