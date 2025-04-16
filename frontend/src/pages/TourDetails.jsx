@@ -44,25 +44,35 @@ const TourDetails = () => {
         })
 
         return (
-            <div className="p-4">
-              <h1 className="text-2xl font-bold mb-4">Location Details</h1>
-        
-              {/* Display error message if any */}
-              {error && <p className="text-red-500">{error}</p>}
-        
-              {/* Render location details */}
-              {location ? (
-                <div className="p-4 border border-gray-300 rounded-md shadow-md">
-                  <h2 className="text-xl font-semibold">{location.name}</h2>
-                  <p className="text-gray-600">Address: {location.address}</p>
-                  <p className="text-gray-600">
-                    Description: {location.description || 'No description available'}
-                  </p>
-                </div>
-              ) : (
-                !error && <p className="text-gray-500">Loading location details...</p>
-              )}
-            </div>
+          <>
+          <section>
+            <Container>
+              <Row>
+                <Col lg='8'>
+                  <div className='tour_content'>
+                    {imageSrc && <img src={imageSrc} alt='tour-image' />}
+                    <div className='tour_info'>
+                      <h2>{location.name}</h2>
+                      <div className='d-flex align-items-center gap-5'>
+                        <span className='tour_rating d-flex align-items-center gap-1'>
+                        </span>
+                          <span>
+                            <i class="ri-map-pin-fill"></i>{location.address}
+                          </span>
+                      </div>
+                      <div className='tour_extra-details'>
+                        <span><i class="ri-map-pin-2-line"></i>{location}</span>
+                        <span><i class="ri-money-dollar-circle-line"></i>${location.price} /person</span>
+                      </div>
+                      <h5>Description</h5>
+                      <p>{location.description}</p>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </section>
+          </>
           );
 }
 
