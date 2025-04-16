@@ -1,7 +1,9 @@
+const cors = require('cors');
 const express = require('express')
 const mongoose = require('mongoose')
 const userRoute = require('./routes/user.route.js')
 const app = express()
+app.use(cors())
 
 // Import Models
 const User = require('./models/user.model.js')

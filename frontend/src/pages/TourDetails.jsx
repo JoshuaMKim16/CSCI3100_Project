@@ -50,6 +50,7 @@ const TourDetails = () => {
               <Row>
                 <Col lg='8'>
                   <div className='tour_content'>
+                    <h1>{id}</h1>
                     {imageSrc && <img src={imageSrc} alt='tour-image' />}
                     <div className='tour_info'>
                       <h2>{location.name}</h2>
