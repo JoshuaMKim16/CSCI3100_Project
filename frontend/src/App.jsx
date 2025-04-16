@@ -5,6 +5,9 @@ import Login from './Components/Login';
 import ForgotPassword from './Components/ForgotPassword';
 import './App.css';
 
+const url = 'http://localhost:3000/api'
+fetch(url);
+
 function App() {
   return (
     <BrowserRouter>
