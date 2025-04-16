@@ -22,7 +22,7 @@ function Map() {
 
     if (!window.google) {
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?AIzaSyBTh1T9VDutesqd6hoMXDV9D-dzwxMFeTI`;
+      script.src = `https://maps.googleapis.com/maps/api/js?APIKEY`;
       script.async = true;
       script.defer = true;
       script.onload = initMap;
