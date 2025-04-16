@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '../App.css';
 import Axios from 'axios';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Signup = () => {
     const [username, setUsername] = useState('')
@@ -44,6 +44,7 @@ const Signup = () => {
                 onChange={(e) => setPassword(e.target.value)}/>
 
                 <button type='Submit'>Sign Up</button>
+                <p>Have an Account? <Link to = '/login'>Login</Link></p> 
             </form>
         </div>
     )
