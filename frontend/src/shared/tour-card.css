@@ -1,5 +1,6 @@
 .tour_img img{
-    width: 100%;
+    width: 260px;
+    height: 260px;
     border-radius: 5px 5px 0 0;
 }
 

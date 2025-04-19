@@ -10,7 +10,7 @@ const TourCard = ({location}) => {
 
   // Fetch locations from the backend
   useEffect(() => {
-    const loadImage = async (location) => {
+    const loadImage = async () => {
       try {
         const imageModule = await import(`../assets/site_data/${location.picture}`);
         setImageSrc(imageModule.default);
