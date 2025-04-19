@@ -5,63 +5,84 @@ import calculateAvgRating from '../utils/avgRating'
 
 import './tour-card.css'
 
-const TourCard = ({tour}) => {
-
-  const {site_id, name, address, price, picture, type} = tour
-  const typeString = type.join(', ')
+const TourCard = () => {
+  const [locations, setLocations] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);
 
+  // Fetch locations from the backend
+  const fetchLocations = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/locations');
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+      setLocations(data);
+    } catch (error) {
+      console.error('Error fetching locations:', error);
+      setLocations([]);
+    }
+  };
+
+  // Fetch initial locations on component mount
   useEffect(() => {
-    const loadImage = async () => {
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
+    const loadImage = async (location) => {
       try {
-        const imageModule = await import(`../assets/site_data/${picture}`);
+        const imageModule = await import(`../assets/site_data/${location.picture}`);
         setImageSrc(imageModule.default);
       } catch (error) {
         console.error('Error loading the image:', error);
       }
     };
-
     loadImage();
   });
 
-
   // const {totalRating, avgRating} = calculateAvgRating(reviews)
-  
-  return <> 
+
+  return (
     <div className='tour_card'>
-      <Card>
-        <div className='tour_img'>
-          {imageSrc && <img src={imageSrc} alt='tour-image' />}
-        </div>
+      {locations.length > 0 ? (
+        locations.map((location) => (
 
-        <CardBody>
-        <div className='card_top d-flex align-items-center justify-content-between'>
-          <span className='tour_location d-flex align-items-center gap-1'>
-            <i class="ri-map-pin-line"></i> {address}
-          </span>
-          {/*<span className='tour_rating d-flex align-items-center gap-1'>
-            <i class="ri-star-fill"></i> {avgRating === 0 ? null:avgRating}
-            {totalRating === 0 ? ('Not rated') : (<span>({reviews.length})</span>)}
-          </span>*/}
-        </div>
-          <h5 className='tour_name'>
-            <Link to={`/tours/${site_id}`}>{name}</Link>
-          </h5>
-        <div>
-          <h6>{typeString}</h6>
-        </div>
-        <div className='card_bottom d-flex align-items-center justify-content-between mt-3'>
-          <h5>${price} <span> /per person</span></h5>
-          <button className='btn booking_btn'>
-            <Link to={`/tours/${site_id}`}>View Details</Link>
-          </button>
-          
-        </div>
-      </CardBody>
+          <Card>
+          <div className='tour_img'>
+            {imageSrc && <img src={imageSrc} alt='tour-image' />}
+          </div>
 
+          <CardBody>
+          <div className='card_top d-flex align-items-center justify-content-between'>
+            <span className='tour_location d-flex align-items-center gap-1'>
+              <i class="ri-map-pin-line"></i> {location.address}
+            </span>
+            {/*<span className='tour_rating d-flex align-items-center gap-1'>
+              <i class="ri-star-fill"></i> {avgRating === 0 ? null:avgRating}
+              {totalRating === 0 ? ('Not rated') : (<span>({reviews.length})</span>)}
+            </span>*/}
+          </div>
+            <h5 className='tour_name'>
+              <Link to={`/tours/${location._id}`}>{location.name}</Link>
+            </h5>
+          <div>
+            <h6>{location.type.join(',')}</h6>
+          </div>
+          <div className='card_bottom d-flex align-items-center justify-content-between mt-3'>
+            <h5>${location.price} <span> /per person</span></h5>
+            <button className='btn booking_btn'>
+              <Link to={`/tours/${location._id}`}>View Details</Link>
+            </button>
+            
+          </div>
+          </CardBody>
       </Card>
+        )
+      )) : (
+        <p>No attractions found.</p>
+      )}
     </div>
-  </>
+    )
 }
 
 export default TourCard
