@@ -5,29 +5,10 @@ import calculateAvgRating from '../utils/avgRating'
 
 import './tour-card.css'
 
-const TourCard = () => {
-  const [locations, setLocations] = useState([]);
+const TourCard = ({location}) => {
   const [imageSrc, setImageSrc] = useState(null);
 
   // Fetch locations from the backend
-  const fetchLocations = async () => {
-    try {
-      const response = await fetch('http://localhost:3000/api/locations');
-      console.log(response);
-      const data = await response.json();
-      console.log(data);
-      setLocations(data);
-    } catch (error) {
-      console.error('Error fetching locations:', error);
-      setLocations([]);
-    }
-  };
-
-  // Fetch initial locations on component mount
-  useEffect(() => {
-    fetchLocations();
-  }, []);
-
   useEffect(() => {
     const loadImage = async (location) => {
       try {
@@ -44,9 +25,6 @@ const TourCard = () => {
 
   return (
     <div className='tour_card'>
-      {locations.length > 0 ? (
-        locations.map((location) => (
-
           <Card>
           <div className='tour_img'>
             {imageSrc && <img src={imageSrc} alt='tour-image' />}
@@ -66,7 +44,7 @@ const TourCard = () => {
               <Link to={`/tours/${location._id}`}>{location.name}</Link>
             </h5>
           <div>
-            <h6>{location.type.join(',')}</h6>
+            <h6>{location.type.join(', ')}</h6>
           </div>
           <div className='card_bottom d-flex align-items-center justify-content-between mt-3'>
             <h5>${location.price} <span> /per person</span></h5>
@@ -77,10 +55,6 @@ const TourCard = () => {
           </div>
           </CardBody>
       </Card>
-        )
-      )) : (
-        <p>No attractions found.</p>
-      )}
     </div>
     )
 }
