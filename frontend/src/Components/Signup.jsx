@@ -4,23 +4,22 @@ import Axios from 'axios';
 import {Link, useNavigate} from "react-router-dom";
 
 const Signup = () => {
-    const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [errorMessage, setErrorMessage] = useState('');
+    //const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.post('http://localhost:3000/auth/signup', {
-            name,
-            username, 
-            email, 
-            password,
+        Axios.get('http://localhost:3000/api/auth/signup', {
+            name: username, 
+            email: email, 
+            password: password,
         }).then(response => {
             if(response.data.status){
+                
                 navigate('/login')
             }
         }).catch(err => {
@@ -33,9 +32,6 @@ const Signup = () => {
         <div className='sign-up-container'>
             <form className='sign-up-form'onSubmit={handleSubmit}>
                 <h2>Sign Up</h2>
-                <label htmlFor='name'>Name:</label>
-                <input type='text' placeholder='Name' 
-                onChange={(e) => setName(e.target.value)}/>
 
                 <label htmlFor='username'>Username:</label>
                 <input type='text' placeholder='Username' 
