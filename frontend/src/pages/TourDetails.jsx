@@ -1,52 +1,83 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {Container, Row, Col, Form, ListGroup, Button} from 'reactstrap';
 import {useParams} from 'react-router-dom'
 import {useNavigate, Link} from 'react-router-dom'
-import '../styles/tour-details.css'; // Reuse the existing styles
-import Booking from '../components/Booking/Booking'
+import '../styles/tour-details.css'
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
+// import Booking from '../components/Booking/Booking'
+
+const containerStyle = {
+  width: '100%',
+  height: '400px'
+}
 
 const TourDetails = () => {
-  const {id} = useParams();
-  const [location, setLocation] = useState([]);
-  const [error, setError] = useState(null);
-  const [imageSrc, setImageSrc] = useState(null);
+  const {id} = useParams()
+  const [location, setLocation] = useState([])
+  const [error, setError] = useState(null)
+  const [imageSrc, setImageSrc] = useState([])
+  const [mapCenter, setMapCenter] = useState({lat: 0, lng: 0})
+  const [isMapLoaded, setIsMapLoaded] = useState(false)
+  const mapRef = useRef(null)
 
-  // Fetch locations from the backend
+  // Fetch locations from the location api
   const fetchLocationByID = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/locations/${id}`);
-      console.log(response);
+      const response = await fetch(`http://localhost:3000/api/locations/${id}`)
+      console.log(response)
       if(!response.ok){
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      };
-      const data = await response.json();
-      console.log(data);
-      setLocation(data);
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
+      }
+      const data = await response.json()
+      console.log(data)
+      setLocation(data)
     } catch (error) {
-      console.error('Error fetching locations:', error);
-      setError('Failed to load location details.');
+      console.error('Error fetching locations:', error)
+      setError('Failed to load location details.')
     }}
 
     useEffect(() => {
         if(id){
-            fetchLocationByID(id);
+            fetchLocationByID(id)
         }
-    }, [id]);
+    }, [id])
 
-    // Fetch locations from the backend
-      useEffect(() => {
-        const loadImage = async () => {
+    // Fetch pictures from the backend
+    useEffect(() => {
+      if(!location) return
+      const loadImage = async () => {
+        try {
+          const imageModule = await import(`../assets/site_data/${location.picture}`)
+          setImageSrc(imageModule.default)
+        } catch (error) {
+          console.error('Error loading the image:', error)
+        }
+      }
+      loadImage()
+    }, [location])
+
+    // Turns address into lat and lng data
+    useEffect(() => {
+      if(!location?.address) return
+      const geocodeAddress = async () => {
           try {
-            const imageModule = await import(`../assets/site_data/${location.picture}`);
-            setImageSrc(imageModule.default);
+              const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=AIzaSyBtgmpbcEglm3EY_02hhUPhxQCBBj_uHV0`)
+              const data = await response.json()
+              if (data.status === 'OK') {
+                  const { lat, lng } = data.results[0].geometry.location
+                  setMapCenter({ lat, lng })
+                  setIsMapLoaded(true)
+              } else {
+                  console.error('Geocoding failed:', data.status)
+              }
           } catch (error) {
-            console.error('Error loading the image:', error);
+              console.error('Error fetching geocoding data:', error)
           }
-        };
-        loadImage();
-      });
-    
-    // When click Add to Planner button 
+      }
+      geocodeAddress()
+    }, [location?.address])
+
+    // When click Add to Planner button, direct users to Thank You page
     const navigate = useNavigate()
     
     const handleClick = e => {
@@ -58,9 +89,6 @@ const TourDetails = () => {
       <section>
         <Container>
           <Row>
-            <button className='btn booking_btn mb-4'>
-              <Link to={`/tours`}>Back</Link>
-            </button>
             <Col lg='7'>
               <div className='tour_content'>
                 {imageSrc && <img src={imageSrc} alt='tour-image' />}
@@ -88,6 +116,14 @@ const TourDetails = () => {
               <Button className='btn primary__btn w-100 mt-4' onClick={handleClick}>Add to Planner</Button>
             </Col>
           </Row>
+          <br/>
+          <LoadScript googleMapsApiKey='AIzaSyBtgmpbcEglm3EY_02hhUPhxQCBBj_uHV0' libraries={['marker']}>
+              {isMapLoaded && (
+                <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
+                  <Marker position={mapCenter}/>
+                </GoogleMap>
+              )}
+            </LoadScript>
         </Container>
       </section>
     );
