@@ -61,7 +61,7 @@ const TourDetails = () => {
       if(!location?.address) return
       const geocodeAddress = async () => {
           try {
-              const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=AIzaSyBtgmpbcEglm3EY_02hhUPhxQCBBj_uHV0`)
+              const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${APIKEY}`)
               const data = await response.json()
               if (data.status === 'OK') {
                   const { lat, lng } = data.results[0].geometry.location
@@ -117,7 +117,7 @@ const TourDetails = () => {
             </Col>
           </Row>
           <br/>
-          <LoadScript googleMapsApiKey='AIzaSyBtgmpbcEglm3EY_02hhUPhxQCBBj_uHV0' libraries={['marker']}>
+          <LoadScript googleMapsApiKey='' libraries={['marker']}>
               {isMapLoaded && (
                 <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
                   <Marker position={mapCenter}/>
