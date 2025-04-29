@@ -3,7 +3,11 @@ import Start from './Components/Start';
 import Signup from './Components/Signup';
 import Login from './Components/Login';
 import SearchPage from './Components/SearchPage';
+import ForgotPassword from './Components/ForgotPassword';
 import './App.css';
+
+const url = 'http://localhost:3000/api'
+fetch(url);
 
 function App() {
   return (
@@ -13,6 +17,7 @@ function App() {
         <Route path = "/signup" element = {<Signup />}></Route>
         <Route path = "/login" element = {<Login />}></Route>
         <Route path = "/searchpage" element = {<SearchPage />}></Route>
+        <Route path = "/forgotPassword" element = {<ForgotPassword />}></Route>
       </Routes>
     </BrowserRouter>
   )

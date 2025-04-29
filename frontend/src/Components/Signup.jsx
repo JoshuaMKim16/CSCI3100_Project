@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../App.css';
 import Axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Signup = () => {
     const [username, setUsername] = useState('')
@@ -9,24 +9,20 @@ const Signup = () => {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    //const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        setError('');
-        setMessage('');
-        // Post to the authentication signup endpoint
-        Axios.post('http://localhost:3000/auth/signup', {
-            name: username, // using "name" to correspond with the model field
-            email, 
-            password,
+        e.preventDefault()
+        Axios.get('http://localhost:3000/api/auth/signup', {
+            name: username, 
+            email: email, 
+            password: password,
         }).then(response => {
             if(response.data.status){
-                setMessage("Signup successful! Redirecting to login page...");
-                setTimeout(() => {
-                    navigate('/login');
-                }, 1500);
+                
+                navigate('/login')
             }
         }).catch(err => {
             setError("An error occurred. Please try again.");
@@ -38,39 +34,21 @@ const Signup = () => {
         <div className='form-container'>
             <form className='form' onSubmit={handleSubmit}>
                 <h2>Sign Up</h2>
-                {message && <p className="success-message">{message}</p>}
-                {error && <p className="error-message">{error}</p>}
-                <div className="form-group">
-                    <label htmlFor='username'>Username:</label>
-                    <input 
-                        type='text' 
-                        placeholder='Username'
-                        value={username} 
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor='email'>Email:</label>
-                    <input 
-                        type='email' 
-                        placeholder='Email'
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor='password'>Password:</label>
-                    <input 
-                        type='password' 
-                        placeholder='******'
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type='submit' className="btn primary-btn">Sign Up</button>
+
+                <label htmlFor='username'>Username:</label>
+                <input type='text' placeholder='Username' 
+                onChange={(e) => setUsername(e.target.value)}/>
+
+                <label htmlFor='email'> Email:</label>
+                <input type='email' autoComplete='off' placeholder='Email'
+                onChange={(e) => setEmail(e.target.value)}/>
+
+                <label htmlFor='password'>Password:</label>
+                <input type='password' placeholder='******'
+                onChange={(e) => setPassword(e.target.value)}/>
+
+                <button type='Submit'>Sign Up</button>
+                <p>Have an Account? <Link to = '/login'>Login</Link></p> 
             </form>
         </div>
     )
