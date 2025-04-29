@@ -1,87 +1,101 @@
-@import url("https://fonts.googleapis.com/css2?family=Island+Moments&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
-
-:root {
-  --primary-color: #ff7e01;
-  --secondary-color: #faa935;
-  --heading-color: #0b2727;
-  --text-color: #6e7074;
-  --font-name: "Montserrat", sans-serif;
-  --subtitle-font-name: "Island Moments", cursive;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url('./Image/cover.png'); 
+  background-size: cover; 
+  background-position: center; 
+  height: 100vh; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
 }
 
-* {
-  margin: 0;
-  padding: 0;
+/* start page */
+main-container {
+  text-align: center; 
+  background-color: rgba(255, 255, 255, 0.8); 
+  padding: 20px; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+}
+.site-title {
+  font-size: 80px;
+  margin-bottom: 16px;
+  text-align: center; 
+  font-family: Georgia, serif;
+}
+
+.welcome-message {
+  font-size: 20px;
+  margin-bottom: 24px;
+  text-align: center; 
+}
+
+.start-button {
+  padding: 10px;
+  font-size: 18px;
+  background-color: #f5e6c4;
+  color: rgb(0, 0, 0);
+  border: 1px, solid, white;
+  border-radius: 60px;
+  width: 200px; 
+  height: 50px;
+  display: block; 
+  margin: 0 auto; 
+  cursor: pointer;
+}
+
+/* signup page */
+.sign-up-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  background-color: #ffffff;
+}
+
+.sign-up-form {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.background{
+  width: 430px;
+  height: 520px;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  background-color: #b5b0e4;
+  left: 50%;
+  top: 50%;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
   box-sizing: border-box;
 }
 
-body {
-  font-family: var(--font-name);
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #f5e6c4;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;   
 }
 
-section {
-  padding: 50px 0px;
+button:hover {
+  background-color: #2980b9;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--heading-color);
-}
 
-a {
-  text-decoration: none;
-  color: unset;
-}
-ul {
-  list-style: none;
-}
-
-.primary__btn {
-  background: var(--secondary-color) !important;
-  border: none !important;
-  border-radius: 50px !important;
-  padding: 0.4rem 1.5rem !important;
-}
-
-.primary__btn a {
-  font-size: 1.1rem;
-  text-decoration: none;
-  color: #fff;
-}
-.primary__btn a:hover {
-  color: inherit;
-}
-.secondary__btn {
-  background: transparent !important;
-  color: #0b2727 !important;
-  border: none !important;
-  font-weight: 500 !important;
-}
-
-.secondary__btn a {
-  text-decoration: none;
-  font-size: 1.1rem;
-  color: var(--heading-color);
-}
-
-.secondary__btn a:hover {
-  color: inherit;
-}
-
-.section__subtitle {
-  background: var(--secondary-color);
-  font-family: var(--subtitle-font-name);
-  width: max-content;
-  padding: 0px 0.5rem;
-  padding-right: 1rem;
-
-  border-radius: 50px;
-  font-weight: 500;
-  font-size: 1.7rem;
-  color: var(--heading-color);
-}
