@@ -23,7 +23,7 @@ const Login = () => {
             if(response.data.status){
                 setMessage("Login successful! Redirecting...");
                 setTimeout(() => {
-                    navigate('/home');
+                    navigate('/tours');
                 }, 1500);
             }
         }).catch(err => {
