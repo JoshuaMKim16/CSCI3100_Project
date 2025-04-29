@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import '../App.css';
 import Axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import {Link, useNavigate} from "react-router-dom";
 
 const Signup = () => {
+    const [name, setName] = useState('')
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    //const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const navigate = useNavigate();
 

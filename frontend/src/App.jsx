@@ -11,6 +11,9 @@ import ResetPassword from './Components/ResetPassword';
 import './App.css';
 // import "./styles/tour.css";  
 
+const url = 'http://localhost:3000/api'
+fetch(url);
+
 function App() {
   return (
     <BrowserRouter>
