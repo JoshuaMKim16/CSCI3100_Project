@@ -15,7 +15,7 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.get('http://localhost:3000/api/auth/signup', {
+        Axios.post('http://localhost:3000/auth/signup', {
             name: username, 
             email: email, 
             password: password,

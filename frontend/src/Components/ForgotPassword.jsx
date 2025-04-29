@@ -1,40 +1,48 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import '../App.css';
 import Axios from 'axios';
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
-    const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        Axios.post('http://localhost:3000/auth/forgot_password', {
-            email, 
-        }).then(response => {
-            if(response.data.status){
-                alert("Check your email for the password reset link")
-                navigate('/login')
-            }
-        }).catch(err => {
-            console.log(err)
-        })
+    Axios.post('http://localhost:3000/auth/forgot_password', { email })
+      .then(response => {
+        if (response.data.status) {
+          alert("A verification code has been sent to your email.");
+          // Pass the email along to the next step if desired.
+          navigate('/reset_password', { state: { email } });
+        } else {
+          alert("This email is not registered. Please sign up or check your email.");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("There was an error processing your request. Please try again.");
+      });
+  };
 
-    }
-
-    return(
-        <div className='sign-up-container'>
-        <form className='sign-up-form'onSubmit={handleSubmit}>
-            <h2>Password Reset</h2>
-           
-            <label htmlFor='email'> Email:</label>
-            <input type='email' autoComplete='off' placeholder='Email'
-            onChange={(e) => setEmail(e.target.value)}/>
-
-            <button type='Submit'>Send</button>
-        </form>
+  return (
+    <div className='sign-up-container'>
+      <form className='sign-up-form' onSubmit={handleSubmit}>
+        <h2>Password Reset</h2>
+        <label htmlFor='email'>Email:</label>
+        <input
+          type='email'
+          autoComplete='off'
+          placeholder='Enter your email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button type='submit'>Send</button>
+      </form>
     </div>
-    )
-}
+  );
+};
+
 export default ForgotPassword;

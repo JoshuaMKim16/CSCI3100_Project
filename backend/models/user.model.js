@@ -1,3 +1,4 @@
+// models/user.model.js
 const mongoose = require('mongoose');
 
 // Main user schema - arbitrary
@@ -24,9 +25,14 @@ const userSchema = new mongoose.Schema({
   is_admin: {
     type: Boolean,
     default: false
-  }},
-  {
-    timestamps: true
-  });
+  },
+  // New field for storing the password reset code
+  resetCode: {
+    type: String
+  }
+},
+{
+  timestamps: true
+});
 
 module.exports = mongoose.model('User', userSchema);

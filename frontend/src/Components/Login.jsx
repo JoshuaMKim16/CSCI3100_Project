@@ -14,7 +14,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        Axios.get('http://localhost:3001/api/auth/login', {
+        Axios.post('http://localhost:3000/auth/login', {
             email: email, 
             password: password,
         }).then(response => {
