@@ -3,41 +3,123 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user.route.js');
 const commentRoute = require('./routes/comment.route.js');
-const locationRoute = require('./routes/location.route.js'); // import Location routes
+const locationRoute = require('./routes/location.route.js');
+const fetch = require('node-fetch').default;
+// 导入 path 模块
+const path = require('path');
+
 const app = express();
-app.use(cors());
+const port = 3000;
+
+app.use(cors({ origin: '*' }));
+
+// 配置静态文件服务，指向项目根目录下的 front_end 文件夹
+app.use(express.static(path.join(__dirname, '../front_end')));
 
 // Import Models (for reference)
 const User = require('./models/user.model.js');
-const Location = require('./models/location.model.js'); // this is your location model
+const Location = require('./models/location.model.js');
 
 // Middleware configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('public'));
 
 // .env file configuration
 const dotenv = require('dotenv');
 dotenv.config();
+
+// 打印环境变量
+console.log('DB_USERNAME:', process.env.DB_USERNAME);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+
 const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@backenddb.vhwzsyd.mongodb.net/backendDB?retryWrites=true&w=majority&appName=BackendDB`;
 
 // Routes configuration
 app.use("/api/users", userRoute);
 app.use("/api/comments", commentRoute);
-app.use("/api/locations", locationRoute); // add path for Location endpoints
+app.use("/api/locations", locationRoute);
 
 app.get('/', (req, res) => {
     res.send('Hello from Node Server Updated');
 });
 
+// 配置 DeepSeek 官网 API 密钥和模型
+const DEEPSEEK_API_KEY = 'sk-88345975d2d045b592fe7d383803ffa6';
+const MODEL = 'deepseek-chat';
+const API_URL = 'https://api.deepseek.com/v1/chat/completions';
+
+app.post('/chat', async (req, res) => {
+    const { message } = req.body;
+    if (!message) {
+        return res.status(400).json({ error: 'Message is required' });
+    }
+
+    try {
+        const requestBody = {
+            messages: [
+                {
+                    content: "You are a helpful assistant. use english all the time. You are responsible for introducing tourist attractions to the users.",
+                    role: "system"
+                },
+                {
+                    content: message,
+                    role: "user"
+                }
+            ],
+            model: MODEL,
+            frequency_penalty: 0,
+            max_tokens: 2048,
+            presence_penalty: 0,
+            response_format: {
+                type: "text"
+            },
+            stop: null,
+            stream: false,
+            stream_options: null,
+            temperature: 1,
+            top_p: 1,
+            tools: null,
+            tool_choice: "none",
+            logprobs: false,
+            top_logprobs: null
+        };
+
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('DeepSeek API 返回的错误信息:', errorData);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const answer = data.choices[0].message.content.trim();
+        res.json({ answer });
+    } catch (error) {
+        if (error.code === 'ENOTFOUND') {
+            console.error('网络错误：无法解析 api.deepseek.com 的域名，请检查网络连接和 DNS 设置。');
+        } else {
+            console.error('DeepSeek API Error:', error);
+        }
+        res.status(500).json({ error: 'An error occurred while processing your request' });
+    }
+});
+
 // Connect to MongoDB and start the server
 mongoose.connect(connectionString)
-    .then(() => {
+   .then(() => {
         console.log('Connected to database');
-        app.listen(3000, () => {
-            console.log('Server is running on port 3000');
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
         });
     })
-    .catch((error) => {
+   .catch((error) => {
         console.log('Connection Failed', error);
-    });
+    });    
