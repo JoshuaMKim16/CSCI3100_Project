@@ -3,7 +3,7 @@ import {Container, Row, Col, Form, ListGroup, Button} from 'reactstrap';
 import {useParams} from 'react-router-dom'
 import {useNavigate, Link} from 'react-router-dom'
 import '../styles/tour-details.css'
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api'
 // import Booking from '../components/Booking/Booking'
 
 const containerStyle = {
@@ -54,14 +54,14 @@ const TourDetails = () => {
         }
       }
       loadImage()
-    }, [location])
+    }, [location?.picture])
 
     // Turns address into lat and lng data
     useEffect(() => {
       if(!location?.address) return
       const geocodeAddress = async () => {
           try {
-              const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${APIKEY}`)
+              const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=`)
               const data = await response.json()
               if (data.status === 'OK') {
                   const { lat, lng } = data.results[0].geometry.location
@@ -117,10 +117,10 @@ const TourDetails = () => {
             </Col>
           </Row>
           <br/>
-          <LoadScript googleMapsApiKey='' libraries={['marker']}>
+          <LoadScript googleMapsApiKey= ''>
               {isMapLoaded && (
                 <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-                  <Marker position={mapCenter}/>
+                  <MarkerF position={mapCenter}/>
                 </GoogleMap>
               )}
             </LoadScript>
