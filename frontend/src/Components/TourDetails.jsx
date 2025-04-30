@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import "./tour-details.css"; // updated import path
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 // import Booking from ~

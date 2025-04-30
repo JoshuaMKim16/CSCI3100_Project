@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardBody } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Card, CardBody, Button } from 'reactstrap';
+import { useNavigate, Link } from 'react-router-dom';
 // import calculateAvgRating from "../utils/avgRating"; // remains same, located in /utils
 import "./tour-card.css"; 
 
 const TourCard = ({ location }) => {
   const [imageSrc, setImageSrc] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch the image asset for the tour
   useEffect(() => {
@@ -19,6 +20,12 @@ const TourCard = ({ location }) => {
     };
     loadImage();
   }, [location.picture]);
+
+    // Handle click to add to planner
+    const handleClick = e => {
+      e.preventDefault();
+      navigate(`/tours/${location._id}`);
+    };
 
   return (
     <div className="tour_card">
@@ -40,9 +47,9 @@ const TourCard = ({ location }) => {
           </div>
           <div className="card_bottom d-flex align-items-center justify-content-between mt-3">
             <h5>${location.price} <span> /per person</span></h5>
-            <button className="btn booking_btn">
-              <Link to={`/tours/${location._id}`}>View Details</Link>
-            </button>
+            <Button className="btn primary__btn w-100 mt-4" onClick={handleClick}>
+              View Details
+            </Button>
           </div>
         </CardBody>
       </Card>
