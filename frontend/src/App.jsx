@@ -10,7 +10,9 @@ import ForgotPassword from './Components/login/ForgotPassword';
 import ResetPassword from './Components/login/ResetPassword';
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
+import AddEditUser from './Components/Admin/AddEditUser';
 import LocationManagement from './Components/Admin/LocationManagement';
+import AddEditLocation from './Components/Admin/AddEditLocation';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
 import './App.css';
@@ -30,17 +32,18 @@ function App() {
           <Route path="/tours" element={<Tours />} />
           <Route path="/tours/:id" element={<TourDetails />} />
 
-          {/* Protected Admin Routes */}
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedAdminRoute>
-                <Admin />
-              </ProtectedAdminRoute>
-            }
-          >
+          {/* Protected Admin Panel - Admin components now reside in Components/Admin */}
+          <Route path="/admin/*" element={
+            <ProtectedAdminRoute>
+              <Admin />
+            </ProtectedAdminRoute>
+          }>
             <Route path="users" element={<UserManagement />} />
+            <Route path="users/add" element={<AddEditUser />} />
+            <Route path="users/edit" element={<AddEditUser />} />
             <Route path="locations" element={<LocationManagement />} />
+            <Route path="locations/add" element={<AddEditLocation />} />
+            <Route path="locations/edit" element={<AddEditLocation />} />
           </Route>
         </Routes>
       </BrowserRouter>
