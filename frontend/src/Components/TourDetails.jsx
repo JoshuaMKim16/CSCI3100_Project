@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import "./tour-details.css"; // updated import path
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 // import Booking from ~
 
 // Define the container style for Google Map
@@ -121,7 +121,7 @@ const TourDetails = () => {
         <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY" libraries={['marker']}>
           {isMapLoaded && (
             <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-              <Marker position={mapCenter} />
+              <MarkerF position={mapCenter} />
             </GoogleMap>
           )}
         </LoadScript>
