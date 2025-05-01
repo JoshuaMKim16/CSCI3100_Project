@@ -1,0 +1,239 @@
+/* Overall page container */
+section.shopping-cart-page {
+  background: #f0f8ff;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  padding: 40px 20px;
+}
+
+/* Main header styling */
+section.shopping-cart-page .cart-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+/* Sub-header styling inside columns */
+section.shopping-cart-page .sub-header {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+/* Flex container for timetable and cart columns */
+.cart-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Timetable column styles */
+.timetable-col {
+  flex: 1 1 300px;
+  max-width: 500px;
+}
+
+/* Cart column styles */
+.cart-col {
+  flex: 1 1 300px;
+  max-width: 500px;
+}
+
+/* List of cart items */
+.cart-items-list {
+  width: 100%;
+  text-align: left;
+}
+
+/* Single cart item */
+.cart-item {
+  border: 2px solid #61dafb;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.cart-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Cart item details and buttons */
+.cart-details h3 {
+  margin: 0;
+  padding-bottom: 8px;
+  font-size: 20px;
+  color: #333;
+  font-weight: 500;
+}
+
+.cart-details p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Time inputs styling */
+.time-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.time-inputs label {
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.time-inputs input[type="datetime-local"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 220px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.time-inputs input[type="datetime-local"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+.cart-buttons {
+  margin-top: 20px;
+}
+
+.cart-buttons button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #dc3545;
+  color: #fff;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.cart-buttons button:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+/* Timetable styles */
+.timetable {
+  width: 100%;
+  text-align: left;
+}
+
+.day-entry {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #ffffff;
+  border: 2px solid #61dafb;
+  border-radius: 8px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.day-entry:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+.day-entry h4 {
+  margin: 0;
+  padding-bottom: 8px;
+  font-size: 18px;
+  color: #333;
+  font-weight: 500;
+}
+
+.event {
+  padding: 8px 0;
+  border-top: 1px solid #e0e0e0;
+}
+
+.event p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Empty cart message */
+.empty-cart-container {
+  text-align: center;
+  padding: 40px;
+  background-color: #ffffff;
+  border: 2px dashed #61dafb;
+  border-radius: 8px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  margin: 20px auto;
+}
+
+.empty-cart {
+  font-size: 20px;
+  color: #555;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+/* Add items button */
+.add-items-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.add-items-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Empty timetable message */
+.empty-timetable {
+  text-align: center;
+  padding: 40px;
+  background-color: #ffffff;
+  border: 2px dashed #61dafb;
+  border-radius: 8px;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  margin: 20px auto;
+}
+
+.empty-timetable p {
+  font-size: 20px;
+  color: #555;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cart-flex-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}

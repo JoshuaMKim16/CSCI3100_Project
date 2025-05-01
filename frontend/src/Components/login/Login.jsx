@@ -1,9 +1,8 @@
-// Login.jsx
 import React, { useState, useContext } from 'react';
-import '../../App.css';
 import Axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from '../utils/AuthContext';
+import '../../App.css';
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
@@ -20,18 +19,22 @@ const Login = () => {
       .then(response => {
         if (response.data.status) {
           const userData = response.data.user;
-          // Instead of localStorage, update the context
+          // Persist user information in localStorage for session persistence.
+          localStorage.setItem('user', JSON.stringify(userData));
+          // Update the context with the user data.
           setUser(userData);
 
           setMessage("Login successful! Redirecting...");
           setError('');
+          
+          // Redirect based on user role (admin or regular user)
           if (userData.is_admin) {
             setTimeout(() => {
               navigate('/admin');
             }, 1500);
           } else {
             setTimeout(() => {
-              navigate('/tours');
+              navigate('/main');
             }, 1500);
           }
         } else {
