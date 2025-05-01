@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-import "./tour-details.css"; // updated import path
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
-// import Booking from ~
+import "./tour-details.css"
 
 // Define the container style for Google Map
 const containerStyle = {
@@ -12,14 +11,22 @@ const containerStyle = {
 };
 
 const TourDetails = () => {
+  // Get parameters from url
   const { id } = useParams();
+
+  // States for fetching location attributes
   const [location, setLocation] = useState([]);
   const [error, setError] = useState(null);
-  const [imageSrc, setImageSrc] = useState(null);
+
+  // States for Google Map
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const mapRef = useRef(null);
   const navigate = useNavigate();
+
+  // States for fetching images
+  const [specificImage, setSpecificImage] = useState(null);
+  const [fetchError, setFetchError] = useState('');
 
   // Fetch location details by ID
   const fetchLocationByID = async (id) => {
@@ -42,27 +49,37 @@ const TourDetails = () => {
     }
   }, [id]);
 
-  // Load image
-  useEffect(() => {
-    if (!location.picture) return;
-    const loadImage = async () => {
-      try {
-        const imageModule = await import(`../../assets/site_data/${location.picture}`);
-        setImageSrc(imageModule.default);
-      } catch (error) {
-        console.error('Error loading the image:', error);
+  // Fetch a specific image by filename
+  const fetchSpecificImage = async () => {
+    try {
+      const filename = location.picture[0].split('/').pop().split('.')[0]
+      const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
+      if (!response.ok) {
+        throw new Error('Fetching specific image failed');
       }
-    };
-    loadImage();
-  }, [location.picture]);
+      const data = await response.json();
+      console.log(response)
+      setSpecificImage(data);
+      setFetchError('');
+    } catch (err) {
+      console.error('Error fetching specific image:', err);
+      setFetchError('Error fetching specific image: ' + err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (location.picture) {
+        fetchSpecificImage();
+    }
+  }, [location]);
 
   // Convert address to lat and lng using Google Geocoding API   
   useEffect(() => {
     if (!location?.address) return;
     const geocodeAddress = async () => {
       try {
-        // Replace 'YOUR_GOOGLE_MAPS_API_KEY' with your actual API Key
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=YOUR_GOOGLE_MAPS_API_KEY`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
+        console.log(process.env.GOOGLE_MAPS_API_KEY)
         const data = await response.json();
         if (data.status === 'OK') {
           const { lat, lng } = data.results[0].geometry.location;
@@ -89,16 +106,24 @@ const TourDetails = () => {
       <Container>
         <Row>
           <Col lg="7">
-            <div className="tour_content">
-              {imageSrc && <img src={imageSrc} alt="tour-image" />}
-            </div>
+            {specificImage && (
+              <div>
+                {specificImage.secure_url && (
+                  <img
+                    src={specificImage.secure_url}
+                    alt={specificImage.public_id}
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                )}
+              </div>
+            )}
           </Col>
           <Col lg="5">
             <div className="tour_info">
               <h2>{location.name}</h2>
               <div className="d-flex align-items-center gap-5">
                 <span>
-                  <i className="ri-map-pin-fill"></i>{location.address}
+                  <i className="ri-map-pin-line"></i>{location.address}
                 </span>
               </div>
               <div className="tour_extra-details">
@@ -118,7 +143,7 @@ const TourDetails = () => {
           </Col>
         </Row>
         <br />
-        <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY" libraries={['marker']}>
+        <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_API_KEY} libraries={['marker']}>
           {isMapLoaded && (
             <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
               <MarkerF position={mapCenter} />
