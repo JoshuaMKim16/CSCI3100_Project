@@ -12,9 +12,18 @@ const saltRounds = 10;
 // Controller function for user signup
 const signupUser = async (req, res) => {
     try {
+        // Check if an admin code is provided and valid (ADMIN CODE = "admin")
+        if(req.body.adminCode && req.body.adminCode === "admin"){
+            req.body.is_admin = true;
+        } else {
+            req.body.is_admin = false;
+        }
+
         // Hash the password before saving to the database
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
         req.body.password = hashedPassword;
+        
+        // Create user using the modified req.body which now includes is_admin
         const user = await User.create(req.body);
         res.status(200).json({ status: true, message: "User created successfully", user });
     } catch (error) {
@@ -26,12 +35,10 @@ const signupUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // Check if a user with the given username exists
         const user = await User.findOne({ email: email });
         if (!user) {
             return res.status(401).json({ status: false, message: "User not found" });
         }
-        // Compare the provided password with the hashed password in the database
         const match = await bcrypt.compare(password, user.password);
         if (match) {
             return res.status(200).json({ status: true, message: "Login successful", user });
@@ -42,6 +49,7 @@ const loginUser = async (req, res) => {
         res.status(500).json({ status: false, message: error.message });
     }
 };
+
 
 // Configure Nodemailer transporter
 // Replace these values with your SMTP settings or use environment variables.
