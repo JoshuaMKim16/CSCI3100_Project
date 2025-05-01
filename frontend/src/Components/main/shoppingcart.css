@@ -1,5 +1,3 @@
-/* ShoppingCart.css */
-
 /* Overall page container */
 section.shopping-cart-page {
   background: #f0f8ff;
@@ -8,24 +6,52 @@ section.shopping-cart-page {
   padding: 40px 20px;
 }
 
-/* Header styling */
+/* Main header styling */
 section.shopping-cart-page .cart-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   color: #333;
   font-size: 28px;
   font-weight: 600;
 }
 
+/* Sub-header styling inside columns */
+section.shopping-cart-page .sub-header {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+/* Flex container for timetable and cart columns */
+.cart-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Timetable column styles */
+.timetable-col {
+  flex: 1 1 300px;
+  max-width: 500px;
+}
+
+/* Cart column styles */
+.cart-col {
+  flex: 1 1 300px;
+  max-width: 500px;
+}
+
 /* List of cart items */
-section.shopping-cart-page .cart-items-list {
-  width: 90%;
-  margin: 0 auto;
+.cart-items-list {
+  width: 100%;
   text-align: left;
 }
 
 /* Single cart item */
-section.shopping-cart-page .cart-item {
+.cart-item {
   border: 2px solid #61dafb;
   padding: 20px;
   margin-bottom: 20px;
@@ -35,13 +61,13 @@ section.shopping-cart-page .cart-item {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-section.shopping-cart-page .cart-item:hover {
+.cart-item:hover {
   transform: translateY(-3px);
   box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Cart item details and buttons */
-section.shopping-cart-page .cart-details h3 {
+.cart-details h3 {
   margin: 0;
   padding-bottom: 8px;
   font-size: 20px;
@@ -49,7 +75,7 @@ section.shopping-cart-page .cart-details h3 {
   font-weight: 500;
 }
 
-section.shopping-cart-page .cart-details p {
+.cart-details p {
   margin: 5px 0;
   font-size: 16px;
   color: #555;
@@ -57,14 +83,14 @@ section.shopping-cart-page .cart-details p {
 }
 
 /* Time inputs styling */
-section.shopping-cart-page .time-inputs {
+.time-inputs {
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin-top: 15px;
 }
 
-section.shopping-cart-page .time-inputs label {
+.time-inputs label {
   font-size: 16px;
   color: #333;
   display: flex;
@@ -73,7 +99,7 @@ section.shopping-cart-page .time-inputs label {
   font-weight: 500;
 }
 
-section.shopping-cart-page .time-inputs input[type="datetime-local"] {
+.time-inputs input[type="datetime-local"] {
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -82,17 +108,17 @@ section.shopping-cart-page .time-inputs input[type="datetime-local"] {
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-section.shopping-cart-page .time-inputs input[type="datetime-local"]:focus {
+.time-inputs input[type="datetime-local"]:focus {
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
   outline: none;
 }
 
-section.shopping-cart-page .cart-buttons {
+.cart-buttons {
   margin-top: 20px;
 }
 
-section.shopping-cart-page .cart-buttons button {
+.cart-buttons button {
   padding: 8px 16px;
   font-size: 16px;
   border: none;
@@ -103,19 +129,18 @@ section.shopping-cart-page .cart-buttons button {
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
 }
 
-section.shopping-cart-page .cart-buttons button:hover {
+.cart-buttons button:hover {
   background-color: #c82333;
   transform: scale(1.05);
 }
 
 /* Timetable styles */
-section.shopping-cart-page .timetable {
-  width: 90%;
-  margin: 0 auto;
+.timetable {
+  width: 100%;
   text-align: left;
 }
 
-section.shopping-cart-page .day-entry {
+.day-entry {
   margin-bottom: 20px;
   padding: 15px;
   background-color: #ffffff;
@@ -125,12 +150,12 @@ section.shopping-cart-page .day-entry {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-section.shopping-cart-page .day-entry:hover {
+.day-entry:hover {
   transform: translateY(-3px);
   box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
 }
 
-section.shopping-cart-page .day-entry h4 {
+.day-entry h4 {
   margin: 0;
   padding-bottom: 8px;
   font-size: 18px;
@@ -138,12 +163,12 @@ section.shopping-cart-page .day-entry h4 {
   font-weight: 500;
 }
 
-section.shopping-cart-page .event {
+.event {
   padding: 8px 0;
   border-top: 1px solid #e0e0e0;
 }
 
-section.shopping-cart-page .event p {
+.event p {
   margin: 0;
   font-size: 16px;
   color: #555;
@@ -151,7 +176,7 @@ section.shopping-cart-page .event p {
 }
 
 /* Empty cart message */
-section.shopping-cart-page .empty-cart-container {
+.empty-cart-container {
   text-align: center;
   padding: 40px;
   background-color: #ffffff;
@@ -159,10 +184,9 @@ section.shopping-cart-page .empty-cart-container {
   border-radius: 8px;
   box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
   margin: 20px auto;
-  width: 90%;
 }
 
-section.shopping-cart-page .empty-cart {
+.empty-cart {
   font-size: 20px;
   color: #555;
   margin-bottom: 25px;
@@ -170,7 +194,7 @@ section.shopping-cart-page .empty-cart {
 }
 
 /* Add items button */
-section.shopping-cart-page .add-items-button {
+.add-items-button {
   padding: 12px 24px;
   font-size: 16px;
   border: none;
@@ -182,14 +206,14 @@ section.shopping-cart-page .add-items-button {
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-section.shopping-cart-page .add-items-button:hover {
+.add-items-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
 /* Empty timetable message */
-section.shopping-cart-page .empty-timetable {
+.empty-timetable {
   text-align: center;
   padding: 40px;
   background-color: #ffffff;
@@ -197,12 +221,19 @@ section.shopping-cart-page .empty-timetable {
   border-radius: 8px;
   box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
   margin: 20px auto;
-  width: 90%;
 }
 
-section.shopping-cart-page .empty-timetable p {
+.empty-timetable p {
   font-size: 20px;
   color: #555;
   margin: 0;
   font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cart-flex-container {
+    flex-direction: column;
+    align-items: center;
+  }
 }

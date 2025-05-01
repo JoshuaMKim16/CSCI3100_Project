@@ -15,9 +15,10 @@ import AddEditUser from './Components/Admin/AddEditUser';
 import LocationManagement from './Components/Admin/LocationManagement';
 import AddEditLocation from './Components/Admin/AddEditLocation';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
+import ProtectedRoute from './Components/utils/ProtectedRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
 
-//testing
+// Testing
 import TestAPIs from './TESTING/cloudinary_testing';
 
 import './App.css';
@@ -27,33 +28,39 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public/General Pages */}
+
+          {/* Public Routes for unregistered users */}
           <Route path="/" element={<Start />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/searchpage" element={<SearchPage />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
-          <Route path="/tours" element={<Tours />} />
-          <Route path="/tours/:id" element={<TourDetails />} />
-          <Route path="/cart" element={<ShoppingCart />} /> {/* New route for ShoppingCart */}
-
-          {/* Testing */}
+          
+          {/* Testing  */}
           <Route path="/phototesting" element={<TestAPIs />} />
 
-          {/* Protected Admin Panel - Admin components now reside in Components/Admin */}
-          <Route path="/admin/*" element={
-            <ProtectedAdminRoute>
-              <Admin />
-            </ProtectedAdminRoute>
-          }>
-            <Route path="users" element={<UserManagement />} />
-            <Route path="users/add" element={<AddEditUser />} />
-            <Route path="users/edit" element={<AddEditUser />} />
-            <Route path="locations" element={<LocationManagement />} />
-            <Route path="locations/add" element={<AddEditLocation />} />
-            <Route path="locations/edit" element={<AddEditLocation />} />
+          {/* Protected Routes for registered users */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/searchpage" element={<SearchPage />} />
+            <Route path="/main" element={<Tours />} />
+            <Route path="/tours/:id" element={<TourDetails />} />
+            <Route path="/planner" element={<ShoppingCart />} />
+
+            {/* Protected Admin Panel */}
+            <Route path="/admin/*" element={
+              <ProtectedAdminRoute>
+                <Admin />
+              </ProtectedAdminRoute>
+            }>
+              <Route path="users" element={<UserManagement />} />
+              <Route path="users/add" element={<AddEditUser />} />
+              <Route path="users/edit" element={<AddEditUser />} />
+              <Route path="locations" element={<LocationManagement />} />
+              <Route path="locations/add" element={<AddEditLocation />} />
+              <Route path="locations/edit" element={<AddEditLocation />} />
+            </Route>
           </Route>
+          
         </Routes>
       </BrowserRouter>
     </AuthProvider>

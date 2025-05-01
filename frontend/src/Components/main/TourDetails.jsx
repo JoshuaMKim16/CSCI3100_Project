@@ -1,9 +1,9 @@
+// /client/src/Components/TourDetails.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import "./tour-details.css"; // updated import path
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-// import Booking from ~
 
 // Define the container style for Google Map
 const containerStyle = {
@@ -78,10 +78,30 @@ const TourDetails = () => {
     geocodeAddress();
   }, [location?.address]);
 
-  // Handle click to add to planner
-  const handleClick = e => {
+  // Handle Add to Cart
+  const handleAddToCart = (e) => {
     e.preventDefault();
-    navigate('/thank-you');
+    // Retrieve the current shopping cart from localStorage, or initialize as an empty array.
+    const currentCart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+
+    // Check if the current location is already in the cart to prevent duplicates.
+    const isAlreadyInCart = currentCart.some(item => item.id === location._id);
+    if (!isAlreadyInCart) {
+      // Add essential details of the location to cart.
+      const newCartItem = {
+        id: location._id,
+        name: location.name,
+        price: location.price
+      };
+      currentCart.push(newCartItem);
+      localStorage.setItem('shoppingCart', JSON.stringify(currentCart));
+    }
+
+    // Showconfirmation popup
+    const userWantsToCheck = window.confirm("It is added to the planner. Do you want to check?");
+    if (userWantsToCheck) {
+      navigate('/planner');
+    }
   };
 
   return (
@@ -103,7 +123,10 @@ const TourDetails = () => {
               </div>
               <div className="tour_extra-details">
                 <span><i className="ri-money-dollar-circle-line"></i>${location.price} /person</span>
-                <span><i className="ri-map-pin-2-line"></i>{location.type && location.type.join(', ')}</span>
+                <span>
+                  <i className="ri-map-pin-2-line"></i>
+                  {location.type && location.type.join(', ')}
+                </span>
               </div>
               <h5>Description</h5>
               {location.description ? (
@@ -112,8 +135,8 @@ const TourDetails = () => {
                 <p>No description available</p>
               )}
             </div>
-            <Button className="btn primary__btn w-100 mt-4" onClick={handleClick}>
-              Add to Planner
+            <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
+              Add to Cart
             </Button>
           </Col>
         </Row>
