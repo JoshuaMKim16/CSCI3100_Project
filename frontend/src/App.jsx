@@ -15,6 +15,10 @@ import LocationManagement from './Components/Admin/LocationManagement';
 import AddEditLocation from './Components/Admin/AddEditLocation';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
+
+//testing
+import TestAPIs from './TESTING/cloudinary_testing';
+
 import './App.css';
 
 function App() {
@@ -31,6 +35,9 @@ function App() {
           <Route path="/reset_password" element={<ResetPassword />} />
           <Route path="/tours" element={<Tours />} />
           <Route path="/tours/:id" element={<TourDetails />} />
+
+          {/* Testing */}
+          <Route path="/phototesting" element={<TestAPIs />} />
 
           {/* Protected Admin Panel - Admin components now reside in Components/Admin */}
           <Route path="/admin/*" element={
