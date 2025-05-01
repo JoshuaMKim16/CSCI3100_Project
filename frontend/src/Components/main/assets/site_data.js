@@ -1,2 +1,2 @@
-// Temporary placeholder for site_data - to be replaced by teammate 
+// Temporary placeholder for site_data 
 export default []; 
