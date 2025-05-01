@@ -21,7 +21,7 @@ app.use(express.static('public'));
 // .env file configuration
 const dotenv = require('dotenv');
 dotenv.config();
-const connectionString = `mongodb+srv://${process.env.iantanboonhee}:${process.env.KZbNsoffb9kNC2xj}@backenddb.vhwzsyd.mongodb.net/backendDB?retryWrites=true&w=majority&appName=BackendDB`;
+const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@backenddb.vhwzsyd.mongodb.net/backendDB?retryWrites=true&w=majority&appName=BackendDB`;
 
 // Routes configuration
 app.use("/api/users", userRoute);

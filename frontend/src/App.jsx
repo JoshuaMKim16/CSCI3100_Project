@@ -6,6 +6,7 @@ import Login from './Components/login/Login';
 import SearchPage from './Components/main/SearchPage';
 import Tours from './Components/main/Tours';
 import TourDetails from './Components/main/TourDetails';
+import ShoppingCart from './Components/main/ShoppingCart'; 
 import ForgotPassword from './Components/login/ForgotPassword';
 import ResetPassword from './Components/login/ResetPassword';
 import Admin from './Components/Admin/Admin';
@@ -31,6 +32,7 @@ function App() {
           <Route path="/reset_password" element={<ResetPassword />} />
           <Route path="/tours" element={<Tours />} />
           <Route path="/tours/:id" element={<TourDetails />} />
+          <Route path="/cart" element={<ShoppingCart />} /> {/* New route for ShoppingCart */}
 
           {/* Protected Admin Panel - Admin components now reside in Components/Admin */}
           <Route path="/admin/*" element={

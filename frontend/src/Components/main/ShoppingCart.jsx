@@ -1,17 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
-import './shopping-cart.css'; // We'll define this CSS file next
+import { Link } from 'react-router-dom';
+import './shoppingcart.css';
 
 const ShoppingCart = () => {
   // State for cart items: [{ site_id, startTime, endTime }]
   const [cartItems, setCartItems] = useState(() => {
-    // Load cart from localStorage if available
-    const savedCart = localStorage.getItem('shoppingCart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      const savedCart = localStorage.getItem('shoppingCart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error('Error parsing shoppingCart from localStorage:', error);
+      return [];
+    }
   });
 
   // State for location details fetched based on site_id
   const [locations, setLocations] = useState({});
+
+  // Ref to track fetched site_ids
+  const fetchedSiteIds = useRef(new Set());
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
@@ -22,26 +30,35 @@ const ShoppingCart = () => {
   useEffect(() => {
     const fetchLocationDetails = async () => {
       const locationData = {};
+      let hasNewFetches = false;
+
       for (const item of cartItems) {
-        if (!locations[item.site_id]) {
+        if (!fetchedSiteIds.current.has(item.site_id) && !locations[item.site_id]) {
           try {
             const response = await fetch(`http://localhost:3000/api/locations/${item.site_id}`);
             if (response.ok) {
               const data = await response.json();
               locationData[item.site_id] = data;
+              fetchedSiteIds.current.add(item.site_id);
+              hasNewFetches = true;
+            } else {
+              console.error(`Failed to fetch location ${item.site_id}: ${response.status}`);
             }
           } catch (error) {
             console.error(`Error fetching location ${item.site_id}:`, error);
           }
         }
       }
-      setLocations((prev) => ({ ...prev, ...locationData }));
+
+      if (hasNewFetches) {
+        setLocations((prev) => ({ ...prev, ...locationData }));
+      }
     };
 
     if (cartItems.length > 0) {
       fetchLocationDetails();
     }
-  }, [cartItems]);
+  }, [cartItems, locations]);
 
   // Function to remove an item from the cart
   const removeFromCart = (site_id) => {
@@ -51,6 +68,8 @@ const ShoppingCart = () => {
     const updatedLocations = { ...locations };
     delete updatedLocations[site_id];
     setLocations(updatedLocations);
+    // Remove from fetchedSiteIds to allow re-fetching if needed
+    fetchedSiteIds.current.delete(site_id);
   };
 
   // Function to set the starting time for a cart item
@@ -95,74 +114,89 @@ const ShoppingCart = () => {
   };
 
   const timetableData = renderTimetable();
+  const hasEvents = timetableData.some((dayEntry) => dayEntry.events.length > 0);
 
   return (
-    <section className="shopping-cart">
+    <section className="shopping-cart-page">
       <Container>
         <Row>
-          {/* Saved Locations Column */}
+          {/* Timetable Column (Left) */}
           <Col lg="6">
-            <h2>Your Shopping Cart</h2>
-            {cartItems.length === 0 ? (
-              <p>Your cart is empty.</p>
-            ) : (
-              cartItems.map((item) => (
-                <div key={item.site_id} className="cart-item">
-                  <div className="location-details">
-                    <h3>{locations[item.site_id]?.name || `Site ${item.site_id}`}</h3>
-                    <p>{locations[item.site_id]?.description || 'Loading...'}</p>
-                    <div className="time-inputs">
-                      <label>
-                        Start Time:
-                        <input
-                          type="datetime-local"
-                          value={item.startTime || ''}
-                          onChange={(e) => setStartingTime(item.site_id, e.target.value)}
-                        />
-                      </label>
-                      <label>
-                        End Time:
-                        <input
-                          type="datetime-local"
-                          value={item.endTime || ''}
-                          onChange={(e) => setEndingTime(item.site_id, e.target.value)}
-                        />
-                      </label>
-                    </div>
-                    <Button
-                      color="danger"
-                      onClick={() => removeFromCart(item.site_id)}
-                      style={{ marginTop: '10px' }}
-                    >
-                      Remove
-                    </Button>
+            <h2 className="cart-header">Weekly Timetable</h2>
+            <div className="timetable">
+              {hasEvents ? (
+                timetableData.map((dayEntry, index) => (
+                  <div key={index} className="day-entry">
+                    <h4>{dayEntry.day}</h4>
+                    {dayEntry.events.length > 0 ? (
+                      dayEntry.events.map((event, idx) => (
+                        <div key={idx} className="event">
+                          <p>
+                            {event.location}: {event.start} - {event.end}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <p>No events scheduled.</p>
+                    )}
                   </div>
+                ))
+              ) : (
+                <div className="empty-timetable">
+                  <p>No events scheduled for this week.</p>
                 </div>
-              ))
-            )}
+              )}
+            </div>
           </Col>
 
-          {/* Timetable Column */}
+          {/* Saved Locations Column (Right) */}
           <Col lg="6">
-            <h2>Weekly Timetable</h2>
-            <div className="timetable">
-              {timetableData.map((dayEntry, index) => (
-                <div key={index} className="day-entry">
-                  <h4>{dayEntry.day}</h4>
-                  {dayEntry.events.length > 0 ? (
-                    dayEntry.events.map((event, idx) => (
-                      <div key={idx} className="event">
-                        <p>
-                          {event.location}: {event.start} - {event.end}
-                        </p>
+            <h2 className="cart-header">Your Shopping Cart</h2>
+            {cartItems.length === 0 ? (
+              <div className="empty-cart-container">
+                <p className="empty-cart">Your cart is empty.</p>
+                <Link to="/searchpage">
+                  <button className="add-items-button">Add Items from Search</button>
+                </Link>
+              </div>
+            ) : (
+              <div className="cart-items-list">
+                {cartItems.map((item) => (
+                  <div key={item.site_id} className="cart-item">
+                    <div className="cart-details">
+                      <h3>{locations[item.site_id]?.name || `Site ${item.site_id}`}</h3>
+                      <p>{locations[item.site_id]?.description || 'Loading...'}</p>
+                      <div className="time-inputs">
+                        <label>
+                          Start Time:
+                          <input
+                            type="datetime-local"
+                            value={item.startTime || ''}
+                            onChange={(e) => setStartingTime(item.site_id, e.target.value)}
+                          />
+                        </label>
+                        <label>
+                          End Time:
+                          <input
+                            type="datetime-local"
+                            value={item.endTime || ''}
+                            onChange={(e) => setEndingTime(item.site_id, e.target.value)}
+                          />
+                        </label>
                       </div>
-                    ))
-                  ) : (
-                    <p>No events scheduled.</p>
-                  )}
-                </div>
-              ))}
-            </div>
+                      <div className="cart-buttons">
+                        <Button
+                          color="danger"
+                          onClick={() => removeFromCart(item.site_id)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </Col>
         </Row>
       </Container>
