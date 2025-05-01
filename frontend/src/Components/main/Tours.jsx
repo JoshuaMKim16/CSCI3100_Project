@@ -1,6 +1,6 @@
 // /client/src/Components/Tours.jsx
 import React, { useState, useEffect } from 'react';
-import CommonSection from '../Components/Start'; // or import your actual CommonSection if you have one
+import CommonSection from '../login/Start'; // or import your actual CommonSection if you have one
 import TourCard from "./TourCard"; 
 // import Newsletter from "../Components/Newsletter"; // adjust if you have this component in Components
 import { Container, Row, Col } from 'reactstrap';

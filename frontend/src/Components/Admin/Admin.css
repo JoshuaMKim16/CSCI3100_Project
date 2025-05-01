@@ -1,0 +1,11 @@
+/* admin.css */
+/* Keep any global custom styles if needed */
+/* For instance, adjust safe-area insets for legacy devices */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+/* A helper class if needed */
+.safe-area {
+  padding-top: var(--safe-top);
+}

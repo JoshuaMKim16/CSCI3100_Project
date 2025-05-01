@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import '../App.css';
+// Login.jsx
+import React, { useState, useContext } from 'react';
+import '../../App.css';
 import Axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from '../utils/AuthContext';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const { setUser } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -14,25 +16,32 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    Axios.post('http://localhost:3000/auth/login', {
-      email: email, 
-      password: password,
-    })
+    Axios.post('http://localhost:3000/auth/login', { email, password })
       .then(response => {
-        if(response.data.status){
+        if (response.data.status) {
+          const userData = response.data.user;
+          // Instead of localStorage, update the context
+          setUser(userData);
+
           setMessage("Login successful! Redirecting...");
-          setError(''); // Clear any previous error messages
-          setTimeout(() => {
-            navigate('/tours');
-          }, 1500);
+          setError('');
+          if (userData.is_admin) {
+            setTimeout(() => {
+              navigate('/admin');
+            }, 1500);
+          } else {
+            setTimeout(() => {
+              navigate('/tours');
+            }, 1500);
+          }
         } else {
           setMessage('');
-          setError("Invalid username or password.");
+          setError("Invalid email or password.");
         }
       })
       .catch(err => {
         setMessage('');
-        setError("Invalid username or password.");
+        setError("Invalid email or password.");
         console.log(err);
       });
   };
