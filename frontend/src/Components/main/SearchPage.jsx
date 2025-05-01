@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import './searchpage.css'; // Reuse the existing styles
 
 const SearchPage = () => {
@@ -8,6 +9,9 @@ const SearchPage = () => {
   const [filteredLocations, setFilteredLocations] = useState([]);
   const [filter, setFilter] = useState('all'); // Filter by category
   const [criteria, setCriteria] = useState('relevance'); // Sorting criteria
+
+  // Use navigate for redirecting to the cart page
+  const navigate = useNavigate();
 
   // Fetch locations from the backend
   const fetchLocations = async () => {
@@ -82,9 +86,36 @@ const SearchPage = () => {
     alert(`Fetching details for site ID: ${siteId}`);
   };
 
-  // Add to cart (mock implementation)
+  // Add to cart
   const addToCart = (siteId) => {
-    alert(`Added site ID ${siteId} to cart`);
+    try {
+      // Read the current cart from localStorage
+      const currentCart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+
+      // Check if the site is already in the cart to avoid duplicates
+      const isAlreadyInCart = currentCart.some(item => item.site_id === siteId);
+      if (isAlreadyInCart) {
+        alert(`Site ID ${siteId} is already in your cart!`);
+        return;
+      }
+
+      // Add the new location to the cart with empty startTime and endTime
+      const newCartItem = {
+        site_id: siteId,
+        startTime: '',
+        endTime: ''
+      };
+
+      // Update the cart
+      const updatedCart = [...currentCart, newCartItem];
+      localStorage.setItem('shoppingCart', JSON.stringify(updatedCart));
+
+      // Redirect to the Shopping Cart page
+      navigate('/shoppingcart');
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add to cart. Please try again.');
+    }
   };
 
   // Save location (mock implementation)
