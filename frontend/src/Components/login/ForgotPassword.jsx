@@ -27,8 +27,8 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className='sign-up-container'>
-      <form className='sign-up-form' onSubmit={handleSubmit}>
+    <div className='signup-container'>
+      <form className='signup-form' onSubmit={handleSubmit}>
         <h2>Password Reset</h2>
         <label htmlFor='email'>Email:</label>
         <input

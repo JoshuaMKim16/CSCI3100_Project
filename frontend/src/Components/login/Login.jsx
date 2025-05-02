@@ -3,7 +3,7 @@ import './Login.css';
 import Axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from '../utils/AuthContext';
-import '../../App.css';
+
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);

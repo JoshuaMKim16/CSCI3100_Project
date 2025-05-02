@@ -2,8 +2,6 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-image: url('./background.png'); 
-    background-size: cover; 
-    background-position: center; 
     height: 100vh; 
     display: flex; 
     justify-content: center; 
@@ -11,12 +9,11 @@ body {
   }
   
   /* start page */
-  main-container {
+  .main-container {
     text-align: center; 
-    background-color: rgba(255, 255, 255, 0.8); 
     padding: 20px; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+    border-radius: 8px;  
+    background-color: transparent;
   }
   .site-title {
     font-size: 80px;
@@ -36,7 +33,7 @@ body {
     font-size: 18px;
     background-color: #f5e6c4;
     color: rgb(0, 0, 0);
-    border: 1px, solid, white;
+    border: 1px solid white;
     border-radius: 60px;
     width: 200px; 
     height: 50px;
