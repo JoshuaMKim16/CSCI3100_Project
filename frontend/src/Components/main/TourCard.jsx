@@ -42,12 +42,12 @@ const TourCard = ({ location }) => {
     };
 
   return (
-    <Card className="tour_card">
+    <Card className="tour_card" style={{width: '400px'}}>
       <Card.Img
           variant="top"
           src={specificImage?.secure_url}
           alt={specificImage?.public_id}
-          className='img-fluid'
+          style={{height: 'auto', width:'auto'}}
       />
       <Card.Body>
         <Card.Title>

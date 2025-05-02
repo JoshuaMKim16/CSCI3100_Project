@@ -37,7 +37,6 @@ function App() {
     <>
     <AuthProvider>
       <BrowserRouter>
-        <Navbar/>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Start />} />
@@ -46,33 +45,38 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
           <Route path="/phototesting" element={<TestAPIs />} />
+        </Routes>
+      </BrowserRouter>
 
+      <BrowserRouter>
+        <Navbar/>
+        <Routes>
           {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>
-            {/* Wrap regular user pages with AppLayout */}
-            <Route element={<AppLayout />}>
-              <Route path="/searchpage" element={<SearchPage />} />
-              <Route path="/main" element={<Tours />} />
-              <Route path="/tours/:id" element={<TourDetails />} />
-              <Route path="/planner" element={<ShoppingCart />} />
-              <Route path="/profile" element={<UserProfile />} />
-              <Route path="/activity" element={<UserActivity />} />
-              <Route path="/subscribe" element={<SubscribePage />} />
-            </Route>
+          {/* Wrap regular user pages with AppLayout */}
+          <Route element={<AppLayout />}>
+            <Route path="/searchpage" element={<SearchPage />} />
+            <Route path="/main" element={<Tours />} />
+            <Route path="/tours/:id" element={<TourDetails />} />
+            <Route path="/planner" element={<ShoppingCart />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/activity" element={<UserActivity />} />
+            <Route path="/subscribe" element={<SubscribePage />} />
           </Route>
+        </Route>
 
-          {/* Protected Admin Panel - No Ads */}
-          <Route element={<ProtectedAdminRoute />}>
-            <Route path="/admin/*" element={<Admin />}>
-              <Route path="users" element={<UserManagement />} />
-              <Route path="users/add" element={<AddEditUser />} />
-              <Route path="users/edit" element={<AddEditUser />} />
-              <Route path="locations" element={<LocationManagement />} />
-              <Route path="locations/add" element={<AddEditLocation />} />
-              <Route path="locations/edit" element={<AddEditLocation />} />
-            </Route>
+        {/* Protected Admin Panel - No Ads */}
+        <Route element={<ProtectedAdminRoute />}>
+          <Route path="/admin/*" element={<Admin />}>
+            <Route path="users" element={<UserManagement />} />
+            <Route path="users/add" element={<AddEditUser />} />
+            <Route path="users/edit" element={<AddEditUser />} />
+            <Route path="locations" element={<LocationManagement />} />
+            <Route path="locations/add" element={<AddEditLocation />} />
+            <Route path="locations/edit" element={<AddEditLocation />} />
           </Route>
-        </Routes>
+        </Route>
+      </Routes>
       </BrowserRouter>
     </AuthProvider>
     </>

@@ -75,7 +75,7 @@ const Tours = () => {
       <section>
         <Container>
           {/* Weather */}
-          <div style={{overflowWrap: 'break-word', width: '100%', height: 'auto'}}>
+          <div style={{overflowWrap: 'break-word', width: '100%'}}>
             <p>Weather forecast</p>
             <p>Today's weather: {weather.forecastDesc}</p>
             <p>Weather forecast: {weather.outlook}</p>
