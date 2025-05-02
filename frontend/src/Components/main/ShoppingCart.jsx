@@ -270,7 +270,7 @@ const ShoppingCart = () => {
       </Container>
       <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
         {isMapLoaded && (
-          <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
+          <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={13}>
             {Object.values(locations).map((location) => {
                 if (location.lat && location.lng) {
                     return (

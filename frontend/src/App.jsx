@@ -1,29 +1,30 @@
 // App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Start from './Components/login/Start';
-import Signup from './Components/login/Signup';
-import Login from './Components/login/Login';
-import ForgotPassword from './Components/login/ForgotPassword';
-import ResetPassword from './Components/login/ResetPassword';
+import Start from './components/login/Start';
+import Signup from './components/login/Signup';
+import Login from './components/login/Login';
+import ForgotPassword from './components/login/ForgotPassword';
+import ResetPassword from './components/login/ResetPassword';
 
-import SearchPage from './Components/main/SearchPage';
-import Tours from './Components/main/Tours';
-import TourDetails from './Components/main/TourDetails';
-import ShoppingCart from './Components/main/ShoppingCart';
-import UserProfile from './Components/UserProfile/UserProfile';
+import SearchPage from './components/main/SearchPage';
+import Tours from './components/main/Tours';
+import TourDetails from './components/main/TourDetails';
+import ShoppingCart from './components/main/ShoppingCart';
+import UserProfile from './components/UserProfile/UserProfile';
 
-import Admin from './Components/Admin/Admin';
-import UserManagement from './Components/Admin/UserManagement';
-import AddEditUser from './Components/Admin/AddEditUser';
-import LocationManagement from './Components/Admin/LocationManagement';
-import AddEditLocation from './Components/Admin/AddEditLocation';
+import Admin from './components/Admin/Admin';
+import UserManagement from './components/Admin/UserManagement';
+import AddEditUser from './components/Admin/AddEditUser';
+import LocationManagement from './components/Admin/LocationManagement';
+import AddEditLocation from './components/Admin/AddEditLocation';
 
-import ProtectedRoute from './Components/utils/ProtectedRoute';
-import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
-import { AuthProvider } from './Components/utils/AuthContext';
-import AppLayout from './Components/utils/AppLayout';
-import SubscribePage from './Components/Advertisement/SubscribePage';
+import ProtectedRoute from './components/utils/ProtectedRoute';
+import ProtectedAdminRoute from './components/utils/ProtectedAdminRoute';
+import { AuthProvider } from './components/utils/AuthContext';
+import AppLayout from './components/utils/AppLayout';
+import Navbar from './components/utils/Navbar'
+import SubscribePage from './components/Advertisement/SubscribePage';
 
 // Testing
 import TestAPIs from './TESTING/cloudinary_testing';
@@ -35,6 +36,7 @@ function App() {
     <>
     <AuthProvider>
       <BrowserRouter>
+        <Navbar/>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Start />} />

@@ -1,10 +1,9 @@
 // /client/src/Components/Tours.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CommonSection from '../login/Start'; // or import your actual CommonSection if available
 import TourCard from "./TourCard"; 
 // import Newsletter from "../Components/Newsletter"; // adjust if you have this component in Components
-import { Container, Row, Input, Button, Form, FormGroup } from 'reactstrap';
+import { Container, Col, Row, Input, Button, Form, FormGroup } from 'reactstrap';
 // import "../../styles/tour.css"; // assuming tour.css is still managed centrally
 
 const Tours = () => {
@@ -15,7 +14,7 @@ const Tours = () => {
   const [weather, setWeather] = useState([]);
 
   // States for dividing locations into pages
-  const itemsPerPage = 2; // Now displaying 5 items per page horizontally
+  const itemsPerPage = 3; // Now displaying 5 items per page horizontally
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
 
@@ -73,12 +72,8 @@ const Tours = () => {
     navigate('/searchpage', { state: { query: searchTerm } });
   };
 
-  // New handler for navigating to profile
-  const handleProfileNavigation = () => {
-    navigate('/profile');
-  };
-
   return (
+    <>
       <section>
           {/* Weather */}
           <div>
@@ -89,6 +84,7 @@ const Tours = () => {
           </div>
 
           {/* Search Bar */}
+          <section>
           <Row className="mb-4">
             <div className="d-flex w-100">
               <Form onSubmit={handleSearchSubmit} className="d-flex w-100">
@@ -106,27 +102,14 @@ const Tours = () => {
               </Form>
             </div>
           </Row>
-          
-          {/* New Profile Navigation Button */}
-          <Row className="mb-4">
-            <Button color="secondary" onClick={handleProfileNavigation}>
-              Go to Profile
-            </Button>
-          </Row>
+          </section>
 
           {/* Tour Cards Section arranged horizontally */}
           <div className="d-flex flex-wrap justify-content-start">
             {currentLocations.map((location) => (
-              <div
-                key={location._id}
-                style={{
-                  flex: '0 0 20%', // Each card takes 20% width, ensuring 5 per row
-                  maxWidth: '20%',
-                  padding: '0.5rem',
-                }}
-              >
-                <TourCard location={location} />
-              </div>
+              <Col lg='3' className='mb-4'>
+                <TourCard location={location}/>
+              </Col>
             ))}
           </div>
 
@@ -146,7 +129,9 @@ const Tours = () => {
             </div>
           </Row>
       </section>
+      </>
   );
+  
 };
 
 export default Tours;
