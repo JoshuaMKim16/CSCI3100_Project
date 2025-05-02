@@ -3,7 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
-import "./tour-details.css"
+import CommentsSection from './CommentsSection';
+import "./tour-details.css";
 
 const containerStyle = {
   width: '100%',
@@ -52,13 +53,13 @@ const TourDetails = () => {
   // Fetch a specific image by filename
   const fetchSpecificImage = async () => {
     try {
-      const filename = location.picture[0].split('/').pop().split('.')[0]
+      const filename = location.picture[0].split('/').pop().split('.')[0];
       const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
       if (!response.ok) {
         throw new Error('Fetching specific image failed');
       }
       const data = await response.json();
-      console.log(response)
+      console.log(response);
       setSpecificImage(data);
       setFetchError('');
     } catch (err) {
@@ -69,7 +70,7 @@ const TourDetails = () => {
 
   useEffect(() => {
     if (location.picture) {
-        fetchSpecificImage();
+      fetchSpecificImage();
     }
   }, [location]);
 
@@ -97,13 +98,12 @@ const TourDetails = () => {
   class LoadScriptOnlyIfNeeded extends LoadScript {
     componentDidMount() {
       const cleaningUp = true;
-      const isBrowser = typeof document !== "undefined"; // require('@react-google-maps/api/src/utils/isbrowser')
+      const isBrowser = typeof document !== "undefined";
       const isAlreadyLoaded =
         window.google &&
         window.google.maps &&
-        document.querySelector("body.first-hit-completed"); // AJAX page loading system is adding this class the first time the app is loaded
+        document.querySelector("body.first-hit-completed");
       if (!isAlreadyLoaded && isBrowser) {
-        // @ts-ignore
         if (window.google && !cleaningUp) {
           console.error("google api is already presented");
           return;
@@ -170,7 +170,10 @@ const TourDetails = () => {
                 </span>
               </div>
               <div className="tour_extra-details">
-                <span><i className="ri-money-dollar-circle-line"></i>${location.price} /person</span>
+                <span>
+                  <i className="ri-money-dollar-circle-line"></i>
+                  ${location.price} /person
+                </span>
                 <span>
                   <i className="ri-map-pin-2-line"></i>
                   {location.type && location.type.join(', ')}
@@ -183,11 +186,9 @@ const TourDetails = () => {
                 <p>No description available</p>
               )}
             </div>
-            {/* Existing Add to Cart Button */}
             <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
               Add to Cart
             </Button>
-            {/* New Go to Profile Button */}
             <Button className="btn secondary__btn w-100 mt-2" onClick={handleProfileNavigation}>
               Go to Profile
             </Button>
@@ -201,6 +202,8 @@ const TourDetails = () => {
             </GoogleMap>
           )}
         </LoadScriptOnlyIfNeeded>
+        {/* Insert the CommentsSection component and pass the location ID */}
+        {location._id && <CommentsSection locationId={location._id} />}
       </Container>
     </section>
   );
