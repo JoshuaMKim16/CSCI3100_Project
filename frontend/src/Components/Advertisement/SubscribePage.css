@@ -1,0 +1,38 @@
+/* SubscribePage.css */
+.subscribe-container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-color: #f0f8ff;
+    font-family: Arial, sans-serif;
+  }
+  
+  .checkout-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .checkout-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .checkout-box p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  
+  .checkout-box form {
+    width: 100%;
+  }
+  
+  .checkout-box form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .checkout-box form .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+  }
