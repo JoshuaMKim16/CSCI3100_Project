@@ -23,6 +23,7 @@ const Signup = () => {
         })
         .then(response => {
             if(response.data.status){
+                setMessage("Sign up successful! Redirecting...");
                 navigate('/login');
             }
         })

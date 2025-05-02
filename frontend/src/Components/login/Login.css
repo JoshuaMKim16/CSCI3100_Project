@@ -1,7 +1,7 @@
-background {
+body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-image: url('./cover.png'); 
+    background-image: url('./background.png'); 
     background-size: cover; 
     background-position: center; 
     height: 100vh; 
@@ -79,6 +79,13 @@ background {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
+/* common */
+.success-message {
+  font-weight: bold;
+  color: green; 
+  font-size: 15px;
+  margin-bottom: 16px;
+}
 
   label {
     display: block;
