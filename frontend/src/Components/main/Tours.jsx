@@ -2,9 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TourCard from "./TourCard"; 
-// import Newsletter from "../Components/Newsletter"; // adjust if you have this component in Components
 import { Container, Col, Row, Input, Button, Form, FormGroup } from 'reactstrap';
-// import "../../styles/tour.css"; // assuming tour.css is still managed centrally
 
 const Tours = () => {
   // State for fetching location
@@ -73,8 +71,8 @@ const Tours = () => {
   };
 
   return (
-    <>
       <section>
+        <Container>
           {/* Weather */}
           <div>
             <p>Weather forecast</p>
@@ -85,33 +83,43 @@ const Tours = () => {
 
           {/* Search Bar */}
           <section>
-          <Row className="mb-4">
-            <div className="d-flex w-100">
-              <Form onSubmit={handleSearchSubmit} className="d-flex w-100">
-                <FormGroup className="flex-grow-1 me-2">
-                  <Input
-                    type="text"
-                    placeholder="Search here..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </FormGroup>
-                <Button type="submit" color="primary">
-                  Search
-                </Button>
-              </Form>
-            </div>
-          </Row>
+            <Container>
+              <Row className="mb-4">
+                <div className="d-flex w-100">
+                  <Form onSubmit={handleSearchSubmit} className="d-flex w-100">
+                    <FormGroup className="flex-grow-1 me-2">
+                      <Input
+                        type="text"
+                        placeholder="Search here..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </FormGroup>
+                    <Button type="submit" color="primary">
+                      Search
+                    </Button>
+                  </Form>
+                </div>
+              </Row>
+              <br/>
+            </Container>
           </section>
 
           {/* Tour Cards Section arranged horizontally */}
-          <div className="d-flex flex-wrap justify-content-start">
-            {currentLocations.map((location) => (
-              <Col lg='3' className='mb-4'>
-                <TourCard location={location}/>
-              </Col>
-            ))}
-          </div>
+          <section className='pt-0'>
+            <Container>
+              <Row>
+                <div className="d-flex flex-wrap justify-content-start">
+                  {currentLocations.map((location) => (
+                    <Col lg='3' className='mb-4'>
+                      <TourCard location={location}/>
+                      <br/>
+                    </Col>
+                  ))}
+                </div>
+              </Row>
+            </Container>
+          </section>
 
           {/* Pagination */}
           <Row className="mt-4">
@@ -128,8 +136,8 @@ const Tours = () => {
               ))}
             </div>
           </Row>
+        </Container>
       </section>
-      </>
   );
   
 };
