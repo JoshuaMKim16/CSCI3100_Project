@@ -1,19 +1,52 @@
+const cors = require('cors');
 const express = require('express');
+const mongoose = require('mongoose');
+const userRoute = require('./routes/user.route.js');
+const commentRoute = require('./routes/comment.route.js');
+const locationRoute = require('./routes/location.route.js');
 const fetch = require('node-fetch').default;
+// 导入 path 模块
+const path = require('path');
+
 const app = express();
 const port = 3000;
-const cors = require('cors');
-// Import dotenv and configure it to load environment variables from a .env file
-require('dotenv').config();
 
 app.use(cors({ origin: '*' }));
-app.use(express.json());
-app.use(express.static('.'));
 
-// Get the DeepSeek official website API key and model from the environment variables
-const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY; 
+// 配置静态文件服务，指向项目根目录下的 front_end 文件夹
+app.use(express.static(path.join(__dirname, '../front_end')));
+
+// Import Models (for reference)
+const User = require('./models/user.model.js');
+const Location = require('./models/location.model.js');
+
+// Middleware configuration
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// .env file configuration
+const dotenv = require('dotenv');
+dotenv.config();
+
+// 打印环境变量
+console.log('DB_USERNAME:', process.env.DB_USERNAME);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+
+const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@backenddb.vhwzsyd.mongodb.net/backendDB?retryWrites=true&w=majority&appName=BackendDB`;
+
+// Routes configuration
+app.use("/api/users", userRoute);
+app.use("/api/comments", commentRoute);
+app.use("/api/locations", locationRoute);
+
+app.get('/', (req, res) => {
+    res.send('Hello from Node Server Updated');
+});
+
+// 配置 DeepSeek 官网 API 密钥和模型
+const DEEPSEEK_API_KEY = 'sk-88345975d2d045b592fe7d383803ffa6';
 const MODEL = 'deepseek-chat';
-const API_URL = 'https://api.deepseek.com/v1/chat/completions'; 
+const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
 app.post('/chat', async (req, res) => {
     const { message } = req.body;
@@ -62,7 +95,7 @@ app.post('/chat', async (req, res) => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('DeepSeek API Returned error message:', errorData);
+            console.error('DeepSeek API 返回的错误信息:', errorData);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -71,7 +104,7 @@ app.post('/chat', async (req, res) => {
         res.json({ answer });
     } catch (error) {
         if (error.code === 'ENOTFOUND') {
-            console.error('Network error: Unable to resolve the domain name of api.deepseek.com, please check your network connection and DNS settings.');
+            console.error('网络错误：无法解析 api.deepseek.com 的域名，请检查网络连接和 DNS 设置。');
         } else {
             console.error('DeepSeek API Error:', error);
         }
@@ -79,6 +112,14 @@ app.post('/chat', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+// Connect to MongoDB and start the server
+mongoose.connect(connectionString)
+   .then(() => {
+        console.log('Connected to database');
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    })
+   .catch((error) => {
+        console.log('Connection Failed', error);
+    });    
