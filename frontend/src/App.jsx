@@ -24,6 +24,7 @@ import ProtectedRoute from './Components/utils/ProtectedRoute';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
 import AppLayout from './Components/utils/AppLayout';
+import Navbar from './Components/utils/Navbar';
 import SubscribePage from './Components/Advertisement/SubscribePage';
 
 // Testing
@@ -36,6 +37,7 @@ function App() {
     <>
     <AuthProvider>
       <BrowserRouter>
+        <Navbar/>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Start />} />

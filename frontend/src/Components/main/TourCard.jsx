@@ -50,26 +50,25 @@ const TourCard = ({ location }) => {
           className='img-fluid'
       />
       <Card.Body>
-        <div className="d-flex align-items-center justify-content-between">
-          <span className="d-flex align-items-center gap-1">
-            {location.address}
-          </span>
-        </div>
         <Card.Title>
           <Link to={`/tours/${location._id}`}>{location.name}</Link>
         </Card.Title>
+        <Card.Subtitle>
+            {location.address}
+        </Card.Subtitle>
         <Card.Subtitle className="mb-2 text-muted">
           {location.type.join(', ')}
         </Card.Subtitle>
-        <div className="d-flex align-items-center justify-content-between mt-3">
-          <h5>{location.price? `${location.price}` : '$0'} <span>/per person</span></h5>
-          <Button
-            className="w-100 mt-4 btn-sm"
-            onClick={handleClick}
-          >
-            View Details
-          </Button>
-        </div>
+        <Card.Subtitle>
+          {location.price? `${location.price}` : '$0'} <span>/per person</span>
+        </Card.Subtitle>
+        <br/>
+        <Button
+          className="w-100 mt-4 btn-sm"
+          onClick={handleClick}
+        >
+          View Details
+        </Button>
       </Card.Body>
     </Card>
   );

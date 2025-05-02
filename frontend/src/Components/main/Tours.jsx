@@ -71,16 +71,11 @@ const Tours = () => {
     navigate('/searchpage', { state: { query: searchTerm } });
   };
 
-  // New handler for navigating to profile
-  const handleProfileNavigation = () => {
-    navigate('/profile');
-  };
-
   return (
       <section>
         <Container>
           {/* Weather */}
-          <div>
+          <div style={{overflowWrap: 'break-word', width: '100%', height: 'auto'}}>
             <p>Weather forecast</p>
             <p>Today's weather: {weather.forecastDesc}</p>
             <p>Weather forecast: {weather.outlook}</p>
@@ -130,16 +125,53 @@ const Tours = () => {
           {/* Pagination */}
           <Row className="mt-4">
             <div className="w-100 d-flex justify-content-center gap-3">
-              {[...Array(pageCount).keys()].map((number) => (
+              {page > -1 && (
                 <span
-                  key={number}
-                  onClick={() => setPage(number)}
-                  className={page === number ? 'active_page' : ''}
-                  style={{ cursor: 'pointer' }}
+                    onClick={() => setPage(0)}
+                    style={{ cursor: 'pointer' }}
                 >
-                  {number + 1}
+                &lt;&lt;
                 </span>
-              ))}
+              )}
+              {page > -1 && (
+                <span
+                    onClick={() => {
+                      if (page === 0) {
+                        setPage(0);
+                      } else{
+                        setPage(page - 1)
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
+                &lt;
+                </span>
+              )}
+              <span>
+                {page + 1} / {pageCount}
+              </span>
+              {page < pageCount && (
+                <span
+                    onClick={() => {
+                      if (page === pageCount - 1) {
+                        setPage(pageCount - 1)
+                      } else {
+                        setPage(page + 1)
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
+                &gt;
+                </span>
+              )}
+              {page < pageCount && (
+                <span
+                    onClick={() => setPage(pageCount - 1)}
+                    style={{ cursor: 'pointer' }}
+                >
+                &gt;&gt;
+                </span>
+                )}
             </div>
           </Row>
         </Container>
