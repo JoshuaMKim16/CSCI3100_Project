@@ -1,23 +1,29 @@
+// App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Start from './Components/login/Start';
 import Signup from './Components/login/Signup';
 import Login from './Components/login/Login';
+import ForgotPassword from './Components/login/ForgotPassword';
+import ResetPassword from './Components/login/ResetPassword';
+
 import SearchPage from './Components/main/SearchPage';
 import Tours from './Components/main/Tours';
 import TourDetails from './Components/main/TourDetails';
 import ShoppingCart from './Components/main/ShoppingCart';
-import ForgotPassword from './Components/login/ForgotPassword';
-import ResetPassword from './Components/login/ResetPassword';
+import UserProfile from './Components/UserProfile/UserProfile';
+
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
 import AddEditUser from './Components/Admin/AddEditUser';
 import LocationManagement from './Components/Admin/LocationManagement';
 import AddEditLocation from './Components/Admin/AddEditLocation';
-import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
+
 import ProtectedRoute from './Components/utils/ProtectedRoute';
+import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
 import AppLayout from './Components/utils/AppLayout';
+import SubscribePage from './Components/Advertisement/SubscribePage';
 
 // Testing
 import TestAPIs from './TESTING/cloudinary_testing';
@@ -37,25 +43,22 @@ function App() {
           <Route path="/reset_password" element={<ResetPassword />} />
           <Route path="/phototesting" element={<TestAPIs />} />
 
-          {/* Protected Routes for registered users */}
+          {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>
-            {/* Wrap regular user pages with the AppLayout */}
+            {/* Wrap regular user pages with AppLayout */}
             <Route element={<AppLayout />}>
               <Route path="/searchpage" element={<SearchPage />} />
               <Route path="/main" element={<Tours />} />
               <Route path="/tours/:id" element={<TourDetails />} />
               <Route path="/planner" element={<ShoppingCart />} />
+              <Route path="/profile" element={<UserProfile />} />
+              <Route path="/subscribe" element={<SubscribePage />} />
             </Route>
+          </Route>
 
-            {/* Protected Admin Panel (no ads) */}
-            <Route
-              path="/admin/*"
-              element={
-                <ProtectedAdminRoute>
-                  <Admin />
-                </ProtectedAdminRoute>
-              }
-            >
+          {/* Protected Admin Panel - No Ads */}
+          <Route element={<ProtectedAdminRoute />}>
+            <Route path="/admin/*" element={<Admin />}>
               <Route path="users" element={<UserManagement />} />
               <Route path="users/add" element={<AddEditUser />} />
               <Route path="users/edit" element={<AddEditUser />} />

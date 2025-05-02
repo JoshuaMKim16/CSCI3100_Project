@@ -5,7 +5,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import "./tour-details.css"; // updated import path
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
-// Define the container style for Google Map
 const containerStyle = {
   width: '100%',
   height: '400px'
@@ -21,7 +20,6 @@ const TourDetails = () => {
   const mapRef = useRef(null);
   const navigate = useNavigate();
 
-  // Fetch location details by ID
   const fetchLocationByID = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/api/locations/${id}`);
@@ -42,7 +40,6 @@ const TourDetails = () => {
     }
   }, [id]);
 
-  // Load image
   useEffect(() => {
     if (!location.picture) return;
     const loadImage = async () => {
@@ -56,7 +53,6 @@ const TourDetails = () => {
     loadImage();
   }, [location.picture]);
 
-  // Convert address to lat and lng using Google Geocoding API   
   useEffect(() => {
     if (!location?.address) return;
     const geocodeAddress = async () => {
@@ -78,16 +74,12 @@ const TourDetails = () => {
     geocodeAddress();
   }, [location?.address]);
 
-  // Handle Add to Cart
+  // Existing add to cart handler
   const handleAddToCart = (e) => {
     e.preventDefault();
-    // Retrieve the current shopping cart from localStorage, or initialize as an empty array.
     const currentCart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-
-    // Check if the current location is already in the cart to prevent duplicates.
     const isAlreadyInCart = currentCart.some(item => item.id === location._id);
     if (!isAlreadyInCart) {
-      // Add essential details of the location to cart.
       const newCartItem = {
         id: location._id,
         name: location.name,
@@ -97,11 +89,15 @@ const TourDetails = () => {
       localStorage.setItem('shoppingCart', JSON.stringify(currentCart));
     }
 
-    // Showconfirmation popup
     const userWantsToCheck = window.confirm("It is added to the planner. Do you want to check?");
     if (userWantsToCheck) {
       navigate('/planner');
     }
+  };
+
+  // New handler for navigating to profile page
+  const handleProfileNavigation = () => {
+    navigate('/profile');
   };
 
   return (
@@ -135,8 +131,13 @@ const TourDetails = () => {
                 <p>No description available</p>
               )}
             </div>
+            {/* Existing Add to Cart Button */}
             <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
               Add to Cart
+            </Button>
+            {/* New Go to Profile Button */}
+            <Button className="btn secondary__btn w-100 mt-2" onClick={handleProfileNavigation}>
+              Go to Profile
             </Button>
           </Col>
         </Row>

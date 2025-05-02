@@ -1,50 +1,55 @@
-// AppLayout.jsx
+// /client/src/Components/utils/AppLayout.jsx
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import AdvertisementModal from '../Advertisement/AdvertisementModal';
+import AdvertisementModal from '../Advertisement/AdvertisementModal';  // Advertisement modal component
 import { AuthContext } from './AuthContext';
 
 const AppLayout = () => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
-  // State for ad dismissal and navigation count
-  const [adDismissed, setAdDismissed] = useState(false);
-  const [navigationCount, setNavigationCount] = useState(0);
+  // For persistence of ad dismissal (this can be used for non‑licensed, trial users if needed)
+  const initialAdDismissed = sessionStorage.getItem('adDismissed') === 'true';
+  const initialNavigationCount = parseInt(sessionStorage.getItem('navigationCount'), 10) || 0;
+
+  const [adDismissed, setAdDismissed] = useState(initialAdDismissed);
+  const [navigationCount, setNavigationCount] = useState(initialNavigationCount);
   const prevLocation = useRef(location.pathname);
 
-  // Listen to route changes. Each time the user navigates and the ad is dismissed,
-  // increment the navigation count.
+  // Persist ad dismissal state
+  useEffect(() => {
+    sessionStorage.setItem('adDismissed', adDismissed);
+    sessionStorage.setItem('navigationCount', navigationCount);
+  }, [adDismissed, navigationCount]);
+
   useEffect(() => {
     if (prevLocation.current !== location.pathname) {
       if (adDismissed) {
-        setNavigationCount((prev) => prev + 1);
+        setNavigationCount((prevCount) => prevCount + 1);
       }
       prevLocation.current = location.pathname;
     }
   }, [location.pathname, adDismissed]);
 
-  // When the user has navigated 10 pages after dismissing the ad, show the ad again.
   useEffect(() => {
     if (navigationCount >= 10) {
       setAdDismissed(false);
       setNavigationCount(0);
+      sessionStorage.setItem('adDismissed', false);
+      sessionStorage.setItem('navigationCount', 0);
     }
   }, [navigationCount]);
 
-  // Dismiss handler passed to the advertisement modal.
   const handleDismiss = () => {
     setAdDismissed(true);
-    setNavigationCount(0); // Reset count when dismissing
+    setNavigationCount(0);
+    sessionStorage.setItem('adDismissed', true);
+    sessionStorage.setItem('navigationCount', 0);
   };
 
-  // Ads should appear only if:
-  // 1. A user is logged in.
-  // 2. The user is not subscribed (user_subscription is false).
-  // 3. The current route is not within the '/admin' routes.
-  // 4. The advertisement has not been dismissed.
-  const isAdminRoute = location.pathname.startsWith('/admin');
-  const showAdModal = user && !user.user_subscription && !isAdminRoute && !adDismissed;
+  // The system assumes that having a valid license key stored in user.user_subscription 
+  // means that the user is licensed and can enjoy an ad‑free experience.
+  const showAdModal = user && !user.user_subscription && !adDismissed;
 
   return (
     <div>

@@ -1,12 +1,12 @@
-// AdvertisementModal.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdvertisementModal.css';
 
 const AdvertisementModal = ({ onDismiss }) => {
   const [countdown, setCountdown] = useState(5);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Only set an interval if the countdown is greater than 0
     if (countdown > 0) {
       const timerId = setInterval(() => {
         setCountdown((prevCount) => {
@@ -17,17 +17,23 @@ const AdvertisementModal = ({ onDismiss }) => {
           return prevCount - 1;
         });
       }, 1000);
-      // Cleanup the interval on unmount
       return () => clearInterval(timerId);
     }
   }, [countdown]);
+
+  const handleSubscribeClick = () => {
+    // Immediately dismiss the modal and navigate to /subscribe
+    if (onDismiss) {
+      onDismiss();
+    }
+    navigate('/subscribe');
+  };
 
   return (
     <div className="ad-modal-overlay">
       <div className="ad-modal">
         <div className="ad-header">
           <h2>Advertisement</h2>
-          {/* Show the countdown timer if it's above 0, otherwise show the close (X) button */}
           {countdown > 0 ? (
             <span className="countdown">{countdown}</span>
           ) : (
@@ -37,11 +43,11 @@ const AdvertisementModal = ({ onDismiss }) => {
           )}
         </div>
         <p>
-          This site is free but displays ads. Subscribe now for an ad-free experience!
+          This site is free but displays ads. Subscribe now for an ad‑free experience!
         </p>
-        <a href="/subscribe">
-          <button className="subscribe-btn">Subscribe Now</button>
-        </a>
+        <button className="subscribe-btn" onClick={handleSubscribeClick}>
+          Subscribe Now
+        </button>
       </div>
     </div>
   );

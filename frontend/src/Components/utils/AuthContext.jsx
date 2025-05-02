@@ -1,18 +1,23 @@
+// /client/src/Components/utils/AuthContext.jsx
 import React, { createContext, useState, useEffect } from 'react';
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Initialize user state from local storage if present
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
+  // Try to load the user from localStorage (which may include the user_subscription/license key)
+  const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      // Parse the user object from local storage and set it in state.
-      setUser(JSON.parse(storedUser));
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  // Whenever the user is updated, store it in localStorage.
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
     }
-  }, []);
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
