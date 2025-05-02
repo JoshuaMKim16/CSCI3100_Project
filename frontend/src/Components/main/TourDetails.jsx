@@ -79,8 +79,7 @@ const TourDetails = () => {
     if (!location?.address) return;
     const geocodeAddress = async () => {
       try {
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`);
-        console.log(process.env.GOOGLE_MAPS_API_KEY)
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${process.env.REACT_APP_MAP_APIKEY}`);
         const data = await response.json();
         if (data.status === 'OK') {
           const { lat, lng } = data.results[0].geometry.location;
@@ -95,6 +94,31 @@ const TourDetails = () => {
     };
     geocodeAddress();
   }, [location?.address]);
+
+  // Handle 'google api already presented' error
+  class LoadScriptOnlyIfNeeded extends LoadScript {
+    componentDidMount() {
+      const cleaningUp = true;
+      const isBrowser = typeof document !== "undefined"; // require('@react-google-maps/api/src/utils/isbrowser')
+      const isAlreadyLoaded =
+        window.google &&
+        window.google.maps &&
+        document.querySelector("body.first-hit-completed"); // AJAX page loading system is adding this class the first time the app is loaded
+      if (!isAlreadyLoaded && isBrowser) {
+        // @ts-ignore
+        if (window.google && !cleaningUp) {
+          console.error("google api is already presented");
+          return;
+        }
+  
+        this.isCleaningUp().then(this.injectScript);
+      }
+  
+      if (isAlreadyLoaded) {
+        this.setState({ loaded: true });
+      }
+    }
+  }
 
   // Handle Add to Cart
   const handleAddToCart = (e) => {
@@ -167,13 +191,13 @@ const TourDetails = () => {
           </Col>
         </Row>
         <br />
-        <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_API_KEY} libraries={['marker']}>
+        <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
           {isMapLoaded && (
             <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
               <MarkerF position={mapCenter} />
             </GoogleMap>
           )}
-        </LoadScript>
+        </LoadScriptOnlyIfNeeded>
       </Container>
     </section>
   );

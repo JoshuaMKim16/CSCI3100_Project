@@ -8,13 +8,40 @@ import { Container, Row, Input, Button, Form, FormGroup } from 'reactstrap';
 // import "../../styles/tour.css"; // assuming tour.css is still managed centrally
 
 const Tours = () => {
+  // State for fetching location
   const [locations, setLocations] = useState([]);
-  const itemsPerPage = 1; // Now displaying 5 items per page horizontally
+
+  // State for fetching weather
+  const [weather, setWeather] = useState([]);
+
+  // States for dividing locations into pages
+  const itemsPerPage = 5; // Now displaying 5 items per page horizontally
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
+
+  // State for searching
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  // Fetch weather
+  const fetchWeather = async() => {
+    try{
+      const response = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=en');
+      const data = await response.json();
+      console.log(response);
+      console.log(data);
+      setWeather(data);
+    } catch(error) {
+      console.error('Error fetching weather:', error);
+      setWeather([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
+
+  // Fetch loactions
   const fetchLocations = async () => {
     try {
       const response = await fetch('http://localhost:3000/api/locations');
@@ -49,9 +76,15 @@ const Tours = () => {
   };
 
   return (
-    <>
       <section>
-        <Container>
+          {/* Weather */}
+          <div>
+            <p>Weather forecast</p>
+            <p>Today's weather: {weather.forecastDesc}</p>
+            <p>Weather forecast: {weather.outlook}</p>
+            <p>Latest update time: {weather.updateTime}</p>
+          </div>
+
           {/* Search Bar */}
           <Row className="mb-4">
             <div className="d-flex w-100">
@@ -102,10 +135,7 @@ const Tours = () => {
               ))}
             </div>
           </Row>
-        </Container>
       </section>
-      {/* <Newsletter /> */}
-    </>
   );
 };
 
