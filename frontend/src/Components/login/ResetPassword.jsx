@@ -36,6 +36,7 @@ const ResetPassword = () => {
   };
 
   return (
+    <div className='body'>
     <div className='login-container'>
       <form className='login-form' onSubmit={handleSubmit}>
         <h2>Reset Password</h2>
@@ -75,6 +76,7 @@ const ResetPassword = () => {
 
         <button type='submit'>Reset Password</button>
       </form>
+    </div>
     </div>
   );
 };

@@ -27,6 +27,7 @@ const ForgotPassword = () => {
   };
 
   return (
+    <div className='body'>
     <div className='signup-container'>
       <form className='signup-form' onSubmit={handleSubmit}>
         <h2>Password Reset</h2>
@@ -41,6 +42,7 @@ const ForgotPassword = () => {
         />
         <button type='submit'>Send</button>
       </form>
+    </div>
     </div>
   );
 };
