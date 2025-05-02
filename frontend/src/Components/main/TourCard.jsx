@@ -51,7 +51,7 @@ const TourCard = ({ location }) => {
               <img
                 src={specificImage.secure_url}
                 alt={specificImage.public_id}
-                style={{ width: 'auto', height: 'auto' }}
+                style={{ maxWidth: '100%', height: 'auto' }}
               />
             )}
           </div>
@@ -60,7 +60,7 @@ const TourCard = ({ location }) => {
         <CardBody>
           <div className="card_top d-flex align-items-center justify-content-between">
             <span className="tour_location d-flex align-items-center gap-1">
-              {location.address}
+              <i className="ri-map-pin-line"></i> {location.address}
             </span>
           </div>
           <h5 className="tour_name">
@@ -70,8 +70,8 @@ const TourCard = ({ location }) => {
             <h6>{location.type.join(', ')}</h6>
           </div>
           <div className="card_bottom d-flex align-items-center justify-content-between mt-3">
-            <h5>{location.price? `${location.price}` : '$0'} <span>/per person</span></h5>
-            <Button className="btn primary__btn w-100 mt-4" style={{ padding: '8px 16px', fontSize: '14px' }} onClick={handleClick}>
+            <h5>{location.price? `${location.price}` : '$0'} <span> /per person</span></h5>
+            <Button className="btn primary__btn w-100 mt-4" onClick={handleClick}>
               View Details
             </Button>
           </div>
