@@ -1,0 +1,35 @@
+/* UserProfile.css */
+.user-profile-container {
+    background: #f0f8ff;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 2px solid #61dafb;
+  }
+  
+  .profile-actions {
+    margin-top: 15px;
+  }
+  
+  .profile-actions button {
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+  
+  .profile-content h3 {
+    margin-bottom: 20px;
+  }

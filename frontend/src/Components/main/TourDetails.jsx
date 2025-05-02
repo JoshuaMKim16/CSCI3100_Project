@@ -5,7 +5,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import "./tour-details.css"
 
-// Define the container style for Google Map
 const containerStyle = {
   width: '100%',
   height: '400px'
@@ -74,7 +73,6 @@ const TourDetails = () => {
     }
   }, [location]);
 
-  // Convert address to lat and lng using Google Geocoding API   
   useEffect(() => {
     if (!location?.address) return;
     const geocodeAddress = async () => {
@@ -123,13 +121,9 @@ const TourDetails = () => {
   // Handle Add to Cart
   const handleAddToCart = (e) => {
     e.preventDefault();
-    // Retrieve the current shopping cart from localStorage, or initialize as an empty array.
     const currentCart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
-
-    // Check if the current location is already in the cart to prevent duplicates.
     const isAlreadyInCart = currentCart.some(item => item.id === location._id);
     if (!isAlreadyInCart) {
-      // Add essential details of the location to cart.
       const newCartItem = {
         id: location._id,
         name: location.name,
@@ -139,11 +133,15 @@ const TourDetails = () => {
       localStorage.setItem('shoppingCart', JSON.stringify(currentCart));
     }
 
-    // Showconfirmation popup
     const userWantsToCheck = window.confirm("It is added to the planner. Do you want to check?");
     if (userWantsToCheck) {
       navigate('/planner');
     }
+  };
+
+  // New handler for navigating to profile page
+  const handleProfileNavigation = () => {
+    navigate('/profile');
   };
 
   return (
@@ -185,8 +183,13 @@ const TourDetails = () => {
                 <p>No description available</p>
               )}
             </div>
+            {/* Existing Add to Cart Button */}
             <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
               Add to Cart
+            </Button>
+            {/* New Go to Profile Button */}
+            <Button className="btn secondary__btn w-100 mt-2" onClick={handleProfileNavigation}>
+              Go to Profile
             </Button>
           </Col>
         </Row>

@@ -6,6 +6,7 @@ const userRoute = require('./routes/user.route.js');
 const commentRoute = require('./routes/comment.route.js');
 const locationRoute = require('./routes/location.route.js'); // import Location routes
 const authRoute = require('./routes/auth.route.js'); // import Authentication routes
+const licenseRoutes = require('./routes/licenseRoutes.js');
 
 // Import the new Cloudinary routes
 const cloudinaryRoutes = require('./routes/cloudinaryRoutes.js');
@@ -33,6 +34,7 @@ app.use("/api/users", userRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/locations", locationRoute); // add path for Location endpoints
 app.use("/auth", authRoute); // authentication routes
+app.use("/api/license", licenseRoutes); // for ad license
 
 // Register the Cloudinary route endpoint
 app.use("/api/photos", cloudinaryRoutes);
