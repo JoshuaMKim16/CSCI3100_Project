@@ -1,4 +1,3 @@
-// App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Start from './Components/login/Start';
@@ -26,8 +25,9 @@ import { AuthProvider } from './Components/utils/AuthContext';
 import AppLayout from './Components/utils/AppLayout';
 import SubscribePage from './Components/Advertisement/SubscribePage';
 
-// Testing
-import TestAPIs from './TESTING/cloudinary_testing';
+
+////////////// Testing DONE ///////////////
+import Chat from "./TESTING/chat_testing"
 
 import './App.css';
 
@@ -43,7 +43,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
-          <Route path="/phototesting" element={<TestAPIs />} />
+
+
+          {/* CHAT TESTING DONE */}
+          <Route path="/chat" element={<Chat />} />
+
 
           {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>

@@ -1,4 +1,3 @@
-// controllers/licenseController.js
 const User = require('../models/user.model');
 
 // Update the license key for a user
