@@ -1,7 +1,7 @@
 // /client/src/Components/Tours.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CommonSection from '../login/Start'; // or import your actual CommonSection if you have one
+import CommonSection from '../login/Start'; // or import your actual CommonSection if available
 import TourCard from "./TourCard"; 
 // import Newsletter from "../Components/Newsletter"; // adjust if you have this component in Components
 import { Container, Row, Input, Button, Form, FormGroup } from 'reactstrap';
@@ -9,7 +9,7 @@ import { Container, Row, Input, Button, Form, FormGroup } from 'reactstrap';
 
 const Tours = () => {
   const [locations, setLocations] = useState([]);
-  const itemsPerPage = 1; // Now displaying 5 items per page horizontally
+  const itemsPerPage = 1; // Now displaying 1 item per page horizontally (change as needed)
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
@@ -48,6 +48,11 @@ const Tours = () => {
     navigate('/searchpage', { state: { query: searchTerm } });
   };
 
+  // New handler for navigating to profile
+  const handleProfileNavigation = () => {
+    navigate('/profile');
+  };
+
   return (
     <>
       <section>
@@ -69,6 +74,13 @@ const Tours = () => {
                 </Button>
               </Form>
             </div>
+          </Row>
+          
+          {/* New Profile Navigation Button */}
+          <Row className="mb-4">
+            <Button color="secondary" onClick={handleProfileNavigation}>
+              Go to Profile
+            </Button>
           </Row>
 
           {/* Tour Cards Section arranged horizontally */}
