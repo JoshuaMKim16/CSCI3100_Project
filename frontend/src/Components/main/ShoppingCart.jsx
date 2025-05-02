@@ -282,17 +282,6 @@ const ShoppingCart = () => {
           </GoogleMap>
         )}
       </LoadScriptOnlyIfNeeded>
-      <div>
-          {/* 渲染位置信息和经纬度 */}
-          {Object.values(locations).map((location) => (
-              <div key={location.id}>
-                  <p>Address: {location.address}</p>
-                  {location.lat && location.lng && (
-                      <p>Latitude: {location.lat}, Longitude: {location.lng}</p>
-                  )}
-              </div>
-          ))}
-      </div>
     </section>
   );
 };
