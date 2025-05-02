@@ -1,6 +1,7 @@
 // /client/src/Components/Tours.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CommonSection from '../login/Start'; // or import your actual CommonSection if available
 import TourCard from "./TourCard"; 
 import { Container, Col, Row, Input, Button, Form, FormGroup } from 'reactstrap';
 
@@ -12,7 +13,7 @@ const Tours = () => {
   const [weather, setWeather] = useState([]);
 
   // States for dividing locations into pages
-  const itemsPerPage = 3; // Now displaying 5 items per page horizontally
+  const itemsPerPage = 2; // Now displaying 5 items per page horizontally
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
 
@@ -68,6 +69,11 @@ const Tours = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     navigate('/searchpage', { state: { query: searchTerm } });
+  };
+
+  // New handler for navigating to profile
+  const handleProfileNavigation = () => {
+    navigate('/profile');
   };
 
   return (
@@ -139,7 +145,6 @@ const Tours = () => {
         </Container>
       </section>
   );
-  
 };
 
 export default Tours;

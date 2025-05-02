@@ -1,3 +1,4 @@
+// UserProfile.jsx
 import React, { useContext } from 'react';
 import { Container, Row, Col, Button, Alert } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ const UserProfile = () => {
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // If there's no user, you can also show a message or navigate to login.
+  // If there's no user, show message.
   if (!user) {
     return (
       <Container className="user-profile-container">
@@ -77,13 +78,10 @@ const UserProfile = () => {
           )}
           
           <div className="profile-actions">
-            <Button color="primary" onClick={() => alert('Your Activity coming soon!')}>
+            <Button color="primary" onClick={() => navigate('/activity')}>
               Your Activity
             </Button>
-            <Button color="secondary" onClick={() => alert('Saved locations coming soon!')}>
-              Saved
-            </Button>
-            {!isSubscribed ? (
+            { !isSubscribed ? (
               <Button 
                 color="success" 
                 onClick={() => navigate('/subscribe')}
@@ -116,7 +114,7 @@ const UserProfile = () => {
         <Col>
           <h3>Welcome, {user.name}!</h3>
           <p>
-            Use the buttons above to view your activity, saved locations, subscribe for an ad‑free experience, or log out.
+            Use the buttons above to view your activity, subscribe for an ad‑free experience, or log out.
           </p>
         </Col>
       </Row>
