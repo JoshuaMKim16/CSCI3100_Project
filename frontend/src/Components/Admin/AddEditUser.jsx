@@ -17,8 +17,9 @@ const AddEditUser = () => {
   const [name, setName] = useState(locationState?.user?.name || '');
   const [email, setEmail] = useState(locationState?.user?.email || '');
   const [password, setPassword] = useState('');
+  // Initialize as boolean value instead of empty string
   const [userSubscription, setUserSubscription] = useState(
-    locationState?.user?.user_subscription || ''
+    locationState?.user?.user_subscription || false
   );
   const [isAdmin, setIsAdmin] = useState(locationState?.user?.is_admin || false);
 
@@ -85,10 +86,14 @@ const AddEditUser = () => {
           placeholder={userId ? 'Leave blank if not changing' : ''}
           required={!userId}
         />
-        <TextField
-          label="Subscription"
-          value={userSubscription}
-          onChange={(e) => setUserSubscription(e.target.value)}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={userSubscription}
+              onChange={(e) => setUserSubscription(e.target.checked)}
+            />
+          }
+          label="User Subscription"
         />
         <FormControlLabel
           control={

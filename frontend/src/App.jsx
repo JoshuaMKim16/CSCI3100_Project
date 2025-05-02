@@ -6,7 +6,7 @@ import Login from './Components/login/Login';
 import SearchPage from './Components/main/SearchPage';
 import Tours from './Components/main/Tours';
 import TourDetails from './Components/main/TourDetails';
-import ShoppingCart from './Components/main/ShoppingCart'; 
+import ShoppingCart from './Components/main/ShoppingCart';
 import ForgotPassword from './Components/login/ForgotPassword';
 import ResetPassword from './Components/login/ResetPassword';
 import Admin from './Components/Admin/Admin';
@@ -17,6 +17,7 @@ import AddEditLocation from './Components/Admin/AddEditLocation';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import ProtectedRoute from './Components/utils/ProtectedRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
+import AppLayout from './Components/utils/AppLayout';
 
 // Testing
 import TestAPIs from './TESTING/cloudinary_testing';
@@ -28,30 +29,33 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-
-          {/* Public Routes for unregistered users */}
+          {/* Public Routes */}
           <Route path="/" element={<Start />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
-          
-          {/* Testing  */}
           <Route path="/phototesting" element={<TestAPIs />} />
 
           {/* Protected Routes for registered users */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/searchpage" element={<SearchPage />} />
-            <Route path="/main" element={<Tours />} />
-            <Route path="/tours/:id" element={<TourDetails />} />
-            <Route path="/planner" element={<ShoppingCart />} />
+            {/* Wrap regular user pages with the AppLayout */}
+            <Route element={<AppLayout />}>
+              <Route path="/searchpage" element={<SearchPage />} />
+              <Route path="/main" element={<Tours />} />
+              <Route path="/tours/:id" element={<TourDetails />} />
+              <Route path="/planner" element={<ShoppingCart />} />
+            </Route>
 
-            {/* Protected Admin Panel */}
-            <Route path="/admin/*" element={
-              <ProtectedAdminRoute>
-                <Admin />
-              </ProtectedAdminRoute>
-            }>
+            {/* Protected Admin Panel (no ads) */}
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedAdminRoute>
+                  <Admin />
+                </ProtectedAdminRoute>
+              }
+            >
               <Route path="users" element={<UserManagement />} />
               <Route path="users/add" element={<AddEditUser />} />
               <Route path="users/edit" element={<AddEditUser />} />
@@ -60,7 +64,6 @@ function App() {
               <Route path="locations/edit" element={<AddEditLocation />} />
             </Route>
           </Route>
-          
         </Routes>
       </BrowserRouter>
     </AuthProvider>

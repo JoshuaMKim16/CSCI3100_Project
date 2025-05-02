@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   user_subscription: {
-    type: String
+    type: Boolean,
+    default: false
   },
   // Indicates whether the user is an admin.
   is_admin: {
