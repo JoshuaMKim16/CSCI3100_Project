@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import '../../App.css'; // Import your CSS file for styling
+import './Login.css';
 
 const Start = () => {
   const navigate = useNavigate(); // Initialize navigate

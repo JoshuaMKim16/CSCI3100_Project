@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../App.css';
+import './Login.css';
 import Axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -27,14 +27,15 @@ const Signup = () => {
             }
         })
         .catch(err => {
+            setMessage('');
             setError("An error occurred. Please try again.");
             console.log(err);
         });
     };
 
     return (
-        <div className='form-container'>
-            <form className='form' onSubmit={handleSubmit}>
+        <div className='signup-container'>
+            <form className='signup-form' onSubmit={handleSubmit}>
                 <h2>Sign Up</h2>
 
                 <label htmlFor='username'>Username:</label>
