@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 
-const ProtectedAdminRoute = ({ children }) => {
+const ProtectedAdminRoute = () => {
   const { user } = useContext(AuthContext);
 
   if (!user || !user.is_admin) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default ProtectedAdminRoute;
