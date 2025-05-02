@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Button } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import './shoppingcart.css';
 
 const ShoppingCart = () => {
@@ -27,6 +28,17 @@ const ShoppingCart = () => {
   // A ref to track fetched site IDs to avoid duplicate API calls
   const fetchedSiteIds = useRef(new Set());
 
+  // States for Google Map
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const mapRef = useRef(null);
+
+  // Define Google Map container
+  const containerStyle = {
+    width: '100%',
+    height: '400px'
+  };
+
   // Save the cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
@@ -48,14 +60,36 @@ const ShoppingCart = () => {
               locationData[id] = data;
               fetchedSiteIds.current.add(id);
               hasNewFetches = true;
-            } else {
+
+              const address = data.address;
+              if (address) {
+                  try {
+                      const geocodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.REACT_APP_MAP_APIKEY}`);
+                      const geocodeData = await geocodeResponse.json();
+                      if (geocodeData.status === 'OK') {
+                          const { lat, lng } = geocodeData.results[0].geometry.location;
+                          locationData[id].lat = lat;
+                          locationData[id].lng = lng;
+                          setIsMapLoaded(true);
+                          if (Object.keys(locationData).length === 1) {
+                              setMapCenter({ lat, lng });
+                          }
+                      } else {
+                          console.error(`Geocoding failed for address ${address}: ${geocodeData.status}`);
+                      }
+                  } catch (geocodeError) {
+                      console.error(`Error fetching geocoding data for address ${address}:`, geocodeError);
+                  }
+              } else {
               console.error(`Failed to fetch location ${id}: ${response.status}`);
-            }
+              }
+          }
           } catch (error) {
             console.error(`Error fetching location ${id}:`, error);
           }
         }
       }
+      console.log(locationData);
 
       if (hasNewFetches) {
         setLocations((prev) => ({ ...prev, ...locationData }));
@@ -123,6 +157,31 @@ const ShoppingCart = () => {
 
   const timetableData = renderTimetable();
   const hasEvents = timetableData.some(dayEntry => dayEntry.events.length > 0);
+
+  // Handle 'google api already presented' error
+    class LoadScriptOnlyIfNeeded extends LoadScript {
+      componentDidMount() {
+        const cleaningUp = true;
+        const isBrowser = typeof document !== "undefined"; // require('@react-google-maps/api/src/utils/isbrowser')
+        const isAlreadyLoaded =
+          window.google &&
+          window.google.maps &&
+          document.querySelector("body.first-hit-completed"); // AJAX page loading system is adding this class the first time the app is loaded
+        if (!isAlreadyLoaded && isBrowser) {
+          // @ts-ignore
+          if (window.google && !cleaningUp) {
+            console.error("google api is already presented");
+            return;
+          }
+    
+          this.isCleaningUp().then(this.injectScript);
+        }
+    
+        if (isAlreadyLoaded) {
+          this.setState({ loaded: true });
+        }
+      }
+    }
 
   return (
     <section className="shopping-cart-page">
@@ -209,6 +268,31 @@ const ShoppingCart = () => {
           </div>
         </div>
       </Container>
+      <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
+        {isMapLoaded && (
+          <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
+            {Object.values(locations).map((location) => {
+                if (location.lat && location.lng) {
+                    return (
+                        <MarkerF key={location.id} position={{ lat: location.lat, lng: location.lng }}/>
+                    );
+                }
+                return null;
+            })}
+          </GoogleMap>
+        )}
+      </LoadScriptOnlyIfNeeded>
+      <div>
+          {/* 渲染位置信息和经纬度 */}
+          {Object.values(locations).map((location) => (
+              <div key={location.id}>
+                  <p>Address: {location.address}</p>
+                  {location.lat && location.lng && (
+                      <p>Latitude: {location.lat}, Longitude: {location.lng}</p>
+                  )}
+              </div>
+          ))}
+      </div>
     </section>
   );
 };

@@ -28,8 +28,6 @@ const Tours = () => {
     try{
       const response = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=en');
       const data = await response.json();
-      console.log(response);
-      console.log(data);
       setWeather(data);
     } catch(error) {
       console.error('Error fetching weather:', error);
