@@ -1,4 +1,3 @@
-// comment.controller.js
 const Comment = require('../models/comment.model');
 
 // Create a new comment (or nested comment) associated with a location
