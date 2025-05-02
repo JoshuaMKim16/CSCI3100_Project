@@ -5,15 +5,13 @@ const userRoute = require('./routes/user.route.js');
 const commentRoute = require('./routes/comment.route.js');
 const locationRoute = require('./routes/location.route.js');
 const fetch = require('node-fetch').default;
-// 导入 path 模块
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 const port = 3000;
 
 app.use(cors({ origin: '*' }));
-
-// 配置静态文件服务，指向项目根目录下的 front_end 文件夹
 app.use(express.static(path.join(__dirname, '../front_end')));
 
 // Import Models (for reference)
@@ -28,7 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 const dotenv = require('dotenv');
 dotenv.config();
 
-// 打印环境变量
+// print environment variables for debugging
 console.log('DB_USERNAME:', process.env.DB_USERNAME);
 console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
 
@@ -43,8 +41,8 @@ app.get('/', (req, res) => {
     res.send('Hello from Node Server Updated');
 });
 
-// 配置 DeepSeek 官网 API 密钥和模型
-const DEEPSEEK_API_KEY = 'sk-88345975d2d045b592fe7d383803ffa6';
+// DeepSeek API configuration
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY; 
 const MODEL = 'deepseek-chat';
 const API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
@@ -95,7 +93,7 @@ app.post('/chat', async (req, res) => {
 
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('DeepSeek API 返回的错误信息:', errorData);
+            console.error('DeepSeek API error message returned:', errorData);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -104,7 +102,7 @@ app.post('/chat', async (req, res) => {
         res.json({ answer });
     } catch (error) {
         if (error.code === 'ENOTFOUND') {
-            console.error('网络错误：无法解析 api.deepseek.com 的域名，请检查网络连接和 DNS 设置。');
+            console.error('Network error: Unable to resolve the domain name of api.deepseek.com, please check the network connection and DNS settings');
         } else {
             console.error('DeepSeek API Error:', error);
         }
