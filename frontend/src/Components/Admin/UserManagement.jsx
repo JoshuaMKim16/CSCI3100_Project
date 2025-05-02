@@ -64,8 +64,8 @@ const UserManagement = () => {
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
-    <Box sx={{ my: 2 }}>
-      <Typography variant="h5" gutterBottom>
+    <Box sx={{ my: 2, padding: 2 }}>
+      <Typography variant="h5" gutterBottom sx={{fontWeight: 'bold'}}> 
         User Management
       </Typography>
       <Box sx={{ mb: 2 }}>
@@ -88,14 +88,14 @@ const UserManagement = () => {
           Add New User
         </Button>
       </Box>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{ backgroundColor: '#f0f0f0' }}>
         <Table aria-label="users table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: 'lightgrey'}}>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Subscription</TableCell>
-              <TableCell>Is Admin?</TableCell>
+              <TableCell>Admin</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
