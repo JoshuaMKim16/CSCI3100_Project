@@ -1,7 +1,9 @@
-// /client/src/Components/ShoppingCart.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Button } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 import './shoppingcart.css';
 
 const ShoppingCart = () => {
@@ -27,6 +29,17 @@ const ShoppingCart = () => {
   // A ref to track fetched site IDs to avoid duplicate API calls
   const fetchedSiteIds = useRef(new Set());
 
+  // States for Google Map
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const mapRef = useRef(null);
+
+  // Define Google Map container style
+  const containerStyle = {
+    width: '100%',
+    height: '400px',
+  };
+
   // Save the cart to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
@@ -48,14 +61,41 @@ const ShoppingCart = () => {
               locationData[id] = data;
               fetchedSiteIds.current.add(id);
               hasNewFetches = true;
-            } else {
-              console.error(`Failed to fetch location ${id}: ${response.status}`);
+
+              const address = data.address;
+              if (address) {
+                try {
+                  const geocodeResponse = await fetch(
+                    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+                      address
+                    )}&key=${process.env.REACT_APP_MAP_APIKEY}`
+                  );
+                  const geocodeData = await geocodeResponse.json();
+                  if (geocodeData.status === 'OK') {
+                    const { lat, lng } = geocodeData.results[0].geometry.location;
+                    locationData[id].lat = lat;
+                    locationData[id].lng = lng;
+                    setIsMapLoaded(true);
+                    // Set map center to first successfully fetched geocoded item.
+                    if (Object.keys(locationData).length === 1) {
+                      setMapCenter({ lat, lng });
+                    }
+                  } else {
+                    console.error(`Geocoding failed for address ${address}: ${geocodeData.status}`);
+                  }
+                } catch (geocodeError) {
+                  console.error(`Error fetching geocoding data for address ${address}:`, geocodeError);
+                }
+              } else {
+                console.error(`Failed to fetch location ${id}: ${response.status}`);
+              }
             }
           } catch (error) {
             console.error(`Error fetching location ${id}:`, error);
           }
         }
       }
+      console.log(locationData);
 
       if (hasNewFetches) {
         setLocations((prev) => ({ ...prev, ...locationData }));
@@ -69,7 +109,7 @@ const ShoppingCart = () => {
 
   // Function to remove an item from the cart
   const removeFromCart = (id) => {
-    const updatedCart = cartItems.filter(item => getSiteId(item) !== id);
+    const updatedCart = cartItems.filter((item) => getSiteId(item) !== id);
     setCartItems(updatedCart);
     // Remove location details from state if no longer in cart
     const updatedLocations = { ...locations };
@@ -81,7 +121,7 @@ const ShoppingCart = () => {
 
   // Function to set the starting time for a cart item
   const setStartingTime = (id, time) => {
-    const updatedCart = cartItems.map(item =>
+    const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, startTime: time } : item
     );
     setCartItems(updatedCart);
@@ -89,7 +129,7 @@ const ShoppingCart = () => {
 
   // Function to set the ending time for a cart item
   const setEndingTime = (id, time) => {
-    const updatedCart = cartItems.map(item =>
+    const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, endTime: time } : item
     );
     setCartItems(updatedCart);
@@ -99,7 +139,7 @@ const ShoppingCart = () => {
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const renderTimetable = () => {
-    const timetable = daysOfWeek.map(day => ({
+    const timetable = daysOfWeek.map((day) => ({
       day,
       events: [],
     }));
@@ -122,7 +162,81 @@ const ShoppingCart = () => {
   };
 
   const timetableData = renderTimetable();
-  const hasEvents = timetableData.some(dayEntry => dayEntry.events.length > 0);
+  const hasEvents = timetableData.some((dayEntry) => dayEntry.events.length > 0);
+
+  // Function to export the timetable to Excel with enhanced formatting using ExcelJS
+  const handleExportExcel = async () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Timetable');
+
+    // Define columns with headers, keys, and custom widths.
+    worksheet.columns = [
+      { header: 'Day', key: 'day', width: 15 },
+      { header: 'Location', key: 'location', width: 30 },
+      { header: 'Start Time', key: 'start', width: 15 },
+      { header: 'End Time', key: 'end', width: 15 },
+    ];
+
+    // Apply styling to the header row.
+    const headerRow = worksheet.getRow(1);
+    headerRow.font = { bold: true, size: 12 };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+    headerRow.eachCell((cell) => {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FFFFCC00' }, // gold/yellow fill
+      };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+    });
+
+    // Add timetable events rows.
+    timetableData.forEach((dayEntry) => {
+      dayEntry.events.forEach((event) => {
+        worksheet.addRow({
+          day: dayEntry.day,
+          location: event.location,
+          start: event.start,
+          end: event.end,
+        });
+      });
+    });
+
+    // Generate buffer from the workbook and trigger a file download.
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    saveAs(blob, 'timetable.xlsx');
+  };
+
+  // Custom component to load Google Script only if needed
+  class LoadScriptOnlyIfNeeded extends LoadScript {
+    componentDidMount() {
+      const cleaningUp = true;
+      const isBrowser = typeof document !== 'undefined';
+      const isAlreadyLoaded =
+        window.google &&
+        window.google.maps &&
+        document.querySelector('body.first-hit-completed');
+      if (!isAlreadyLoaded && isBrowser) {
+        if (window.google && !cleaningUp) {
+          console.error('google api is already presented');
+          return;
+        }
+        this.isCleaningUp().then(this.injectScript);
+      }
+
+      if (isAlreadyLoaded) {
+        this.setState({ loaded: true });
+      }
+    }
+  }
 
   return (
     <section className="shopping-cart-page">
@@ -132,6 +246,9 @@ const ShoppingCart = () => {
           {/* Timetable Column (Left) */}
           <div className="timetable-col">
             <h3 className="sub-header">Weekly Timetable</h3>
+            <Button color="success" onClick={handleExportExcel} className="mb-3">
+              Export Timetable to Excel
+            </Button>
             <div className="timetable">
               {hasEvents ? (
                 timetableData.map((dayEntry, index) => (
@@ -209,6 +326,23 @@ const ShoppingCart = () => {
           </div>
         </div>
       </Container>
+      <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
+        {isMapLoaded && (
+          <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
+            {Object.values(locations).map((location) => {
+              if (location.lat && location.lng) {
+                return (
+                  <MarkerF
+                    key={location.id || location._id}
+                    position={{ lat: location.lat, lng: location.lng }}
+                  />
+                );
+              }
+              return null;
+            })}
+          </GoogleMap>
+        )}
+      </LoadScriptOnlyIfNeeded>
     </section>
   );
 };

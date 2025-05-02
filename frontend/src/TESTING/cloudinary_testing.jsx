@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 const TestAPIs = () => {
   // States for upload functionality
-  const [file, setFile] = useState(null);
-  const [uploadResult, setUploadResult] = useState(null);
+  const [files, setFiles] = useState([]);
+  const [uploadResults, setUploadResults] = useState([]);
   const [uploadError, setUploadError] = useState('');
 
   // States for fetching images
@@ -11,40 +11,42 @@ const TestAPIs = () => {
   const [specificImage, setSpecificImage] = useState(null);
   const [fetchError, setFetchError] = useState('');
 
-  // Handle file selection for upload
+  // Handle file selection for upload (allow multiple files)
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    setUploadResult(null);
+    setFiles(Array.from(e.target.files));
+    setUploadResults([]);
     setUploadError('');
   };
 
   // Handle the upload button click
   const handleUpload = async () => {
-    if (!file) {
-      setUploadError('Please select a file first');
+    if (files.length === 0) {
+      setUploadError('Please select one or more files first');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
-      const response = await fetch('http://localhost:3000/api/photos/upload', {
-        method: 'POST',
-        body: formData,
+      const uploadPromises = files.map((file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        return fetch('http://localhost:3000/api/photos/upload', {
+          method: 'POST',
+          body: formData,
+        }).then(async (response) => {
+          if (!response.ok) {
+            throw new Error('Upload failed');
+          }
+          return response.json();
+        });
       });
 
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const data = await response.json();
-      setUploadResult(data);
+      const results = await Promise.all(uploadPromises);
+      setUploadResults(results);
       setUploadError('');
-      console.log('Upload successful!', data);
+      console.log('Upload successful!', results);
     } catch (err) {
-      console.error('Error uploading image:', err);
-      setUploadError('Error uploading image. Please try again.');
+      console.error('Error uploading images:', err);
+      setUploadError('Error uploading images. Please try again.');
     }
   };
 
@@ -87,20 +89,24 @@ const TestAPIs = () => {
       
       {/* Upload Section */}
       <section style={{ marginBottom: '40px', borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
-        <h2>Upload Image</h2>
-        <input type="file" onChange={handleFileChange} />
+        <h2>Upload Image(s)</h2>
+        <input type="file" multiple onChange={handleFileChange} />
         <br /><br />
         <button onClick={handleUpload}>Upload</button>
         {uploadError && <p style={{ color: 'red' }}>{uploadError}</p>}
-        {uploadResult && (
+        {uploadResults.length > 0 && (
           <div style={{ marginTop: '20px' }}>
-            <h3>Upload Result</h3>
-            <p>{uploadResult.secure_url}</p>
-            <img
-              src={uploadResult.secure_url}
-              alt="Uploaded"
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
+            <h3>Upload Results</h3>
+            {uploadResults.map((result, index) => (
+              <div key={index} style={{ marginBottom: '20px' }}>
+                <p>{result.secure_url}</p>
+                <img
+                  src={result.secure_url}
+                  alt={`Uploaded ${index}`}
+                  style={{ maxWidth: '100%', height: 'auto' }}
+                />
+              </div>
+            ))}
           </div>
         )}
       </section>
