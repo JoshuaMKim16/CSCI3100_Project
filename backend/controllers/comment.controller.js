@@ -30,6 +30,19 @@ const getCommentsByLocation = async (req, res) => {
   }
 };
 
+// New: Get all comments made by a specific user
+const getCommentsByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const comments = await Comment.find({ author: userId })
+      .populate('location', 'name')
+      .populate('author', 'name');
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Update an existing comment
 const updateComment = async (req, res) => {
   try {
@@ -97,6 +110,7 @@ const dislikeComment = async (req, res) => {
 module.exports = {
   createComment,
   getCommentsByLocation,
+  getCommentsByUser, // <- exporting the new function
   updateComment,
   deleteComment,
   likeComment,

@@ -1,4 +1,3 @@
-// controllers/location.controller.js
 const Location = require('../models/location.model');
 
 // Create a new location

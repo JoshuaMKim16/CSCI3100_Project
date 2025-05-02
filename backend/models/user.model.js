@@ -1,4 +1,3 @@
-// models/user.model.js
 const mongoose = require('mongoose');
 
 // Main user schema - arbitrary

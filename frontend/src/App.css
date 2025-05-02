@@ -8,6 +8,7 @@ body {
   display: flex; 
   justify-content: center; 
   align-items: center;
+  overflow-y: auto;
 }
 
 /* start page */
@@ -97,5 +98,3 @@ button {
 button:hover {
   background-color: #2980b9;
 }
-
-

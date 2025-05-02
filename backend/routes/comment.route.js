@@ -3,6 +3,7 @@ const router = express.Router();
 const { 
   createComment, 
   getCommentsByLocation, 
+  getCommentsByUser, // Import new function
   updateComment, 
   deleteComment,
   likeComment,
@@ -14,6 +15,9 @@ router.post("/", createComment);
 
 // Retrieve comments for a specific location
 router.get("/location/:locationId", getCommentsByLocation);
+
+// Retrieve comments made by a specific user
+router.get("/user/:userId", getCommentsByUser);
 
 // Update a comment
 router.put("/:id", updateComment);

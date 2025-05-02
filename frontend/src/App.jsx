@@ -1,4 +1,3 @@
-// App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Start from './Components/login/Start';
@@ -12,6 +11,7 @@ import Tours from './Components/main/Tours';
 import TourDetails from './Components/main/TourDetails';
 import ShoppingCart from './Components/main/ShoppingCart';
 import UserProfile from './Components/UserProfile/UserProfile';
+import UserActivity from './Components/UserProfile/UserActivity';
 
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
@@ -25,13 +25,15 @@ import { AuthProvider } from './Components/utils/AuthContext';
 import AppLayout from './Components/utils/AppLayout';
 import SubscribePage from './Components/Advertisement/SubscribePage';
 
-// Testing
-import TestAPIs from './TESTING/cloudinary_testing';
+
+////////////// Testing DONE ///////////////
+import Chat from "./TESTING/chat_testing"
 
 import './App.css';
 
 function App() {
   return (
+    <>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -41,7 +43,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
-          <Route path="/phototesting" element={<TestAPIs />} />
+
+
+          {/* CHAT TESTING DONE */}
+          <Route path="/chat" element={<Chat />} />
+
 
           {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>
@@ -52,6 +58,7 @@ function App() {
               <Route path="/tours/:id" element={<TourDetails />} />
               <Route path="/planner" element={<ShoppingCart />} />
               <Route path="/profile" element={<UserProfile />} />
+              <Route path="/activity" element={<UserActivity />} />
               <Route path="/subscribe" element={<SubscribePage />} />
             </Route>
           </Route>
@@ -70,6 +77,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </>
   );
 }
 
