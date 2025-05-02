@@ -1,59 +1,71 @@
+// App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Start from './Components/login/Start';
 import Signup from './Components/login/Signup';
 import Login from './Components/login/Login';
+import ForgotPassword from './Components/login/ForgotPassword';
+import ResetPassword from './Components/login/ResetPassword';
+
 import SearchPage from './Components/main/SearchPage';
 import Tours from './Components/main/Tours';
 import TourDetails from './Components/main/TourDetails';
-import ForgotPassword from './Components/login/ForgotPassword';
-import ResetPassword from './Components/login/ResetPassword';
+import ShoppingCart from './Components/main/ShoppingCart';
+import UserProfile from './Components/UserProfile/UserProfile';
+
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
 import AddEditUser from './Components/Admin/AddEditUser';
 import LocationManagement from './Components/Admin/LocationManagement';
 import AddEditLocation from './Components/Admin/AddEditLocation';
+
+import ProtectedRoute from './Components/utils/ProtectedRoute';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
+import AppLayout from './Components/utils/AppLayout';
+import SubscribePage from './Components/Advertisement/SubscribePage';
 
-//testing
+// Testing
 import TestAPIs from './TESTING/cloudinary_testing';
 
 import './App.css';
-
-const url = 'http://localhost:3000/api'
-fetch(url);
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public/General Pages */}
+          {/* Public Routes */}
           <Route path="/" element={<Start />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/searchpage" element={<SearchPage />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
-          <Route path="/tours" element={<Tours />} />
-          <Route path="/tours/:id" element={<TourDetails />} />
-
-          {/* Testing */}
           <Route path="/phototesting" element={<TestAPIs />} />
 
-          {/* Protected Admin Panel - Admin components now reside in Components/Admin */}
-          <Route path="/admin" element={
-            <ProtectedAdminRoute>
-              <Admin />
-            </ProtectedAdminRoute>
-          }>
-            <Route path="users" element={<UserManagement />} />
-            <Route path="users/add" element={<AddEditUser />} />
-            <Route path="users/edit" element={<AddEditUser />} />
-            <Route path="locations" element={<LocationManagement />} />
-            <Route path="locations/add" element={<AddEditLocation />} />
-            <Route path="locations/edit" element={<AddEditLocation />} />
+          {/* Protected Routes for Registered (Non-Admin) Users */}
+          <Route element={<ProtectedRoute />}>
+            {/* Wrap regular user pages with AppLayout */}
+            <Route element={<AppLayout />}>
+              <Route path="/searchpage" element={<SearchPage />} />
+              <Route path="/main" element={<Tours />} />
+              <Route path="/tours/:id" element={<TourDetails />} />
+              <Route path="/planner" element={<ShoppingCart />} />
+              <Route path="/profile" element={<UserProfile />} />
+              <Route path="/subscribe" element={<SubscribePage />} />
+            </Route>
+          </Route>
+
+          {/* Protected Admin Panel - No Ads */}
+          <Route element={<ProtectedAdminRoute />}>
+            <Route path="/admin/*" element={<Admin />}>
+              <Route path="users" element={<UserManagement />} />
+              <Route path="users/add" element={<AddEditUser />} />
+              <Route path="users/edit" element={<AddEditUser />} />
+              <Route path="locations" element={<LocationManagement />} />
+              <Route path="locations/add" element={<AddEditLocation />} />
+              <Route path="locations/edit" element={<AddEditLocation />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -2,34 +2,12 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
-import { Box, Button, IconButton, Typography } from '@mui/material';
-import Header from './Header';
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 const Admin = () => {
   return (
-    <Box m="20px" bgcolor="lightgray">
-      {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        <Box>
-          <Button
-            sx={{
-             // backgroundColor: colors.blueAccent[700],
-              //color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
-      </Box>
-
-
     <Container
       maxWidth="lg"
       // Ensures the overall container takes full viewport height and allows vertical scrolling
@@ -40,15 +18,43 @@ const Admin = () => {
       }}
     >
       {/* Sticky header so the h4 and nav remain always visible at the top */}
-      
+      <Box
+        sx={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 100,
+          bgcolor: 'background.paper',
+          pt: 2,
+          pb: 2,
+          boxShadow: 1,
+        }}
+      >
+        <Typography variant="h4" align="center" gutterBottom>
+          Admin Dashboard
+        </Typography>
+        <Box
+          component="nav"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 2,
+            flexWrap: 'wrap',
+          }}
+        >
+          <Button variant="contained" component={Link} to="/admin/users">
+            Manage Users
+          </Button>
+          <Button variant="contained" component={Link} to="/admin/locations">
+            Manage Locations
+          </Button>
+        </Box>
+      </Box>
 
       {/* The rendered child pages will appear below the header inside this scrollable container */}
       <Box sx={{ mt: 2 }}>
         <Outlet />
       </Box>
-
     </Container>
-    </Box>
   );
 };
 
