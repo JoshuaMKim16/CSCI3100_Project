@@ -1,11 +1,10 @@
-// comment.controller.js
+// controllers/comment.controller.js
 const Comment = require('../models/comment.model');
 
 // Create a new comment (or nested comment) associated with a location
 const createComment = async (req, res) => {
   try {
     const { content, author, location, parentComment } = req.body;
-
     const comment = await Comment.create({
       content,
       author,
@@ -18,20 +17,33 @@ const createComment = async (req, res) => {
   }
 };
 
-// Get all comments for a specific location
-const getCommentsByLocation = async (req, res) => {
+// Get all comments in the database
+const getAllComments = async (req, res) => {
   try {
-    const { locationId } = req.params;
-    const comments = await Comment.find({ location: locationId })
+    const comments = await Comment.find()
       .populate('author', 'name')
-      .populate('parentComment'); // optionally populate parent comment details
+      .populate('location', 'name')
+      .populate('parentComment');
     res.status(200).json(comments);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// New: Get all comments made by a specific user
+// Get all comments for a specific location
+const getCommentsByLocation = async (req, res) => {
+  try {
+    const { locationId } = req.params;
+    const comments = await Comment.find({ location: locationId })
+      .populate('author', 'name')
+      .populate('parentComment');
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get all comments made by a specific user
 const getCommentsByUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -110,8 +122,9 @@ const dislikeComment = async (req, res) => {
 
 module.exports = {
   createComment,
+  getAllComments,   // Exporting the new function to get every comment
   getCommentsByLocation,
-  getCommentsByUser, // <- exporting the new function
+  getCommentsByUser,
   updateComment,
   deleteComment,
   likeComment,

@@ -1,10 +1,11 @@
-// comment.route.js
+// routes/comment.route.js
 const express = require("express");
 const router = express.Router();
 const { 
   createComment, 
+  getAllComments,       // Import new function
   getCommentsByLocation, 
-  getCommentsByUser, // Import new function
+  getCommentsByUser, 
   updateComment, 
   deleteComment,
   likeComment,
@@ -13,6 +14,9 @@ const {
 
 // Create a comment (or nested comment)
 router.post("/", createComment);
+
+// Retrieve all comments in the database
+router.get("/", getAllComments);
 
 // Retrieve comments for a specific location
 router.get("/location/:locationId", getCommentsByLocation);

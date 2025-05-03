@@ -19,6 +19,7 @@ import UserManagement from './Components/Admin/UserManagement';
 import AddEditUser from './Components/Admin/AddEditUser';
 import LocationManagement from './Components/Admin/LocationManagement';
 import AddEditLocation from './Components/Admin/AddEditLocation';
+import Dashboard from './Components/Admin/Dashboard';
 
 import ProtectedRoute from './Components/utils/ProtectedRoute';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
@@ -62,6 +63,7 @@ function App() {
           {/* Protected Admin Panel - No Ads */}
           <Route element={<ProtectedAdminRoute />}>
             <Route path="/admin/*" element={<Admin />}>
+              <Route index element={<Dashboard />} />
               <Route path="users" element={<UserManagement />} />
               <Route path="users/add" element={<AddEditUser />} />
               <Route path="users/edit" element={<AddEditUser />} />
