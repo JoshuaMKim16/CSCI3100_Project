@@ -1,123 +1,92 @@
-// /client/src/Components/TourDetails.jsx
+// /client/src/Components/main/TourDetails.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import { useParams, useNavigate } from 'react-router-dom';
-import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import { LoadScript, GoogleMap, MarkerF } from '@react-google-maps/api';
+import {jwtDecode} from 'jwt-decode';
 import CommentsSection from './CommentsSection';
-import { jwtDecode } from 'jwt-decode';
-import "./tour-details.css";
+import './tour-details.css';
 
-const containerStyle = {
-  width: '100%',
-  height: '400px'
-};
+const containerStyle = { width: '100%', height: '100%' };
 
 const TourDetails = () => {
-  // Get parameters from URL
   const { id } = useParams();
-
-  // States for fetching location details
-  const [location, setLocation] = useState([]);
-  const [error, setError] = useState(null);
-
-  // States for Google Map
-  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
-  const mapRef = useRef(null);
   const navigate = useNavigate();
 
-  // States for fetching images
-  const [specificImage, setSpecificImage] = useState(null);
-  const [fetchError, setFetchError] = useState('');
+  const [location, setLocation] = useState(null);
+  const [loadingLoc, setLoadingLoc] = useState(true);
+  const [error, setError] = useState('');
 
-  // Helper function to retrieve the current user ID from the JWT
-  const getCurrentUserIdFromJWT = () => {
+  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  const [isGeocoded, setIsGeocoded] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+
+  const [imageUrl, setImageUrl] = useState('');
+  const [loadingImage, setLoadingImage] = useState(false);
+
+  // derive cart key from JWT
+  const getCartKey = () => {
     try {
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        const parsedData = JSON.parse(userData);
-        if (parsedData.token) {
-          const decodedToken = jwtDecode(parsedData.token);
-          // Adjust based on your JWT payload structure (e.g., id or userId)
-          return decodedToken.id || decodedToken.userId;
-        }
+      const stored = JSON.parse(localStorage.getItem('user') || '{}');
+      if (stored.token) {
+        const decoded = jwtDecode(stored.token);
+        const uid = decoded.id || decoded.userId;
+        return `shoppingCart_${uid}`;
       }
-    } catch (error) {
-      console.error('Error decoding JWT:', error);
-    }
-    return 'guest';
+    } catch {}
+    return 'shoppingCart_guest';
   };
+  const cartKey = getCartKey();
 
-  // Use the JWT-derived user identifier to form a unique storage key.
-  const userId = getCurrentUserIdFromJWT();
-  const cartKey = `shoppingCart_${userId}`;
-
-  // Fetch location details by ID
-  const fetchLocationByID = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/locations/${id}`);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
-      const data = await response.json();
-      setLocation(data);
-    } catch (error) {
-      console.error('Error fetching location:', error);
-      setError('Failed to load location details.');
-    }
-  };
-
+  // Fetch location
   useEffect(() => {
-    if (id) {
-      fetchLocationByID(id);
-    }
+    setLoadingLoc(true);
+    fetch(`http://localhost:3000/api/locations/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json();
+      })
+      .then(data => setLocation(data))
+      .catch(() => setError('Unable to load tour details.'))
+      .finally(() => setLoadingLoc(false));
   }, [id]);
 
-  // Fetch a specific image by filename
-  const fetchSpecificImage = async () => {
-    try {
-      const filename = location.picture[0].split('/').pop().split('.')[0];
-      const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
-      if (!response.ok) {
-        throw new Error('Fetching specific image failed');
-      }
-      const data = await response.json();
-      console.log(response);
-      setSpecificImage(data);
-      setFetchError('');
-    } catch (err) {
-      console.error('Error fetching specific image:', err);
-      setFetchError('Error fetching specific image: ' + err.message);
-    }
-  };
-
+  // Fetch specific image
   useEffect(() => {
-    if (location.picture) {
-      fetchSpecificImage();
-    }
+    if (!location?.picture?.length) return;
+    setLoadingImage(true);
+    const filename = location.picture[0]
+      .split('/')
+      .pop()
+      .split('.')[0];
+    fetch(`http://localhost:3000/api/photos/${filename}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Image fetch failed');
+        return res.json();
+      })
+      .then(json => setImageUrl(json.secure_url))
+      .catch(console.error)
+      .finally(() => setLoadingImage(false));
   }, [location]);
 
+  // Geocode address
   useEffect(() => {
     if (!location?.address) return;
-    const geocodeAddress = async () => {
-      try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${process.env.REACT_APP_MAP_APIKEY}`
-        );
-        const data = await response.json();
-        if (data.status === 'OK') {
-          const { lat, lng } = data.results[0].geometry.location;
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+        location.address
+      )}&key=${process.env.REACT_APP_MAP_APIKEY}`
+    )
+      .then(res => res.json())
+      .then(jd => {
+        if (jd.status === 'OK') {
+          const { lat, lng } = jd.results[0].geometry.location;
           setMapCenter({ lat, lng });
-          setIsMapLoaded(true);
-        } else {
-          console.error('Geocoding failed:', data.status);
+          setIsGeocoded(true);
         }
-      } catch (error) {
-        console.error('Error fetching geocoding data:', error);
-      }
-    };
-    geocodeAddress();
-  }, [location?.address]);
+      })
+      .catch(console.error);
+  }, [location]);
 
   // Custom LoadScript component to avoid duplicate Google API injections
   class LoadScriptOnlyIfNeeded extends LoadScript {
@@ -153,14 +122,10 @@ const TourDetails = () => {
         name: location.name,
         price: location.price
       };
-      currentCart.push(newCartItem);
-      localStorage.setItem(cartKey, JSON.stringify(currentCart));
-      // Dispatch custom event to notify ShoppingCart
+      localStorage.setItem(cartKey, JSON.stringify(cart));
       window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
-
-    const userWantsToCheck = window.confirm("It is added to the planner. Do you want to check?");
-    if (userWantsToCheck) {
+    if (window.confirm('Added to planner. Go to planner now?')) {
       navigate('/planner');
     }
   };
@@ -209,7 +174,12 @@ const TourDetails = () => {
               {location.description ? (
                 <p>{location.description}</p>
               ) : (
-                <p>No description available.</p>
+                <CardImg
+                  top
+                  width="100%"
+                  src={imageUrl || '/default-tour.jpg'}
+                  alt={location.name}
+                />
               )}
             </div>
             <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
@@ -230,6 +200,35 @@ const TourDetails = () => {
         </LoadScriptOnlyIfNeeded>
         {location._id && <CommentsSection locationId={location._id} />}
       </Container>
+
+      {/* Full-screen Modal for Map */}
+      <Modal
+        isOpen={showMap}
+        toggle={toggleMap}
+        className="map-modal"
+        fade={false}
+        centered
+      >
+        <ModalHeader toggle={toggleMap}>Location Map</ModalHeader>
+        <ModalBody className="p-0">
+          {isGeocoded ? (
+            <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY}>
+              <GoogleMap
+                ref={mapRef}
+                mapContainerStyle={containerStyle}
+                center={mapCenter}
+                zoom={15}
+              >
+                <MarkerF position={mapCenter} />
+              </GoogleMap>
+            </LoadScript>
+          ) : (
+            <div className="h-100 d-flex justify-content-center align-items-center">
+              <Spinner />
+            </div>
+          )}
+        </ModalBody>
+      </Modal>
     </section>
   );
 };

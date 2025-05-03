@@ -62,7 +62,8 @@ function App() {
               <Route path="/activity" element={<UserActivity />} />
               <Route path="/subscribe" element={<SubscribePage />} />
             </Route>
-          </Route>
+            </Route>
+          
 
           {/* Protected Admin Panel - No Ads */}
           <Route element={<ProtectedAdminRoute />}>
