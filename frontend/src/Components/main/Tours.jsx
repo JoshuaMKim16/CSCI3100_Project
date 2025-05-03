@@ -1,11 +1,8 @@
 // /client/src/Components/Tours.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CommonSection from '../login/Start'; // or import your actual CommonSection if available
 import TourCard from "./TourCard"; 
-// import Newsletter from "../Components/Newsletter"; // adjust if you have this component in Components
-import { Container, Row, Input, Button, Form, FormGroup } from 'reactstrap';
-// import "../../styles/tour.css"; // assuming tour.css is still managed centrally
+import { Container, Col, Row, Input, Button, Form, FormGroup } from 'reactstrap';
 
 const Tours = () => {
   // State for fetching location
@@ -73,15 +70,11 @@ const Tours = () => {
     navigate('/searchpage', { state: { query: searchTerm } });
   };
 
-  // New handler for navigating to profile
-  const handleProfileNavigation = () => {
-    navigate('/profile');
-  };
-
   return (
       <section>
+        <Container style={{height: '90vh', width: '95%', margin: '0 auto'}}>
           {/* Weather */}
-          <div>
+          <div style={{overflowWrap: 'break-word', width: '100%'}}>
             <p>Weather forecast</p>
             <p>Today's weather: {weather.forecastDesc}</p>
             <p>Weather forecast: {weather.outlook}</p>
@@ -89,62 +82,98 @@ const Tours = () => {
           </div>
 
           {/* Search Bar */}
-          <Row className="mb-4">
-            <div className="d-flex w-100">
-              <Form onSubmit={handleSearchSubmit} className="d-flex w-100">
-                <FormGroup className="flex-grow-1 me-2">
-                  <Input
-                    type="text"
-                    placeholder="Search here..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </FormGroup>
-                <Button type="submit" color="primary">
-                  Search
-                </Button>
-              </Form>
-            </div>
-          </Row>
-          
-          {/* New Profile Navigation Button */}
-          <Row className="mb-4">
-            <Button color="secondary" onClick={handleProfileNavigation}>
-              Go to Profile
-            </Button>
-          </Row>
+          <section>
+            <Container>
+              <Row className="mb-4">
+                <div className="d-flex w-100">
+                  <Form onSubmit={handleSearchSubmit} className="d-flex w-100">
+                    <FormGroup className="flex-grow-1 me-2">
+                      <Input
+                        type="text"
+                        placeholder="Search here..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </FormGroup>
+                    <Button type="submit" color="primary">
+                      Search
+                    </Button>
+                  </Form>
+                </div>
+              </Row>
+              <br/>
+            </Container>
+          </section>
 
           {/* Tour Cards Section arranged horizontally */}
-          <div className="d-flex flex-wrap justify-content-start">
-            {currentLocations.map((location) => (
-              <div
-                key={location._id}
-                style={{
-                  flex: '0 0 20%', // Each card takes 20% width, ensuring 5 per row
-                  maxWidth: '20%',
-                  padding: '0.5rem',
-                }}
-              >
-                <TourCard location={location} />
-              </div>
-            ))}
-          </div>
+          <section className='pt-0'>
+            <Container>
+              <Row>
+                <div className="d-flex flex-wrap justify-content-start">
+                  {currentLocations.map((location) => (
+                    <Col lg='3' className='mb-4' style={{ border: '1px solid gray'}}>
+                      <TourCard location={location}/>
+                    </Col>
+                  ))}
+                </div>
+              </Row>
+            </Container>
+          </section>
+          <br/>
 
           {/* Pagination */}
-          <Row className="mt-4">
-            <div className="w-100 d-flex justify-content-center gap-3">
-              {[...Array(pageCount).keys()].map((number) => (
+          <Container style={{margin: '0 auto'}}>
+            <div>
+              {page > -1 && (
                 <span
-                  key={number}
-                  onClick={() => setPage(number)}
-                  className={page === number ? 'active_page' : ''}
-                  style={{ cursor: 'pointer' }}
+                    onClick={() => setPage(0)}
+                    style={{ cursor: 'pointer' }}
                 >
-                  {number + 1}
+                &lt;&lt;
                 </span>
-              ))}
+              )}
+              {page > -1 && (
+                <span
+                    onClick={() => {
+                      if (page === 0) {
+                        setPage(0);
+                      } else{
+                        setPage(page - 1)
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
+                &lt;
+                </span>
+              )}
+              <span>
+                {page + 1} / {pageCount}
+              </span>
+              {page < pageCount && (
+                <span
+                    onClick={() => {
+                      if (page === pageCount - 1) {
+                        setPage(pageCount - 1)
+                      } else {
+                        setPage(page + 1)
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
+                &gt;
+                </span>
+              )}
+              {page < pageCount && (
+                <span
+                    onClick={() => setPage(pageCount - 1)}
+                    style={{ cursor: 'pointer' }}
+                >
+                &gt;&gt;
+                </span>
+                )}
             </div>
-          </Row>
+          </Container>
+        </Container>
       </section>
   );
 };
