@@ -1,7 +1,7 @@
 // /client/src/Components/TourDetails.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
-import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from'react-icons/fa'
+import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import CommentsSection from './CommentsSection';
@@ -129,9 +129,17 @@ const TourDetails = () => {
   }
 
   // Handle Add to Cart
+  // Fix: Make sure the cart is stored with the same key as in the shopping cart component
   const handleAddToCart = (e) => {
     e.preventDefault();
-    const currentCart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+    
+    // Retrieve logged-in user info (adjust logic as per your auth implementation)
+    const loggedInUser = JSON.parse(localStorage.getItem('user')) || {};
+    const userId = loggedInUser._id || 'guest';
+    // Use the same key as in ShoppingCart.jsx:
+    const cartKey = `shoppingCart_${userId}`;
+    const currentCart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    
     const isAlreadyInCart = currentCart.some(item => item.id === location._id);
     if (!isAlreadyInCart) {
       const newCartItem = {
@@ -140,7 +148,7 @@ const TourDetails = () => {
         price: location.price
       };
       currentCart.push(newCartItem);
-      localStorage.setItem('shoppingCart', JSON.stringify(currentCart));
+      localStorage.setItem(cartKey, JSON.stringify(currentCart));
     }
 
     const userWantsToCheck = window.confirm("It is added to the planner. Do you want to check?");
@@ -148,7 +156,7 @@ const TourDetails = () => {
       navigate('/planner');
     }
   };
-  
+
   return (
     <section>
       {/*Picture and Details*/}
@@ -192,9 +200,9 @@ const TourDetails = () => {
               ) : (
                 <p>No description available</p>
               )}
-            <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
-              Add to Cart
-            </Button>
+              <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
+                Add to Cart
+              </Button>
             </div>
           </Col>
         </Row>
@@ -202,10 +210,10 @@ const TourDetails = () => {
 
         {/*Google Map*/}
         {showSidebar && (
-          <div className={`sidebar ${showSidebar? 'active' : ''}`}>
+          <div className={`sidebar ${showSidebar ? 'active' : ''}`}>
             <div className="sidebar-content">
-                <h3>Google Map</h3>
-                <p onClick={handleSidebarClose} style={{ cursor: 'pointer', color: 'blue'}}>Close</p>
+              <h3>Google Map</h3>
+              <p onClick={handleSidebarClose} style={{ cursor: 'pointer', color: 'blue'}}>Close</p>
               <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
                 {isMapLoaded && (
                   <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
