@@ -1,4 +1,3 @@
-// Components/Admin/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Paper, CircularProgress } from '@mui/material';
 import {
@@ -19,18 +18,25 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get the admin's id from localStorage (set after login)
+    // Get the admin's id and token from localStorage (set after login)
     const storedUser = localStorage.getItem('user');
-    const adminId = storedUser ? JSON.parse(storedUser)._id : null;
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+    const adminId = parsedUser?._id || null;
+    const token = parsedUser?.token || null;
 
     // Base API URL
     const baseUrl = 'http://localhost:3000';
+
+    // Common headers, including the token if available
+    const headers = token 
+      ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } 
+      : { 'Content-Type': 'application/json' };
 
     // Fetch admin profile by ID
     const fetchAdminProfile = async () => {
       if (!adminId) return;
       try {
-        const response = await fetch(`${baseUrl}/api/users/${adminId}`);
+        const response = await fetch(`${baseUrl}/api/users/${adminId}`, { headers });
         if (!response.ok) throw new Error('Failed to fetch admin profile');
         const data = await response.json();
         setAdminProfile(data);
@@ -42,7 +48,7 @@ const Dashboard = () => {
     // Fetch count of all users
     const fetchUserCount = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/users`);
+        const response = await fetch(`${baseUrl}/api/users`, { headers });
         if (!response.ok) throw new Error('Failed to fetch users');
         const users = await response.json();
         setUserCount(users.length);
@@ -54,7 +60,7 @@ const Dashboard = () => {
     // Fetch count of all locations
     const fetchLocationCount = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/locations`);
+        const response = await fetch(`${baseUrl}/api/locations`, { headers });
         if (!response.ok) throw new Error('Failed to fetch locations');
         const locations = await response.json();
         setLocationCount(locations.length);
@@ -66,7 +72,7 @@ const Dashboard = () => {
     // Fetch count of all comments
     const fetchCommentCount = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/comments`);
+        const response = await fetch(`${baseUrl}/api/comments`, { headers });
         if (!response.ok) throw new Error('Failed to fetch comments');
         const comments = await response.json();
         setCommentCount(comments.length);
@@ -112,13 +118,13 @@ const Dashboard = () => {
   }
 
   return (
-    <Box >
-      <Paper elevation={3} sx={{ p: 3, mb: 4, boxShadow: 'none', width:'500px' }}>
+    <Box>
+      <Paper elevation={3} sx={{ p: 3, mb: 4, boxShadow: 'none', width: '500px' }}>
         <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
           Admin Profile
         </Typography>
         {adminProfile ? (
-          <Box sx={{ mb: 2, boxShadow: 0,}}>
+          <Box sx={{ mb: 2, boxShadow: 0 }}>
             <Typography variant="h6">
               Name: {adminProfile.name}
             </Typography>
