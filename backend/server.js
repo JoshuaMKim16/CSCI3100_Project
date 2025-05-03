@@ -22,7 +22,6 @@ app.use(cors());
 // Middleware configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('public'));
 
 // .env file configuration
 const dotenv = require('dotenv');

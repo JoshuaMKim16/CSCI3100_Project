@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <title>AI Chatbot</title>
+    <style>
+        /* Scrollbar styles */
+        #chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #chat-messages::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+        }
+
+        #chat-messages::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+         
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 8px;
+        }
+
+        .user-avatar {
+            background-color: #e0f3ff;  
+        }
+
+        .ai-avatar {
+            background-color: #f5f5f5; 
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div id="chat-container" class="bg-white w-full max-w-md h-96 rounded-lg shadow-md overflow-hidden flex flex-col">
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto">
+            <!-- Messages will be added here -->
+        </div>
+        <div class="p-4 border-t border-gray-200 flex">
+            <input type="text" id="user-input" class="flex-1 border border-gray-300 rounded-md p-2 mr-2"
+                placeholder="Enter your message">
+            <button id="send-button"
+                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const chatMessages = document.getElementById('chat-messages');
+
+         
+        const welcomeWrapper = document.createElement('div');
+        welcomeWrapper.classList.add('flex', 'mb-2', 'self-start');
+
+        const aiAvatar = document.createElement('span');
+        aiAvatar.classList.add('avatar', 'ai-avatar');
+        aiAvatar.innerHTML = '<i class="fa-solid fa-robot text-blue-500"></i>';  
+
+        const welcomeMessage = document.createElement('div');
+        welcomeMessage.classList.add('bg-blue-100', 'p-2', 'rounded-md');
+        welcomeMessage.textContent = 'Hello! I am AI bot of CSCI 3100 project. You can ask me anything';
+
+        welcomeWrapper.appendChild(aiAvatar);
+        welcomeWrapper.appendChild(welcomeMessage);
+        chatMessages.appendChild(welcomeWrapper);
+
+        sendButton.addEventListener('click', async () => {
+            const message = userInput.value;
+            if (message.trim() === '') return;
+
+             
+            const userWrapper = document.createElement('div');
+            userWrapper.classList.add('flex', 'mb-2', 'self-end', 'flex-row-reverse');  
+
+            const userAvatar = document.createElement('span');
+            userAvatar.classList.add('avatar', 'user-avatar');
+            userAvatar.innerHTML = '<i class="fa-solid fa-user text-gray-600"></i>';  
+
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('bg-blue-100', 'p-2', 'rounded-md');  
+            userMessage.textContent = message;
+
+            userWrapper.appendChild(userAvatar);  
+            userWrapper.appendChild(userMessage);  
+            chatMessages.appendChild(userWrapper);
+
+            userInput.value = '';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                const answer = data.answer;
+
+                 
+                const aiWrapper = document.createElement('div');
+                aiWrapper.classList.add('flex', 'mb-2', 'self-start'); 
+
+                const aiAvatarResponse = document.createElement('span');
+                aiAvatarResponse.classList.add('avatar', 'ai-avatar');
+                aiAvatarResponse.innerHTML = '<i class="fa-solid fa-robot text-blue-500"></i>';
+
+                const aiMessage = document.createElement('div');
+                aiMessage.classList.add('bg-gray-100', 'p-2', 'rounded-md');  
+                aiMessage.textContent = answer;
+
+                aiWrapper.appendChild(aiAvatarResponse);  
+                aiWrapper.appendChild(aiMessage);
+                chatMessages.appendChild(aiWrapper);
+
+           
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch (error) {
+                console.error('Error:', error);
+                const errorWrapper = document.createElement('div');
+                errorWrapper.classList.add('flex', 'mb-2', 'self-start');
+
+                const errorAvatar = document.createElement('span');
+                errorAvatar.classList.add('avatar', 'ai-avatar');
+                errorAvatar.innerHTML = '<i class="fa-solid fa-robot text-blue-500"></i>';
+
+                const errorMessage = document.createElement('div');
+                errorMessage.classList.add('bg-red-100', 'p-2', 'rounded-md');
+                errorMessage.textContent = 'An error occurred while processing your request';
+
+                errorWrapper.appendChild(errorAvatar);
+                errorWrapper.appendChild(errorMessage);
+                chatMessages.appendChild(errorWrapper);
+            }
+        });
+    </script>
+</body>
+
+</html>
