@@ -2,9 +2,6 @@
   max-width: 800px;
   margin: 2rem auto;
   padding: 1rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .comments-title {
@@ -25,43 +22,176 @@
 
 .timestamp {
   font-size: 0.8rem;
+  opacity: 0.7;
 }
 
+/* Header row: author/timestamp + more-menu toggle */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.more-container {
+  position: relative;
+}
+
+/* Ellipsis button */
+.more-btn {
+  background: transparent !important;
+  border: none !important;
+  padding: 2px !important;
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 1rem;
+  appearance: none;
+}
+
+.more-btn:hover,
+.more-btn:focus {
+  background: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #343a40;
+}
+
+/* Popup menu */
+.more-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgb(255, 255, 255);
+  z-index: 10;
+}
+
+.more-menu .menu-item {
+  display: block;
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  padding: 0.25rem 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  appearance: none;
+}
+
+.more-menu .menu-item:hover,
+.more-menu .menu-item:focus {
+  background: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  text-decoration: underline;
+}
+
+/* Reaction buttons */
 .comment-actions {
   margin-top: 0.5rem;
 }
 
-/* Compact like/dislike buttons without black focus box */
-.comments-wrapper .comment-actions .btn {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+.reaction-buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
-.comments-wrapper .comment-actions .btn:hover,
-.comments-wrapper .comment-actions .btn:focus {
+.like-btn,
+.dislike-btn {
+  background: transparent !important;
+  border: none !important;
+  padding: 2px 4px !important;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  appearance: none;
+}
+
+.like-btn:hover,
+.dislike-btn:hover,
+.like-btn:focus,
+.dislike-btn:focus {
   background: transparent !important;
   outline: none !important;
   box-shadow: none !important;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
-.comments-wrapper .comment-actions .btn-group .btn {
-  font-size: 0.85rem;
-}
-
-/* Color the Edit/Delete dropdown items */
-.comments-wrapper .dropdown-menu .dropdown-item.text-primary {
-  color: #0d6efd;
-}
-
-.comments-wrapper .dropdown-menu .dropdown-item.text-danger {
-  color: #dc3545;
-}
+.like-btn { color: #198754; }    /* Bootstrap “success” */
+.dislike-btn { color: #dc3545; } /* Bootstrap “danger” */
 
 @media (max-width: 576px) {
   .comments-wrapper {
     margin: 1rem;
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
+}
+
+/* tour-details.css */
+
+/* ============================
+     your existing CSS…
+   ============================ */
+
+.tour-details-container {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+/* Fullscreen‐style map modal */
+.map-modal .modal-dialog {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.map-modal .modal-content {
+  height: 100%;
+  border: none;
+  border-radius: 0;
+}
+.map-modal .modal-body {
+  padding: 0;
+  height: calc(100% - 56px);
+}
+
+/* Offscreen small‐screen support */
+@media (max-width: 576px) {
+  .map-modal .modal-header {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  .map-modal .modal-body {
+    height: calc(100% - 48px);
+  }
+}
+
+/* Badge & map‐button icons */
+.tour-meta .badge svg,
+.d-flex .btn-link svg {
+  vertical-align: middle;
+}
+
+/* ================================
+   TINY ADDITION TO FIX BLACK OVERLAY
+   ================================ */
+
+/*
+  This ONLY targets your CommentsSection edit/delete buttons.
+  No other .btn-link or .btn in the app will be affected.
+*/
+.comments-section .edit-btn,
+.comments-section .delete-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.25rem 0.5rem !important;
+  line-height: 1 !important;
+}
+.comments-section .edit-btn:hover,
+.comments-section .delete-btn:hover {
+  background: rgba(0,0,0,0.05) !important; /* subtle hover, optional */
 }
