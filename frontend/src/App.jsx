@@ -60,6 +60,7 @@ function App() {
               <Route path="/subscribe" element={<SubscribePage />} />
               <Route path="/weatherforecast" element={<WeatherForecast/>}/>
             </Route>
+            </Route>
           
 
           {/* Protected Admin Routes */}

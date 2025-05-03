@@ -1,7 +1,7 @@
 /* Overall page container */
 section.shopping-cart-page {
   background: #f0f8ff;
-  background-image: url('../../Image/cover.png'); /* Relative to frontend/src/Components */
+  background-image: url('../login/background.png'); /* Relative to frontend/src/Components */
   background-size: cover;
   background-position: center;
   min-height: 100vh;
