@@ -1,3 +1,4 @@
+// comment.controller.js
 const Comment = require('../models/comment.model');
 
 // Create a new comment (or nested comment) associated with a location
@@ -24,6 +25,19 @@ const getCommentsByLocation = async (req, res) => {
     const comments = await Comment.find({ location: locationId })
       .populate('author', 'name')
       .populate('parentComment'); // optionally populate parent comment details
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// New: Get all comments made by a specific user
+const getCommentsByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const comments = await Comment.find({ author: userId })
+      .populate('location', 'name')
+      .populate('author', 'name');
     res.status(200).json(comments);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -97,6 +111,7 @@ const dislikeComment = async (req, res) => {
 module.exports = {
   createComment,
   getCommentsByLocation,
+  getCommentsByUser, // <- exporting the new function
   updateComment,
   deleteComment,
   likeComment,

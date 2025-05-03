@@ -1,15 +1,18 @@
-const express = require("express")
+const express = require("express");
 const router = express.Router();
-const { getUsers, getUser, createUser, updateUser, deleteUser } = require('../controllers/user.controller')
+
+// Import signupUser from auth.controller.js instead of using createUser from user.controller.js
+const { getUsers, getUser, updateUser, deleteUser } = require('../controllers/user.controller');
+const { signupUser } = require('../controllers/auth.controller'); 
 
 // browse list of users
 router.get('/', getUsers);
 
 // search a user with id
-router.get("/:id", getUser)
+router.get("/:id", getUser);
 
-// create a user
-router.post("/", createUser);
+// create a user using the signupUser function (which handles password hashing)
+router.post("/", signupUser);
 
 // update a user
 router.put("/:id", updateUser);
