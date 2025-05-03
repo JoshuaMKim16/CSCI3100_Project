@@ -14,10 +14,17 @@ const LocationManagement = () => {
   const locationsPerPage = 6;
   const navigate = useNavigate();
 
+  const getAuthHeader = () => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    return { Authorization: `Bearer ${storedUser?.token}` };
+  };
+
   // Fetch locations from API
   const fetchLocations = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3000/api/locations');
+      const { data } = await axios.get('http://localhost:3000/api/locations', {
+        headers: getAuthHeader(),
+      });
       setLocations(data);
     } catch (error) {
       console.error('Error fetching locations', error);
@@ -31,7 +38,9 @@ const LocationManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this location?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/locations/${id}`);
+        await axios.delete(`http://localhost:3000/api/locations/${id}`, {
+          headers: getAuthHeader(),
+        });
         fetchLocations();
       } catch (error) {
         console.error('Error deleting location', error);
@@ -43,14 +52,12 @@ const LocationManagement = () => {
     navigate('/admin/locations/edit', { state: { location: locationData } });
   };
 
-  // Filter locations by name or address.
   const filteredLocations = locations.filter(
     (loc) =>
       loc.name.toLowerCase().includes(filterQuery.toLowerCase()) ||
       loc.address.toLowerCase().includes(filterQuery.toLowerCase())
   );
 
-  // Pagination logic.
   const indexOfLastLocation = currentPage * locationsPerPage;
   const indexOfFirstLocation = indexOfLastLocation - locationsPerPage;
   const currentLocations = filteredLocations.slice(indexOfFirstLocation, indexOfLastLocation);

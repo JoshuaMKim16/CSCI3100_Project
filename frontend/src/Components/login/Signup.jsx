@@ -1,3 +1,4 @@
+// Signup.jsx
 import React, { useState } from 'react';
 import './Login.css';
 import Axios from 'axios';
@@ -7,7 +8,7 @@ const Signup = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [adminCode, setAdminCode] = useState('');  // New state for admin code
+    const [adminCode, setAdminCode] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
@@ -19,7 +20,7 @@ const Signup = () => {
             name: username, 
             email: email, 
             password: password,
-            adminCode: adminCode  // Send the admin code
+            adminCode: adminCode
         })
         .then(response => {
             if(response.data.status){

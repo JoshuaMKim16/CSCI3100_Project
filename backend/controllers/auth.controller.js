@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const result = require('dotenv').config({ path: '.env' });
 if (result.error) {
   console.error('Error loading .env file:', result.error);
@@ -6,8 +9,10 @@ if (result.error) {
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken'); // Import JSON Web Token
 
 const saltRounds = 10;
+const JWT_SECRET = process.env.JWT_SECRET; 
 
 // Controller function for user signup
 const signupUser = async (req, res) => {
@@ -25,13 +30,17 @@ const signupUser = async (req, res) => {
         
         // Create user using the modified req.body which now includes is_admin
         const user = await User.create(req.body);
-        res.status(200).json({ status: true, message: "User created successfully", user });
+        
+        // Optionally, generate JWT after signup if auto-login is desired.
+        const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '720h' });
+      
+        res.status(200).json({ status: true, message: "User created successfully", user, token });
     } catch (error) {
         res.status(500).json({ status: false, message: error.message });
     }
 };
 
-// Controller function for user login
+// Controller function for user login with JWT token generation
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -41,7 +50,8 @@ const loginUser = async (req, res) => {
         }
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-            return res.status(200).json({ status: true, message: "Login successful", user });
+            const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '720h' });
+            return res.status(200).json({ status: true, message: "Login successful", user, token });
         } else {
             return res.status(401).json({ status: false, message: "Invalid credentials" });
         }
@@ -50,10 +60,8 @@ const loginUser = async (req, res) => {
     }
 };
 
-
 // Configure Nodemailer transporter
 // Replace these values with your SMTP settings or use environment variables.
-
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -61,6 +69,7 @@ const transporter = nodemailer.createTransport({
       pass: `${process.env.APP_PASSWORD}`,
     },
   });
+
 // Controller function for sending a password reset code to the user's email
 const forgotPassword = async (req, res) => {
     try {
