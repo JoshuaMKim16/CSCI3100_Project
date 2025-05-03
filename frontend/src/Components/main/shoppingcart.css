@@ -1,26 +1,29 @@
 /* Overall page container */
 section.shopping-cart-page {
   background: #f0f8ff;
+  background-image: url('C:/Users/ianta/CSCI3100_Project/frontend/src/Image/cover.png'); /* Restored background image */
+  background-size: cover; /* Ensures the image covers the entire background */
+  background-position: center; /* Centers the image */
   min-height: 100vh;
   font-family: Arial, sans-serif;
-  padding: 40px 20px;
+  padding: 20px 10px; /* Reduced padding for smaller screens */
 }
 
 /* Main header styling */
 section.shopping-cart-page .cart-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   color: #333;
-  font-size: 28px;
+  font-size: 24px; /* Slightly smaller for responsiveness */
   font-weight: 600;
 }
 
 /* Sub-header styling inside columns */
 section.shopping-cart-page .sub-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: #333;
-  font-size: 22px;
+  font-size: 20px; /* Slightly smaller */
   font-weight: 500;
 }
 
@@ -28,83 +31,109 @@ section.shopping-cart-page .sub-header {
 .cart-flex-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 50px; 
   justify-content: center;
+  align-items: flex-start; /* Align items to top for better stacking */
 }
 
 /* Timetable column styles */
 .timetable-col {
-  flex: 1 1 300px;
-  max-width: 500px;
+  flex: 1 1 280px; /* Slightly smaller base width */
+  max-width: 100%; /* Allow full width for horizontal layout */
 }
 
 /* Cart column styles */
 .cart-col {
-  flex: 1 1 300px;
-  max-width: 500px;
+  flex: 1 1 230px; /* Further reduced base width */
+  max-width: 380px; /* Adjusted for smaller screens */
+  min-width: 180px; /* Adjusted minimum width */
 }
 
 /* List of cart items */
 .cart-items-list {
   width: 100%;
   text-align: left;
+  max-height: 1000px; /* Restored original max-height for scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* For Firefox: slim scrollbar */
+  scrollbar-color: #61dafb #f0f8ff; /* For Firefox: scrollbar colors */
+}
+
+/* Webkit scrollbar styling for Chrome, Safari, Edge */
+.cart-items-list::-webkit-scrollbar {
+  width: 8px; /* Restored original scrollbar width */
+}
+
+.cart-items-list::-webkit-scrollbar-track {
+  background: #f0f8ff; /* Track color */
+  border-radius: 4px;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb {
+  background: #61dafb; /* Thumb color */
+  border-radius: 4px;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb:hover {
+  background: #21a1f1; /* Thumb hover color */
 }
 
 /* Single cart item */
 .cart-item {
   border: 2px solid #61dafb;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 15px; /* Reduced padding */
+  margin-bottom: 15px; /* Reduced margin */
   border-radius: 8px;
   background-color: #ffffff;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .cart-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Cart item details and buttons */
 .cart-details h3 {
   margin: 0;
-  padding-bottom: 8px;
-  font-size: 20px;
+  padding-bottom: 6px;
+  font-size: 18px; /* Smaller font */
   color: #333;
   font-weight: 500;
 }
 
 .cart-details p {
-  margin: 5px 0;
-  font-size: 16px;
+  margin: 4px 0;
+  font-size: 14px; /* Smaller font */
   color: #555;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* Time inputs styling */
 .time-inputs {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 15px;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .time-inputs label {
-  font-size: 16px;
+  font-size: 14px; /* Smaller font */
   color: #333;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-weight: 500;
 }
 
 .time-inputs input[type="datetime-local"] {
-  padding: 10px;
-  font-size: 16px;
+  padding: 8px;
+  font-size: 14px; /* Smaller font */
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 220px;
+  width: 100%; /* Full width for responsiveness */
+  max-width: 200px; /* Limit max width */
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
@@ -115,12 +144,12 @@ section.shopping-cart-page .sub-header {
 }
 
 .cart-buttons {
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .cart-buttons button {
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: 6px 12px; /* Smaller padding */
+  font-size: 14px; /* Smaller font */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -137,66 +166,111 @@ section.shopping-cart-page .sub-header {
 /* Timetable styles */
 .timetable {
   width: 100%;
-  text-align: left;
-}
-
-.day-entry {
-  margin-bottom: 20px;
-  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   background-color: #ffffff;
   border: 2px solid #61dafb;
   border-radius: 8px;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+  overflow-x: auto; /* Allow horizontal scrolling on small screens */
+  min-height: 500px; /* Reduced height */
+}
+
+/* Day entry styles */
+.day-entry {
+  flex: 1;
+  min-width: 100px; /* Reduced minimum width */
+  padding: 8px;
+  background-color: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin: 0 3px; /* Reduced spacing */
+  text-align: center;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .day-entry:hover {
   transform: translateY(-3px);
-  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .day-entry h4 {
   margin: 0;
   padding-bottom: 8px;
-  font-size: 18px;
+  font-size: 14px; /* Smaller font */
   color: #333;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 2px solid #61dafb;
 }
 
+/* Event styling */
 .event {
   padding: 8px 0;
   border-top: 1px solid #e0e0e0;
 }
 
-.event p {
-  margin: 0;
-  font-size: 16px;
+.event-entry {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 5px;
+  margin: 4px 0;
+  color: #fff;
+  font-size: 12px; /* Smaller font */
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.4;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.event-entry:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Color classes for events */
+.event-entry.bg-sky { background-color: #61dafb; }
+.event-entry.bg-green { background-color: #28a745; }
+.event-entry.bg-yellow { background-color: #ffc107; }
+.event-entry.bg-purple { background-color: #6f42c1; }
+.event-entry.bg-pink { background-color: #e83e8c; }
+.event-entry.bg-lightred { background-color: #dc3545; }
+
+.event-details {
+  margin-top: 4px;
+  font-size: 11px; /* Smaller font */
   color: #555;
-  line-height: 1.5;
+}
+
+.event-time {
+  font-size: 11px; /* Smaller font */
+  color: #333;
 }
 
 /* Empty cart message */
 .empty-cart-container {
   text-align: center;
-  padding: 40px;
+  padding: 20px;
   background-color: #ffffff;
   border: 2px dashed #61dafb;
   border-radius: 8px;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
-  margin: 20px auto;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+  margin: 15px auto;
 }
 
 .empty-cart {
-  font-size: 20px;
+  font-size: 18px; /* Smaller font */
   color: #555;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-weight: 500;
 }
 
 /* Add items button */
 .add-items-button {
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 10px 20px;
+  font-size: 14px; /* Smaller font */
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -215,25 +289,150 @@ section.shopping-cart-page .sub-header {
 /* Empty timetable message */
 .empty-timetable {
   text-align: center;
-  padding: 40px;
+  padding: 20px;
   background-color: #ffffff;
   border: 2px dashed #61dafb;
   border-radius: 8px;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
-  margin: 20px auto;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+  margin: 15px auto;
 }
 
 .empty-timetable p {
-  font-size: 20px;
+  font-size: 18px; /* Smaller font */
   color: #555;
   margin: 0;
   font-weight: 500;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for medium screens */
 @media (max-width: 768px) {
   .cart-flex-container {
     flex-direction: column;
     align-items: center;
+    gap: 15px; /* Further reduced gap */
   }
+
+  .timetable-col {
+    max-width: 100%;
+  }
+
+  .timetable {
+    flex-direction: column; /* Stack days vertically */
+    overflow-x: visible;
+    min-height: 400px; /* Reduced height */
+  }
+
+  .day-entry {
+    min-width: 100%; /* Full width for stacked layout */
+    margin: 3px 0; /* Reduced vertical spacing */
+  }
+
+  .day-entry h4 {
+    font-size: 13px;
+  }
+
+  .event-entry {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .event-details,
+  .event-time {
+    font-size: 10px;
+  }
+
+  .cart-col {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .cart-items-list {
+    max-height: 400px; /* Adjusted for medium screens */
+  }
+}
+
+/* Responsive adjustments for very small screens (minimized tabs) */
+@media (max-width: 480px) {
+  section.shopping-cart-page {
+    padding: 10px 5px; /* Minimal padding */
+  }
+
+  .cart-header {
+    font-size: 20px;
+  }
+
+  .sub-header {
+    font-size: 18px;
+  }
+
+  .cart-flex-container {
+    gap: 10px;
+  }
+
+  .timetable-col,
+  .cart-col {
+    flex: 1 1 100%; /* Full width */
+    min-width: 100%;
+  }
+
+  .cart-items-list {
+    max-height: 300px; /* Adjusted for very small screens */
+  }
+
+  .cart-item {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .cart-details h3 {
+    font-size: 16px;
+  }
+
+  .cart-details p {
+  font-size: 12px;
+}
+
+.time-inputs input[type="datetime-local"] {
+  font-size: 12px;
+  padding: 6px;
+  max-width: 160px;
+}
+
+.cart-buttons button {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.add-items-button {
+  font-size: 12px;
+  padding: 8px 16px;
+}
+
+.timetable {
+  padding: 8px;
+  min-height: 300px; /* Further reduced */
+}
+
+.day-entry {
+  padding: 6px;
+}
+
+.day-entry h4 {
+  font-size: 12px;
+}
+
+.event-entry {
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+.empty-cart-container,
+.empty-timetable {
+  padding: 15px;
+}
+
+.empty-cart,
+.empty-timetable p {
+  font-size: 16px;
+}
 }
