@@ -65,10 +65,10 @@ const UserManagement = () => {
 
   return (
     <Box sx={{ my: 2, padding: 2 }}>
-      <Typography variant="h5" gutterBottom sx={{fontWeight: 'bold'}}> 
+      <Typography variant="h5" gutterBottom sx={{fontWeight: 'bold', mt: 3}}> 
         User Management
       </Typography>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <TextField
           fullWidth
           label="Filter by name or email"
@@ -81,16 +81,16 @@ const UserManagement = () => {
       </Box>
       <Box sx={{ mb: 2 }}>
         <Button
-          variant="contained"
+          variant="outline"
           color="primary"
           onClick={() => navigate('/admin/users/add')}
         >
           Add New User
         </Button>
       </Box>
-      <TableContainer component={Paper} sx={{ backgroundColor: '#f0f0f0' }}>
+      <TableContainer component={Paper} sx={{width: '100%', backgroundColor: '#f0f0f0' }}>
         <Table aria-label="users table">
-          <TableHead sx={{ backgroundColor: 'lightgrey'}}>
+          <TableHead sx={{ backgroundColor: 'lightgrey', position: 'sticky', top: 0, zIndex: 1 }}>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>

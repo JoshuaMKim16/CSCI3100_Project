@@ -80,16 +80,16 @@ const LocationManagement = () => {
       </Box>
       <Box sx={{ mb: 2 }}>
         <Button
-          variant="contained"
+          variant="outline"
           color="primary"
           onClick={() => navigate('/admin/locations/add')}
         >
           Add New Location
         </Button>
       </Box>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} sx={{width: '100%', backgroundColor: '#f0f0f0' }}>
         <Table aria-label="locations table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: 'lightgrey'}}>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Address</TableCell>
