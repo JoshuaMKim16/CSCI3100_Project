@@ -22,18 +22,15 @@ import AddEditLocation from './Components/Admin/AddEditLocation';
 import ProtectedRoute from './Components/utils/ProtectedRoute';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
-import AppLayout from './Components/utils/AppLayout';
 import SubscribePage from './Components/Advertisement/SubscribePage';
 
-
-////////////// Testing DONE ///////////////
-import Chat from "./TESTING/chat_testing"
+// Testing
+import Chat from "./TESTING/chat_testing";
 
 import './App.css';
 
 function App() {
   return (
-    <>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -44,15 +41,12 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
 
-
-          {/* CHAT TESTING DONE */}
+          {/* Chat Testing */}
           <Route path="/chat" element={<Chat />} />
-
 
           {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>
-            {/* Wrap regular user pages with AppLayout */}
-            <Route element={<AppLayout />}>
+            
               <Route path="/searchpage" element={<SearchPage />} />
               <Route path="/main" element={<Tours />} />
               <Route path="/tours/:id" element={<TourDetails />} />
@@ -61,9 +55,9 @@ function App() {
               <Route path="/activity" element={<UserActivity />} />
               <Route path="/subscribe" element={<SubscribePage />} />
             </Route>
-          </Route>
+          
 
-          {/* Protected Admin Panel - No Ads */}
+          {/* Protected Admin Routes */}
           <Route element={<ProtectedAdminRoute />}>
             <Route path="/admin/*" element={<Admin />}>
               <Route path="users" element={<UserManagement />} />
@@ -77,7 +71,6 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
-    </>
   );
 }
 

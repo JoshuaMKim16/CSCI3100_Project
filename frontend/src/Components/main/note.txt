@@ -246,7 +246,6 @@ const ShoppingCart = () => {
           {/* Timetable Column (Left) */}
           <div className="timetable-col">
             <h3 className="sub-header">Weekly Timetable</h3>
-           
             <div className="timetable">
               {hasEvents ? (
                 timetableData.map((dayEntry, index) => (
@@ -270,14 +269,11 @@ const ShoppingCart = () => {
                   <p>No events scheduled for this week.</p>
                 </div>
               )}
-              
             </div>
-             <Button color="success" onClick={handleExportExcel} className="mb-3">
+            <Button color="success" onClick={handleExportExcel} className="mb-3">
               Export Timetable to Excel
             </Button>
-
           </div>
-         
           {/* Cart Items Column (Right) */}
           <div className="cart-col">
             <h3 className="sub-header">Saved Locations</h3>
@@ -292,10 +288,14 @@ const ShoppingCart = () => {
               <div className="cart-items-list">
                 {cartItems.map((item) => {
                   const id = getSiteId(item);
+                  const typeFirstElement = locations[id] && locations[id].type && locations[id].type.length > 0
+                    ? locations[id].type[0]
+                    : 'Unknown';
                   return (
                     <div key={id} className="cart-item">
                       <div className="cart-details">
                         <h3>{(locations[id] && locations[id].name) || `Site ${id}`}</h3>
+                        <p className="cart-type">{typeFirstElement}</p>
                         <p>{(locations[id] && locations[id].description) || 'Loading...'}</p>
                         <div className="time-inputs">
                           <label>
