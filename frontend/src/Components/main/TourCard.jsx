@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card,  Button } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
-// import calculateAvgRating from "../utils/avgRating"; // remains same, located in /utils
+import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from'react-icons/fa'
 import "./tour-card.css"; 
 
 const TourCard = ({ location }) => {
@@ -42,29 +42,36 @@ const TourCard = ({ location }) => {
     };
 
   return (
-    <Card className="tour_card" style={{width: '400px'}}>
+    <Card className="tour_card" style={{width: '400px', height: 'auto', boxShadow: '20px', borderRadius: '5px'}}>
       <Card.Img
           variant="top"
           src={specificImage?.secure_url}
           alt={specificImage?.public_id}
-          style={{height: 'auto', width:'auto'}}
+          style={{height: 'auto', width:'auto', borderRadius: '5px', cursor: 'pointer'}}
+          onClick={() => navigate(`/tours/${location._id}`)}
       />
-      <Card.Body>
+      <Card.Body style={{padding: '10px'}}>
         <Card.Title>
-          <Link to={`/tours/${location._id}`}>{location.name}</Link>
+          <Link to={`/tours/${location._id}`} style={{color: 'blue', fontWeight: 'bold', fontSize: '20px', textDecoration: 'none'}}>{` ${location.name}`}</Link>
         </Card.Title>
-        <Card.Subtitle>
-            {location.address}
+        <br/>
+        <Card.Subtitle style={{color: 'grey'}}>
+          <FaMapMarkerAlt/>
+          {` ${location.address}`}
         </Card.Subtitle>
-        <Card.Subtitle className="mb-2 text-muted">
-          {location.type.join(', ')}
+        <Card.Subtitle style={{color: 'grey'}}>
+          <FaTag/>
+          {` ${location.type.join(', ')}`}
         </Card.Subtitle>
-        <Card.Subtitle>
-          {location.price? `${location.price}` : '$0'} <span>/per person</span>
+        <Card.Subtitle  style={{color: 'grey'}}>
+          <FaMoneyBillWave/>
+          {location.price? `${location.price}` : ' N/A '}/ person
         </Card.Subtitle>
         <br/>
         <Button
-          className="w-100 mt-4 btn-sm"
+          variant='primary'
+          size='sm'
+          style={{width: '30%', position: 'relative', marginBottom: '10px', left: '65%'}}
           onClick={handleClick}
         >
           View Details

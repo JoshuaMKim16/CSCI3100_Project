@@ -1,7 +1,6 @@
 // /client/src/Components/Tours.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CommonSection from '../login/Start'; // or import your actual CommonSection if available
 import TourCard from "./TourCard"; 
 import { Container, Col, Row, Input, Button, Form, FormGroup } from 'reactstrap';
 
@@ -73,7 +72,7 @@ const Tours = () => {
 
   return (
       <section>
-        <Container>
+        <Container style={{height: '90vh', width: '95%', margin: '0 auto'}}>
           {/* Weather */}
           <div style={{overflowWrap: 'break-word', width: '100%'}}>
             <p>Weather forecast</p>
@@ -112,19 +111,19 @@ const Tours = () => {
               <Row>
                 <div className="d-flex flex-wrap justify-content-start">
                   {currentLocations.map((location) => (
-                    <Col lg='3' className='mb-4'>
+                    <Col lg='3' className='mb-4' style={{ border: '1px solid gray'}}>
                       <TourCard location={location}/>
-                      <br/>
                     </Col>
                   ))}
                 </div>
               </Row>
             </Container>
           </section>
+          <br/>
 
           {/* Pagination */}
-          <Row className="mt-4">
-            <div className="w-100 d-flex justify-content-center gap-3">
+          <Container style={{margin: '0 auto'}}>
+            <div>
               {page > -1 && (
                 <span
                     onClick={() => setPage(0)}
@@ -173,7 +172,7 @@ const Tours = () => {
                 </span>
                 )}
             </div>
-          </Row>
+          </Container>
         </Container>
       </section>
   );
