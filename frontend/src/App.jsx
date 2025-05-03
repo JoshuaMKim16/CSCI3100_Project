@@ -50,6 +50,7 @@ function App() {
           {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
+            
               <Route path="/searchpage" element={<SearchPage />} />
               <Route path="/main" element={<Tours />} />
               <Route path="/tours/:id" element={<TourDetails />} />
@@ -59,7 +60,7 @@ function App() {
               <Route path="/subscribe" element={<SubscribePage />} />
               <Route path="/weatherforecast" element={<WeatherForecast/>}/>
             </Route>
-          </Route>
+          
 
           {/* Protected Admin Routes */}
           <Route element={<ProtectedAdminRoute />}>
