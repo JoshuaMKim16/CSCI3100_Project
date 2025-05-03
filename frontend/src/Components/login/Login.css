@@ -1,7 +1,7 @@
 .body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-image: url('./background.png');
+    background-image: url('./background.jpg');
     background-size: cover; 
     background-position: center;  
     height: 100vh; 
@@ -68,7 +68,7 @@
   button {
     width: 100%;
     padding: 10px;
-    background-color: #f5e6c4; 
+    background-color: #dbe9f3; 
     color: #000000;
     border: none;
     border-radius: 4px;
@@ -76,7 +76,7 @@
   }
   
   button:hover {
-    background-color: #2980b9;
+    background-color: #a9dafd;
   }
   
   .error-message {

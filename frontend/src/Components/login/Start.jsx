@@ -25,7 +25,7 @@ const Start = () => {
           position: 'fixed', // Make the sidebar sticky
           top: 0, // Stick to the top of the viewport
           width: '100%',
-          bgcolor: '#f6f2e9',
+          bgcolor: '#dbe9f3',
           boxShadow: 0,
           zIndex: 100,
           pt: 2,
@@ -46,7 +46,7 @@ const Start = () => {
           </Button>
           <Button
             variant="contained"
-            sx={{ mb: 1, mt:-2, mr: 1, color: 'black', bgcolor: '#f9ca7ed9', ml: 1 }} // Added margin-left for spacing
+            sx={{ mb: 1, mt:-2, mr: 1, color: 'black', bgcolor: '#a9dafd', ml: 1 }} // Added margin-left for spacing
             component={Link} 
             to="/signup"
           >
