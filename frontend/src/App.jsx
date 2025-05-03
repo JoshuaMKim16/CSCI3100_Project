@@ -10,6 +10,7 @@ import SearchPage from './Components/main/SearchPage';
 import Tours from './Components/main/Tours';
 import TourDetails from './Components/main/TourDetails';
 import ShoppingCart from './Components/main/ShoppingCart';
+import WeatherForecast from './Components/main/WeatherForecast';
 import UserProfile from './Components/UserProfile/UserProfile';
 import UserActivity from './Components/UserProfile/UserActivity';
 
@@ -55,6 +56,7 @@ function App() {
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/activity" element={<UserActivity />} />
               <Route path="/subscribe" element={<SubscribePage />} />
+              <Route path="/weatherforecast" element={<WeatherForecast/>}/>
             </Route>
           </Route>
 
