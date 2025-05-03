@@ -22,19 +22,16 @@ import AddEditLocation from './Components/Admin/AddEditLocation';
 import ProtectedRoute from './Components/utils/ProtectedRoute';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
-import AppLayout from './Components/utils/AppLayout';
-import Navbar from './Components/utils/Navbar';
+import MainLayout from './Components/utils/MainLayout';
 import SubscribePage from './Components/Advertisement/SubscribePage';
 
-
-////////////// Testing DONE ///////////////
-import Chat from "./TESTING/chat_testing"
+// Testing
+import Chat from "./TESTING/chat_testing";
 
 import './App.css';
 
 function App() {
   return (
-    <>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -45,44 +42,36 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
 
-          {/* CHAT TESTING DONE */}
+          {/* Chat Testing */}
           <Route path="/chat" element={<Chat />} />
-          
-        </Routes>
-      </BrowserRouter>
 
-      <BrowserRouter>
-        <Navbar/>
-        <Routes>
           {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>
-          {/* Wrap regular user pages with AppLayout */}
-          <Route element={<AppLayout />}>
-            <Route path="/searchpage" element={<SearchPage />} />
-            <Route path="/main" element={<Tours />} />
-            <Route path="/tours/:id" element={<TourDetails />} />
-            <Route path="/planner" element={<ShoppingCart />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/activity" element={<UserActivity />} />
-            <Route path="/subscribe" element={<SubscribePage />} />
+            <Route element={<MainLayout />}>
+              <Route path="/searchpage" element={<SearchPage />} />
+              <Route path="/main" element={<Tours />} />
+              <Route path="/tours/:id" element={<TourDetails />} />
+              <Route path="/planner" element={<ShoppingCart />} />
+              <Route path="/profile" element={<UserProfile />} />
+              <Route path="/activity" element={<UserActivity />} />
+              <Route path="/subscribe" element={<SubscribePage />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* Protected Admin Panel - No Ads */}
-        <Route element={<ProtectedAdminRoute />}>
-          <Route path="/admin/*" element={<Admin />}>
-            <Route path="users" element={<UserManagement />} />
-            <Route path="users/add" element={<AddEditUser />} />
-            <Route path="users/edit" element={<AddEditUser />} />
-            <Route path="locations" element={<LocationManagement />} />
-            <Route path="locations/add" element={<AddEditLocation />} />
-            <Route path="locations/edit" element={<AddEditLocation />} />
+          {/* Protected Admin Routes */}
+          <Route element={<ProtectedAdminRoute />}>
+            <Route path="/admin/*" element={<Admin />}>
+              <Route path="users" element={<UserManagement />} />
+              <Route path="users/add" element={<AddEditUser />} />
+              <Route path="users/edit" element={<AddEditUser />} />
+              <Route path="locations" element={<LocationManagement />} />
+              <Route path="locations/add" element={<AddEditLocation />} />
+              <Route path="locations/edit" element={<AddEditLocation />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
-    </>
   );
 }
 
