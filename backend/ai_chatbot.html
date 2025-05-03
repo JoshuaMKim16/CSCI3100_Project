@@ -62,91 +62,118 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-button');
         const chatMessages = document.getElementById('chat-messages');
-
-         
+    
+        // Welcome message
         const welcomeWrapper = document.createElement('div');
         welcomeWrapper.classList.add('flex', 'mb-2', 'self-start');
-
+    
         const aiAvatar = document.createElement('span');
         aiAvatar.classList.add('avatar', 'ai-avatar');
         aiAvatar.innerHTML = '<i class="fa-solid fa-robot text-blue-500"></i>';  
-
+    
         const welcomeMessage = document.createElement('div');
-        welcomeMessage.classList.add('bg-blue-100', 'p-2', 'rounded-md');
-        welcomeMessage.textContent = 'Hello! I am AI bot of CSCI 3100 project. You can ask me anything';
-
+        welcomeMessage.classList.add('bg-gray-100', 'p-2', 'rounded-md');
+        welcomeMessage.textContent = 'Hello! I am AI bot of TravelTailor. How can I help you?';
+    
         welcomeWrapper.appendChild(aiAvatar);
         welcomeWrapper.appendChild(welcomeMessage);
         chatMessages.appendChild(welcomeWrapper);
-
+    
         sendButton.addEventListener('click', async () => {
             const message = userInput.value;
             if (message.trim() === '') return;
-
-             
+    
+            // Add user message
             const userWrapper = document.createElement('div');
             userWrapper.classList.add('flex', 'mb-2', 'self-end', 'flex-row-reverse');  
-
+    
             const userAvatar = document.createElement('span');
             userAvatar.classList.add('avatar', 'user-avatar');
             userAvatar.innerHTML = '<i class="fa-solid fa-user text-gray-600"></i>';  
-
+    
             const userMessage = document.createElement('div');
             userMessage.classList.add('bg-blue-100', 'p-2', 'rounded-md');  
             userMessage.textContent = message;
-
+    
             userWrapper.appendChild(userAvatar);  
             userWrapper.appendChild(userMessage);  
             chatMessages.appendChild(userWrapper);
-
+    
             userInput.value = '';
-
+    
+            // Add "chatbot is thinking" message
+            const thinkingWrapper = document.createElement('div');
+            thinkingWrapper.classList.add('flex', 'mb-2', 'self-start');
+    
+            const thinkingAvatar = document.createElement('span');
+            thinkingAvatar.classList.add('avatar', 'ai-avatar');
+            thinkingAvatar.innerHTML = '<i class="fa-solid fa-robot text-blue-500"></i>';
+    
+            const thinkingMessage = document.createElement('div');
+            thinkingMessage.classList.add('bg-gray-200', 'p-2', 'rounded-md', 'italic', 'text-gray-600');
+            thinkingMessage.textContent = 'Chatbot is thinking...';
+    
+            thinkingWrapper.appendChild(thinkingAvatar);
+            thinkingWrapper.appendChild(thinkingMessage);
+            chatMessages.appendChild(thinkingWrapper);
+    
+            // Scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+    
             try {
-                const response = await fetch('/chat', {
+                const response = await fetch('http://localhost:3000/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ message })
                 });
-
+    
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
+    
                 const data = await response.json();
                 const answer = data.answer;
-
-                 
+    
+                // Remove "chatbot is thinking" message
+                thinkingWrapper.remove();
+    
+                // Add AI response
                 const aiWrapper = document.createElement('div');
                 aiWrapper.classList.add('flex', 'mb-2', 'self-start'); 
-
+    
                 const aiAvatarResponse = document.createElement('span');
                 aiAvatarResponse.classList.add('avatar', 'ai-avatar');
                 aiAvatarResponse.innerHTML = '<i class="fa-solid fa-robot text-blue-500"></i>';
-
+    
                 const aiMessage = document.createElement('div');
                 aiMessage.classList.add('bg-gray-100', 'p-2', 'rounded-md');  
                 aiMessage.textContent = answer;
-
+    
                 aiWrapper.appendChild(aiAvatarResponse);  
                 aiWrapper.appendChild(aiMessage);
                 chatMessages.appendChild(aiWrapper);
-
-           
+    
+                // Scroll to the bottom
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-
+    
             } catch (error) {
                 console.error('Error:', error);
+    
+                // Remove "chatbot is thinking" message
+                thinkingWrapper.remove();
+    
+                // Add error message
                 const errorWrapper = document.createElement('div');
                 errorWrapper.classList.add('flex', 'mb-2', 'self-start');
-
+    
                 const errorAvatar = document.createElement('span');
                 errorAvatar.classList.add('avatar', 'ai-avatar');
                 errorAvatar.innerHTML = '<i class="fa-solid fa-robot text-blue-500"></i>';
-
+    
                 const errorMessage = document.createElement('div');
                 errorMessage.classList.add('bg-red-100', 'p-2', 'rounded-md');
                 errorMessage.textContent = 'An error occurred while processing your request';
-
+    
                 errorWrapper.appendChild(errorAvatar);
                 errorWrapper.appendChild(errorMessage);
                 chatMessages.appendChild(errorWrapper);

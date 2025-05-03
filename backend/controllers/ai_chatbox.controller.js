@@ -16,7 +16,7 @@ const chatController = async (req, res) => {
         const requestBody = {
             messages: [
                 {
-                    content: "You are a helpful assistant. use english all the time. You are responsible for introducing tourist attractions to the users.",
+                    content: "You are a very helpful assistant in our program, which is a TravelTailor website application that introduces Hong Kong tourist attractions and restaurants to the users. I want you to form a detailed but concise answer to the user.",
                     role: "system"
                 },
                 {
@@ -26,7 +26,7 @@ const chatController = async (req, res) => {
             ],
             model: MODEL,
             frequency_penalty: 0,
-            max_tokens: 2048,
+            max_tokens: 1024,
             presence_penalty: 0,
             response_format: {
                 type: "text"
@@ -34,7 +34,7 @@ const chatController = async (req, res) => {
             stop: null,
             stream: false,
             stream_options: null,
-            temperature: 1,
+            temperature: 0.7,
             top_p: 1,
             tools: null,
             tool_choice: "none",

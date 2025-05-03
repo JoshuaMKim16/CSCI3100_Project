@@ -10,6 +10,7 @@ const locationRoute = require('./routes/location.route.js');
 const authRoute = require('./routes/auth.route.js'); 
 const licenseRoutes = require('./routes/licenseRoutes.js');
 const cloudinaryRoutes = require('./routes/cloudinaryRoutes.js');
+const AIchatRoutes = require('./routes/AIchatRoutes.js');
 
 // Import Models (for reference)
 const User = require('./models/user.model.js');
@@ -36,10 +37,11 @@ app.use("/api/locations", locationRoute);
 app.use("/auth", authRoute); 
 app.use("/api/license", licenseRoutes); 
 app.use("/api/photos", cloudinaryRoutes); 
+app.use('/', AIchatRoutes); //for AI Chatbot
 
-app.get('/', (req, res) => {
-  res.send('Hello from Node Server Updated');
-});
+// app.get('/', (req, res) => {
+//   res.send('Hello from Node Server Updated');
+// });
 
 // Socket.IO
 const server = http.createServer(app);
