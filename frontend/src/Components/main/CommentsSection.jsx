@@ -1,14 +1,17 @@
-// CommentsSection.jsx
 import React, { useState, useEffect } from 'react';
+import {Container} from 'reactstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp, faThumbsDown, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 
 const CommentsSection = ({ locationId }) => {
+  // Retrieve logged-in user info (adjust this logic to match your auth implementation)
   const loggedInUser = JSON.parse(localStorage.getItem('user')) || {};
   const userId = loggedInUser._id;
-  const token = loggedInUser.token || '';
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
     content: '',
+    // use logged in user's _id for the author field
     author: userId,
     location: locationId,
   });
@@ -20,15 +23,13 @@ const CommentsSection = ({ locationId }) => {
     content: ''
   });
 
+  // State for ... list in owner's comment
+  const [showActions, setShowActions] = useState(false);
+
   // Fetch comments for the given location ID
   const fetchComments = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/comments/location/${locationId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await fetch(`http://localhost:3000/api/comments/location/${locationId}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -57,10 +58,7 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments`, {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newComment),
       });
       if (!response.ok) {
@@ -82,10 +80,6 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}`, {
         method: 'DELETE',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -120,10 +114,7 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${id}`, {
         method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content }),
       });
       if (!response.ok) {
@@ -147,10 +138,6 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}/like`, {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -171,10 +158,6 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}/dislike`, {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -199,9 +182,24 @@ const CommentsSection = ({ locationId }) => {
   };
 
   return (
-    <div className="comments-section" style={{ marginTop: '2rem' }}>
-      <h3>Comments</h3>
+    <Container style={{border: '1px solid', borderRadius: '5px', marginTop: '2rem', padding: '10px'}}>
+    <div className="comments-section">
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      <h3>Comments</h3>
+      <form onSubmit={handleNewCommentSubmit} style={{ marginTop: '1rem' }}>
+        <textarea
+          name="content"
+          value={newComment.content}
+          onChange={handleNewCommentChange}
+          placeholder="Write your comment here..."
+          required
+          style={{ width: '100%', height: '100px', padding: '0.5rem', boxSizing: 'border-box' }}
+        />
+        {/* The author input is hidden since logged in user info is used */}
+        <button type="submit" style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}>
+          Add Comment
+        </button>
+      </form>
       <div className="comments-list">
         {comments.length > 0 ? (
           comments.map((comment) => (
@@ -223,9 +221,9 @@ const CommentsSection = ({ locationId }) => {
                     value={editingComment.content}
                     onChange={handleEditingChange}
                     required
-                    style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem' }}
+                    style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', boxSizing: 'border-box' }}
                   />
-                  <button type="submit">Save</button>
+                  <button type="submit" style={{marginBottom: '0.5rem'}}>Save</button>
                   <button type="button" onClick={() => setEditingComment({ id: null, content: '' })}>
                     Cancel
                   </button>
@@ -234,23 +232,42 @@ const CommentsSection = ({ locationId }) => {
                 <p>{comment.content}</p>
               )}
               <div style={{ marginTop: '0.5rem' }}>
-                <button onClick={() => handleLike(comment._id)} style={{ marginRight: '0.5rem' }}>
-                  Like {comment.likes || 0}
-                </button>
-                <button onClick={() => handleDislike(comment._id)} style={{ marginRight: '0.5rem' }}>
-                  Dislike {comment.dislikes || 0}
-                </button>
+                <FontAwesomeIcon icon={faThumbsUp} onClick={() => handleLike(comment._id)} style={{color: 'green', cursor: 'pointer'}}/> {comment.likes || 0}
+                <FontAwesomeIcon icon={faThumbsDown} onClick={() => handleDislike(comment._id)} style={{color: 'red', cursor: 'pointer', marginLeft: '30px'}}/> {comment.dislikes || 0}
                 {isCommentOwner(comment) && (
-                  <>
-                    <button
-                      onClick={() => startEditing(comment)}
-                      style={{ marginRight: '0.5rem' }}
-                    >
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(comment._id)}>Delete</button>
-                  </>
-                )}
+                  <div style={{ position:'relative', left: '95%'}}>
+                      <FontAwesomeIcon icon={faEllipsisV} onClick={() => setShowActions(!showActions)} style={{ cursor: 'pointer', marginLeft: '10px' }}/>
+                      {showActions && (
+                          <div style={{
+                              position: 'relative',
+                              backgroundColor: '#fff',
+                              border: '1px solid #ccc',
+                              borderRadius: '4px',
+                              padding: '5px',
+                              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                              width: '100px'
+                          }}>
+                              <button
+                                  onClick={() => {
+                                      startEditing(comment);
+                                      setShowActions(false);
+                                  }}
+                                  style={{ marginBottom: '0.5rem'}}
+                              >
+                                  Edit
+                              </button>
+                              <button
+                                  onClick={() => {
+                                      handleDelete(comment._id);
+                                      setShowActions(false);
+                                  }}
+                              >
+                                  Delete
+                              </button>
+                          </div>
+                      )}
+                  </div>
+              )}
               </div>
             </div>
           ))
@@ -258,21 +275,8 @@ const CommentsSection = ({ locationId }) => {
           <p>No comments yet.</p>
         )}
       </div>
-      <form onSubmit={handleNewCommentSubmit} style={{ marginTop: '1rem' }}>
-        <textarea
-          name="content"
-          value={newComment.content}
-          onChange={handleNewCommentChange}
-          placeholder="Write your comment here..."
-          required
-          style={{ width: '100%', height: '100px', padding: '0.5rem' }}
-        />
-        {/* The author input is hidden since logged in user info is used */}
-        <button type="submit" style={{ marginTop: '0.5rem' }}>
-          Add Comment
-        </button>
-      </form>
     </div>
+    </Container>
   );
 };
 
