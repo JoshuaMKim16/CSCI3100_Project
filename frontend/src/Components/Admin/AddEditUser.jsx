@@ -58,11 +58,12 @@ const AddEditUser = () => {
           gap: 2,
           p: { xs: 2, sm: 3 },
           borderRadius: 2,
-          boxShadow: 2,
+          boxShadow: 0,
           bgcolor: 'background.paper',
+          width: '400px',
         }}
       >
-        <Typography variant="h5" align="center">
+        <Typography variant="h5" align="left" sx={{ fontWeight: 'bold'}}>
           {userId ? 'Edit User' : 'Add New User'}
         </Typography>
         <TextField

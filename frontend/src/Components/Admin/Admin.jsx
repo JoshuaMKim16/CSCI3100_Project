@@ -23,7 +23,7 @@ import {
 } from 'recharts';
 
 const Admin = () => {
-  const [isOpen, setIsOpen] = useState(false); // Sidebar toggle state
+  const [isOpen, setIsOpen] = useState(true); // Sidebar toggle state
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -35,7 +35,7 @@ const Admin = () => {
       sx={{
         height: '100vh',
         width: '100%',
-        overflowY: 'auto',
+        overflow: 'none',
         position: 'relative'
       }}
     >
@@ -65,7 +65,7 @@ const Admin = () => {
             width: '200px',
             height: '100%',
             bgcolor: 'background.paper',
-            boxShadow: 2,
+            boxShadow: 0,
             zIndex: 100,
             pt: 2,
             display: 'flex',

@@ -29,6 +29,7 @@
     "multer": "^1.4.5-lts.2",
     "nodemailer": "^6.10.1",
     "nodemon": "^3.1.10",
+    "recharts": "^2.15.3",
     "uploadthing": "^7.6.0"
   }
 }

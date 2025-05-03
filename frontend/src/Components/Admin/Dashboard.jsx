@@ -112,13 +112,13 @@ const Dashboard = () => {
   }
 
   return (
-    <Box>
-      <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h4" gutterBottom>
+    <Box >
+      <Paper elevation={3} sx={{ p: 3, mb: 4, boxShadow: 'none', width:'500px' }}>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
           Admin Profile
         </Typography>
         {adminProfile ? (
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 2, boxShadow: 0,}}>
             <Typography variant="h6">
               Name: {adminProfile.name}
             </Typography>
@@ -139,8 +139,8 @@ const Dashboard = () => {
         </Typography>
       </Paper>
 
-      <Paper elevation={3} sx={{ p: 3 }}>
-        <Typography variant="h4" gutterBottom>
+      <Paper elevation={3} sx={{ p: 3, boxShadow: 'none', width: '800px' }}>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
           Dashboard Metrics
         </Typography>
         <Box sx={{ width: '100%', height: 300 }}>
