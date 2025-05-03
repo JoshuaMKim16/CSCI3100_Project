@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card,  Button } from 'react-bootstrap';
+import { Card, CardBody, Button } from 'reactstrap';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from'react-icons/fa'
+// import calculateAvgRating from "../utils/avgRating"; // remains same, located in /utils
 import "./tour-card.css"; 
 
 const TourCard = ({ location }) => {
@@ -42,42 +42,42 @@ const TourCard = ({ location }) => {
     };
 
   return (
-    <Card className="tour_card" style={{width: '400px', height: 'auto', boxShadow: '20px', borderRadius: '5px'}}>
-      <Card.Img
-          variant="top"
-          src={specificImage?.secure_url}
-          alt={specificImage?.public_id}
-          style={{height: 'auto', width:'auto', borderRadius: '5px', cursor: 'pointer'}}
-          onClick={() => navigate(`/tours/${location._id}`)}
-      />
-      <Card.Body style={{padding: '10px'}}>
-        <Card.Title>
-          <Link to={`/tours/${location._id}`} style={{color: 'blue', fontWeight: 'bold', fontSize: '20px', textDecoration: 'none'}}>{` ${location.name}`}</Link>
-        </Card.Title>
-        <br/>
-        <Card.Subtitle style={{color: 'grey'}}>
-          <FaMapMarkerAlt/>
-          {` ${location.address}`}
-        </Card.Subtitle>
-        <Card.Subtitle style={{color: 'grey'}}>
-          <FaTag/>
-          {` ${location.type.join(', ')}`}
-        </Card.Subtitle>
-        <Card.Subtitle  style={{color: 'grey'}}>
-          <FaMoneyBillWave/>
-          {location.price? `${location.price}` : ' N/A '}/ person
-        </Card.Subtitle>
-        <br/>
-        <Button
-          variant='primary'
-          size='sm'
-          style={{width: '30%', position: 'relative', marginBottom: '10px', left: '65%'}}
-          onClick={handleClick}
-        >
-          View Details
-        </Button>
-      </Card.Body>
-    </Card>
+    <div className="tour_card">
+      <Card>
+        <div className="tour_img">
+        {specificImage && (
+          <div>
+            {specificImage.secure_url && (
+              <img
+                src={specificImage.secure_url}
+                alt={specificImage.public_id}
+                style={{ maxWidth: '100%', height: 'auto' }}
+              />
+            )}
+          </div>
+          )}
+        </div>
+        <CardBody>
+          <div className="card_top d-flex align-items-center justify-content-between">
+            <span className="tour_location d-flex align-items-center gap-1">
+              <i className="ri-map-pin-line"></i> {location.address}
+            </span>
+          </div>
+          <h5 className="tour_name">
+            <Link to={`/tours/${location._id}`}>{location.name}</Link>
+          </h5>
+          <div>
+            <h6>{location.type.join(', ')}</h6>
+          </div>
+          <div className="card_bottom d-flex align-items-center justify-content-between mt-3">
+            <h5>{location.price? `${location.price}` : '$0'} <span> /per person</span></h5>
+            <Button className="btn primary__btn w-100 mt-4" onClick={handleClick}>
+              View Details
+            </Button>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
   );
 };
 
