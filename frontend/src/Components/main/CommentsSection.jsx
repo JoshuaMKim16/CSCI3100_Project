@@ -6,17 +6,12 @@ import {
   Form,
   InputGroup,
   Input,
-  Button,
   ListGroup,
   ListGroupItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Badge,
   Spinner,
   Alert,
-  ButtonGroup
+  Button
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -27,45 +22,45 @@ import {
 import './comments-section.css';
 
 const CommentsSection = ({ locationId }) => {
-  // Get logged-in user
   const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
   const userId     = storedUser._id;
   const token      = storedUser.token || '';
 
-  // State
   const [comments, setComments]     = useState([]);
   const [loading, setLoading]       = useState(true);
   const [error, setError]           = useState('');
   const [newComment, setNewComment] = useState({ content: '' });
   const [editing, setEditing]       = useState({ id: null, content: '' });
+  const [menuOpenId, setMenuOpenId] = useState(null);
 
-  // Fetch comments
-  const fetchComments = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `http://localhost:3000/api/comments/location/${locationId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      if (!res.ok) throw new Error(res.statusText);
-      setComments(await res.json());
-      setError('');
-    } catch (err) {
-      console.error(err);
-      setError('Could not load comments.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Fetch comments on mount or when locationId changes
   useEffect(() => {
+    const fetchComments = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/comments/location/${locationId}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        if (!res.ok) throw new Error(res.statusText);
+        const data = await res.json();
+        setComments(data);
+        setError('');
+      } catch (err) {
+        console.error(err);
+        setError('Could not load comments.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (locationId) fetchComments();
-  }, [locationId]);
+  }, [locationId, token]);
 
   // Post new comment
   const handleNewSubmit = async e => {
@@ -108,6 +103,7 @@ const CommentsSection = ({ locationId }) => {
       );
       if (!res.ok) throw new Error(res.statusText);
       setComments(prev => prev.filter(c => c._id !== cid));
+      setMenuOpenId(null);
     } catch (err) {
       console.error(err);
       setError('Could not delete comment.');
@@ -115,7 +111,10 @@ const CommentsSection = ({ locationId }) => {
   };
 
   // Start editing
-  const startEdit = c => setEditing({ id: c._id, content: c.content });
+  const startEdit = c => {
+    setEditing({ id: c._id, content: c.content });
+    setMenuOpenId(null);
+  };
 
   // Submit edit
   const submitEdit = async e => {
@@ -136,7 +135,7 @@ const CommentsSection = ({ locationId }) => {
       const updated = await res.json();
       setComments(prev =>
         prev.map(c =>
-          c._id === editing.id ? { ...c, content: updated.content } : c
+          c._id === updated._id ? { ...c, content: updated.content } : c
         )
       );
       setEditing({ id: null, content: '' });
@@ -171,7 +170,6 @@ const CommentsSection = ({ locationId }) => {
     }
   };
 
-  // Check ownership
   const isOwner = c => {
     const auth = c.author;
     return (
@@ -186,7 +184,7 @@ const CommentsSection = ({ locationId }) => {
       <h4 className="comments-title">Comments</h4>
       {error && <Alert color="danger">{error}</Alert>}
 
-      {/* New Comment */}
+      {/* New Comment Form */}
       <Card className="mb-3">
         <CardBody>
           <Form onSubmit={handleNewSubmit}>
@@ -217,34 +215,46 @@ const CommentsSection = ({ locationId }) => {
             </ListGroupItem>
           )}
           {comments.map(c => (
-            <ListGroupItem key={c._id} className="comment-item">
-              <div className="d-flex justify-content-between">
+            <ListGroupItem
+              key={c._id}
+              className="comment-item"
+              style={{ position: 'relative' }}
+            >
+              <div className="header-row">
                 <div>
-                  <strong>{c.author?.name || 'User'}</strong>
-                  <Badge color="light" className="ms-2 timestamp">
+                  <strong>{c.author?.name || 'User'}</strong>{' '}
+                  <Badge color="light" className="timestamp">
                     {new Date(c.createdAt).toLocaleString()}
                   </Badge>
                 </div>
+
                 {isOwner(c) && (
-                  <UncontrolledDropdown>
-                    <DropdownToggle tag="span" className="text-secondary">
+                  <div className="more-container">
+                    <button
+                      className="more-btn"
+                      onClick={() =>
+                        setMenuOpenId(menuOpenId === c._id ? null : c._id)
+                      }
+                    >
                       <FontAwesomeIcon icon={faEllipsisV} />
-                    </DropdownToggle>
-                    <DropdownMenu end>
-                      <DropdownItem
-                        onClick={() => startEdit(c)}
-                        className="text-primary"
-                      >
-                        Edit
-                      </DropdownItem>
-                      <DropdownItem
-                        onClick={() => handleDelete(c._id)}
-                        className="text-danger"
-                      >
-                        Delete
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
+                    </button>
+                    {menuOpenId === c._id && (
+                      <div className="more-menu">
+                        <button
+                          className="menu-item text-primary"
+                          onClick={() => startEdit(c)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="menu-item text-danger"
+                          onClick={() => handleDelete(c._id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
 
@@ -258,39 +268,43 @@ const CommentsSection = ({ locationId }) => {
                     }
                     required
                   />
-                  <ButtonGroup size="sm" className="mt-2">
-                    <Button color="success">Save</Button>
-                    <Button
-                      color="secondary"
+                  <div className="mt-2">
+                    <button
+                      type="submit"
+                      className="btn btn-sm btn-success me-2"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-secondary"
                       onClick={() => setEditing({ id: null, content: '' })}
                     >
                       Cancel
-                    </Button>
-                  </ButtonGroup>
+                    </button>
+                  </div>
                 </Form>
               ) : (
                 <p className="mt-2 mb-1">{c.content}</p>
               )}
 
               <div className="comment-actions">
-                <ButtonGroup size="sm">
-                  <Button
-                    color="link"
-                    className="text-success p-1"
+                <div className="reaction-buttons">
+                  <button
+                    className="like-btn"
                     onClick={() => reactTo(c._id, 'like')}
                   >
                     <FontAwesomeIcon icon={faThumbsUp} />
                     <span className="ms-1">{c.likes || 0}</span>
-                  </Button>
-                  <Button
-                    color="link"
-                    className="text-danger p-1"
+                  </button>
+                  <button
+                    className="dislike-btn"
                     onClick={() => reactTo(c._id, 'dislike')}
                   >
                     <FontAwesomeIcon icon={faThumbsDown} />
                     <span className="ms-1">{c.dislikes || 0}</span>
-                  </Button>
-                </ButtonGroup>
+                  </button>
+                </div>
               </div>
             </ListGroupItem>
           ))}
