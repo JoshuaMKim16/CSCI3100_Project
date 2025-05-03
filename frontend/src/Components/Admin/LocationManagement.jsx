@@ -63,11 +63,13 @@ const LocationManagement = () => {
   const totalPages = Math.ceil(filteredLocations.length / locationsPerPage);
 
   return (
-    <Box sx={{ my: 2 }}>
-      <Typography variant="h5" gutterBottom>
+    <Box sx={{ my: 2, padding: 2, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* Header and filter container */}
+      <Box sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, padding: 2, boxShadow: 'none' }}>
+      <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}> 
         Location Management
       </Typography>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <TextField
           fullWidth
           label="Filter by name or address"
@@ -78,15 +80,17 @@ const LocationManagement = () => {
           }}
         />
       </Box>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ flex: 3 }}>
         <Button
-          variant="outline"
+          variant="outlined"
           color="primary"
           onClick={() => navigate('/admin/locations/add')}
         >
           Add New Location
         </Button>
       </Box>
+      
+
       <TableContainer component={Paper} sx={{width: '100%', backgroundColor: '#f0f0f0' }}>
         <Table aria-label="locations table">
           <TableHead sx={{ backgroundColor: 'lightgrey'}}>
@@ -142,6 +146,8 @@ const LocationManagement = () => {
           ))}
         </Box>
       )}
+      
+    </Box>
     </Box>
   );
 };

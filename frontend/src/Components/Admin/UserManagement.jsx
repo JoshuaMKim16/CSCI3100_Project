@@ -1,4 +1,3 @@
-// UserManagement.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -64,31 +63,39 @@ const UserManagement = () => {
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
-    <Box sx={{ my: 2, padding: 2 }}>
-      <Typography variant="h5" gutterBottom sx={{fontWeight: 'bold', mt: 3}}> 
-        User Management
-      </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <TextField
-          fullWidth
-          label="Filter by name or email"
-          value={filterQuery}
-          onChange={(e) => {
-            setFilterQuery(e.target.value);
-            setCurrentPage(1);
-          }}
-        />
+    <Box sx={{ my: 2, padding: 2, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* Header and filter container */}
+      <Box sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, padding: 2, boxShadow: 'none' }}>
+        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}> 
+          User Management
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Box sx={{ flex: 7, mr: 2 }}>
+            <TextField
+              fullWidth
+              label="Filter by name/ email"
+              value={filterQuery}
+              size="small"
+              onChange={(e) => {
+                setFilterQuery(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+          </Box>
+          <Box sx={{ flex: 3 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => navigate('/admin/users/add')}
+            >
+              Add New User
+            </Button>
+          </Box>
+        </Box>
       </Box>
-      <Box sx={{ mb: 2 }}>
-        <Button
-          variant="outline"
-          color="primary"
-          onClick={() => navigate('/admin/users/add')}
-        >
-          Add New User
-        </Button>
-      </Box>
-      <TableContainer component={Paper} sx={{width: '100%', backgroundColor: '#f0f0f0' }}>
+
+      {/* Table for displaying users */}
+      <TableContainer component={Paper} sx={{ flex: 1, backgroundColor: '#f0f0f0', overflow: 'auto',  }}>
         <Table aria-label="users table">
           <TableHead sx={{ backgroundColor: 'lightgrey', position: 'sticky', top: 0, zIndex: 1 }}>
             <TableRow>

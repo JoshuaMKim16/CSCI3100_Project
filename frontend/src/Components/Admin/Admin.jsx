@@ -49,7 +49,7 @@ const Admin = () => {
             bgcolor: 'background.paper',
             boxShadow: 2, // Optional: add shadow for depth
             zIndex: 100, // Ensure it is on top
-            overflowY: 'auto', // Allow scrolling if content overflows
+            boxShadow: 'none',
             pt: 2, // Padding on the top
             display: 'flex',
             flexDirection: 'column', // Align content vertically
@@ -60,7 +60,10 @@ const Admin = () => {
             Welcome! Admin.
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, ml: 2 }}>
-            <Button variant="text" sx={{ mb: 1, mt: 1, textAlign: 'left', justifyContent: 'flex-start' }} component={Link} to="/admin/users">
+            <Button variant="text" sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }} component={Link} to="/admin/users">
+              Dashboard
+            </Button>
+            <Button variant="text" sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }} component={Link} to="/admin/users">
               Manage Users
             </Button>
             <Button variant="text" sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }} component={Link} to="/admin/locations">
