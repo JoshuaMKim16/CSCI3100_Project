@@ -51,15 +51,15 @@ const ShoppingCart = () => {
         console.error(err);
       }
     };
-
-    window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => {
-      window.removeEventListener('cartUpdated', handleCartUpdate);
-    };
   }, [cartKey]);
 
   const [locations, setLocations] = useState({});
+  // State for fetched images
+  const [specificImages, setSpecificImages] = useState({});
+
+  // A ref to track fetched site IDs to avoid duplicate API calls
   const fetchedSiteIds = useRef(new Set());
+  const fetchedImageIds = useRef(new Set());
 
   // States for Google Map.
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
@@ -77,7 +77,7 @@ const ShoppingCart = () => {
     localStorage.setItem(cartKey, JSON.stringify(cartItems));
   }, [cartItems, cartKey]);
 
-  // Fetch location details for each site in the cart that's missing from state.
+  // Fetch location details for each site in the cart
   useEffect(() => {
     const fetchLocationDetails = async () => {
       const locationData = {};
@@ -117,16 +117,15 @@ const ShoppingCart = () => {
                 } catch (geocodeError) {
                   console.error(`Error fetching geocoding data for address ${address}:`, geocodeError);
                 }
-              } else {
-                console.error(`Failed to fetch location ${id}: ${response.status}`);
               }
+            } else {
+              console.error(`Failed to fetch location ${id}: ${response.status}`);
             }
           } catch (error) {
             console.error(`Error fetching location ${id}:`, error);
           }
         }
       }
-      console.log(locationData);
 
       if (hasNewFetches) {
         setLocations((prev) => ({ ...prev, ...locationData }));
@@ -136,7 +135,37 @@ const ShoppingCart = () => {
     if (cartItems.length > 0) {
       fetchLocationDetails();
     }
-  }, [cartItems, locations]);
+  }, [cartItems]);
+
+  // Fetch specific images for locations with pictures
+  useEffect(() => {
+    const fetchSpecificImage = async (id, pictureUrl) => {
+      if (!pictureUrl || fetchedImageIds.current.has(id)) return;
+
+      try {
+        const filename = pictureUrl.split('/').pop().split('.')[0];
+        const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
+        if (!response.ok) {
+          throw new Error(`Fetching image for ${filename} failed`);
+        }
+        const data = await response.json();
+        setSpecificImages((prev) => ({
+          ...prev,
+          [id]: data, // Assume data contains { url: "image_url" }
+        }));
+        fetchedImageIds.current.add(id);
+      } catch (err) {
+        console.error(`Error fetching image for ${id}:`, err);
+      }
+    };
+
+    Object.keys(locations).forEach((id) => {
+      const picture = locations[id]?.picture?.[0];
+      if (picture) {
+        fetchSpecificImage(id, picture);
+      }
+    });
+  }, [locations]);
 
   // Function to remove an item from the cart.
   const removeFromCart = (id) => {
@@ -145,7 +174,11 @@ const ShoppingCart = () => {
     const updatedLocations = { ...locations };
     delete updatedLocations[id];
     setLocations(updatedLocations);
+    const updatedImages = { ...specificImages };
+    delete updatedImages[id];
+    setSpecificImages(updatedImages);
     fetchedSiteIds.current.delete(id);
+    fetchedImageIds.current.delete(id);
   };
 
   // Function to set the starting time for a cart item.
@@ -164,7 +197,7 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
-  // Generate a simple weekly timetable from cart items.
+  // Generate a weekly timetable with events sorted chronologically within each day
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const renderTimetable = () => {
@@ -179,48 +212,52 @@ const ShoppingCart = () => {
         const dayIndex = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
         const id = getSiteId(item);
         const locationName = (locations[id] && locations[id].name) || `Site ${id}`;
+        const locationImage = specificImages[id]?.url || '';
+        const locationTypes = (locations[id] && locations[id].type) || [];
+        const isRestaurantOrCafe = locationTypes.some((type) =>
+          ['restaurant', 'cafe'].includes(type.toLowerCase())
+        );
+        const bgClass = isRestaurantOrCafe ? 'bg-creamy-peach' : 'bg-creamy-mint';
+
         timetable[dayIndex].events.push({
+          startDate,
           location: locationName,
           start: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           end: new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          bgClass,
+          image: locationImage,
         });
       }
     });
+
+    // Sort events within each day by startDate
+    timetable.forEach((dayEntry) => {
+      dayEntry.events.sort((a, b) => a.startDate - b.startDate);
+    });
+
     return timetable;
   };
 
   const timetableData = renderTimetable();
   const hasEvents = timetableData.some((dayEntry) => dayEntry.events.length > 0);
 
-  // Function to export the timetable to Excel using ExcelJS.
+  // Function to export the timetable to Excel
   const handleExportExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Timetable');
-
     worksheet.columns = [
       { header: 'Day', key: 'day', width: 15 },
       { header: 'Location', key: 'location', width: 30 },
       { header: 'Start Time', key: 'start', width: 15 },
       { header: 'End Time', key: 'end', width: 15 },
     ];
-
     const headerRow = worksheet.getRow(1);
     headerRow.font = { bold: true, size: 12 };
     headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
     headerRow.eachCell((cell) => {
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFFFCC00' },
-      };
-      cell.border = {
-        top: { style: 'thin' },
-        left: { style: 'thin' },
-        bottom: { style: 'thin' },
-        right: { style: 'thin' },
-      };
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFCC00' } };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
     });
-
     timetableData.forEach((dayEntry) => {
       dayEntry.events.forEach((event) => {
         worksheet.addRow({
@@ -231,23 +268,16 @@ const ShoppingCart = () => {
         });
       });
     });
-
     const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     saveAs(blob, 'timetable.xlsx');
   };
 
-  // Custom component to conditionally load the Google Map script.
   class LoadScriptOnlyIfNeeded extends LoadScript {
     componentDidMount() {
       const cleaningUp = true;
       const isBrowser = typeof document !== 'undefined';
-      const isAlreadyLoaded =
-        window.google &&
-        window.google.maps &&
-        document.querySelector('body.first-hit-completed');
+      const isAlreadyLoaded = window.google && window.google.maps && document.querySelector('body.first-hit-completed');
       if (!isAlreadyLoaded && isBrowser) {
         if (window.google && !cleaningUp) {
           console.error('Google API is already loaded');
@@ -255,7 +285,6 @@ const ShoppingCart = () => {
         }
         this.isCleaningUp().then(this.injectScript);
       }
-
       if (isAlreadyLoaded) {
         this.setState({ loaded: true });
       }
@@ -265,14 +294,10 @@ const ShoppingCart = () => {
   return (
     <section className="shopping-cart-page">
       <Container>
-        <h2 className="cart-header">Your Planner</h2>
         <div className="cart-flex-container">
           {/* Timetable Column */}
           <div className="timetable-col">
-            <h3 className="sub-header">Weekly Timetable</h3>
-            <Button color="success" onClick={handleExportExcel} className="mb-3">
-              Export Timetable to Excel
-            </Button>
+            <h3 className="sub-header"></h3>
             <div className="timetable">
               {hasEvents ? (
                 timetableData.map((dayEntry, index) => (
@@ -281,9 +306,13 @@ const ShoppingCart = () => {
                     {dayEntry.events.length > 0 ? (
                       dayEntry.events.map((event, idx) => (
                         <div key={idx} className="event">
-                          <p>
-                            {event.location}: {event.start} - {event.end}
-                          </p>
+                          <div className="event-entry">
+                            {event.image && <img src={event.image} alt={event.location} />}
+                            <div className="event-content">
+                              <span className={`location ${event.bgClass}`}>{event.location}</span>
+                              <span className="time">{event.start} - {event.end}</span>
+                            </div>
+                          </div>
                         </div>
                       ))
                     ) : (
@@ -297,11 +326,13 @@ const ShoppingCart = () => {
                 </div>
               )}
             </div>
+            <Button color="success" onClick={handleExportExcel} className="mb-3">
+              Export Timetable to Excel
+            </Button>
           </div>
-
-          {/* Cart Items Column */}
+          {/* Cart Items Column (Right) */}
           <div className="cart-col">
-            <h3 className="sub-header">Saved Locations</h3>
+            <h3 className="sub-header"></h3>
             {cartItems.length === 0 ? (
               <div className="empty-cart-container">
                 <p className="empty-cart">Your cart is empty.</p>
@@ -317,7 +348,7 @@ const ShoppingCart = () => {
                     <div key={id} className="cart-item">
                       <div className="cart-details">
                         <h3>{(locations[id] && locations[id].name) || `Site ${id}`}</h3>
-                        <p>{(locations[id] && locations[id].description) || 'Loading...'}</p>
+                        <p className="cart-description">{locations[id]?.description || 'No description available'}</p>
                         <div className="time-inputs">
                           <label>
                             Start Time:

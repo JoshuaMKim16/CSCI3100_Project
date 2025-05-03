@@ -1,128 +1,165 @@
 /* Overall page container */
 section.shopping-cart-page {
   background: #f0f8ff;
+  background-image: url('../login/background.jpg'); 
+  background-size: cover;
+  background-position: center;
   min-height: 100vh;
   font-family: Arial, sans-serif;
-  padding: 40px 20px;
-}
-
-/* Main header styling */
-section.shopping-cart-page .cart-header {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
-  font-weight: 600;
 }
 
 /* Sub-header styling inside columns */
 section.shopping-cart-page .sub-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 0.9375rem; /* 15px → 0.9375rem */
   color: #333;
-  font-size: 22px;
+  font-size: 1.25rem; /* 20px → 1.25rem */
   font-weight: 500;
 }
 
 /* Flex container for timetable and cart columns */
 .cart-flex-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  justify-content: flex-end; /* Push cart to the rightmost edge */
+  align-items: flex-start;
+  padding: 0 0 0 0rem; /* Remove right padding, keep left */
 }
 
 /* Timetable column styles */
 .timetable-col {
-  flex: 1 1 300px;
-  max-width: 500px;
+  flex: 1 1 60%;
+  max-width: calc(100% - 310px); /* Account for cart width + gap */
+  min-width: 400px;
+  margin-top: 1rem; /* Consistent spacing from navbar */
 }
 
 /* Cart column styles */
 .cart-col {
-  flex: 1 1 300px;
-  max-width: 500px;
+  flex: 0 0 300px; /* Fixed width for cart */
+  max-width: 300px;
+  min-width: 250px;
+  background-color: #fff;
+  border-left: 1px solid #e0e0e0;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-right: 0; /* Stick to right edge */
+  margin-top: 1rem; /* Consistent spacing from navbar */
 }
 
 /* List of cart items */
 .cart-items-list {
-  width: 100%;
+  width: 100%; /* Full width within cart column */
   text-align: left;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #61dafb #f0f8ff;
+}
+
+/* Webkit scrollbar styling */
+.cart-items-list::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.cart-items-list::-webkit-scrollbar-track {
+  background: #f0f8ff;
+  border-radius: 0.25rem;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb {
+  background: #61dafb;
+  border-radius: 0.25rem;
+}
+
+.cart-items-list::-webkit-scrollbar-thumb:hover {
+  background: #21a1f1;
 }
 
 /* Single cart item */
 .cart-item {
-  border: 2px solid #61dafb;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
+  border: 0.125rem solid #61dafb;
+  padding: 1.5%;
+  margin-bottom: 0.9375rem;
+  border-radius: 0.5rem;
   background-color: #ffffff;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .cart-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-0.1875rem);
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
 }
 
 /* Cart item details and buttons */
 .cart-details h3 {
   margin: 0;
-  padding-bottom: 8px;
-  font-size: 20px;
+  padding-bottom: 0.375rem;
+  font-size: 1.125rem;
   color: #333;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .cart-details p {
-  margin: 5px 0;
-  font-size: 16px;
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
   color: #555;
-  line-height: 1.5;
+  line-height: 1.4;
+}
+
+/* Description field styling */
+.cart-description {
+  font-size: 0.875rem;
+  color: #555;
+  line-height: 1.4;
+  font-style: italic;
+  word-break: break-word;
 }
 
 /* Time inputs styling */
 .time-inputs {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 15px;
+  gap: 0.625rem;
+  margin-top: 0.625rem;
 }
 
 .time-inputs label {
-  font-size: 16px;
+  font-size: 0.875rem;
   color: #333;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.625rem;
   font-weight: 500;
 }
 
 .time-inputs input[type="datetime-local"] {
-  padding: 10px;
-  font-size: 16px;
+  padding: 0.5rem;
+  font-size: 0.875rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 220px;
+  border-radius: 0.3125rem;
+  width: 100%;
+  max-width: 12.5rem;
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .time-inputs input[type="datetime-local"]:focus {
   border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 0.3125rem rgba(0, 123, 255, 0.3);
   outline: none;
 }
 
 .cart-buttons {
-  margin-top: 20px;
+  margin-top: 0.9375rem;
 }
 
 .cart-buttons button {
-  padding: 8px 16px;
-  font-size: 16px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
   background-color: #dc3545;
   color: #fff;
@@ -137,68 +174,148 @@ section.shopping-cart-page .sub-header {
 /* Timetable styles */
 .timetable {
   width: 100%;
-  text-align: left;
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: #ffffff;
+  padding: 1rem;
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  min-height: 80vh;
+  scrollbar-width: thin;
+  scrollbar-color: #61dafb #f0f8ff;
 }
 
+/* Webkit scrollbar styling for timetable */
+.timetable::-webkit-scrollbar {
+  height: 0.5rem;
+}
+
+.timetable::-webkit-scrollbar-track {
+  background: #f0f8ff;
+  border-radius: 0.25rem;
+}
+
+.timetable::-webkit-scrollbar-thumb {
+  background: #61dafb;
+  border-radius: 0.25rem;
+}
+
+.timetable::-webkit-scrollbar-thumb:hover {
+  background: #21a1f1;
+}
+
+/* Day entry styles */
 .day-entry {
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #ffffff;
-  border: 2px solid #61dafb;
-  border-radius: 8px;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 0.5rem;
+  padding: 0rem;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  min-width: 150px;
+  margin-right: 1rem;
+}
+
+.day-entry:last-child {
+  margin-right: 0;
 }
 
 .day-entry:hover {
-  transform: translateY(-3px);
-  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-0.1875rem);
+  box-shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.15);
 }
 
 .day-entry h4 {
-  margin: 0;
-  padding-bottom: 8px;
-  font-size: 18px;
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
   color: #333;
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 2px solid #61dafb;
+  padding-bottom: 0.5rem;
 }
 
+/* Event styling */
 .event {
-  padding: 8px 0;
-  border-top: 1px solid #e0e0e0;
+  margin-bottom: 0.5rem;
 }
 
-.event p {
-  margin: 0;
-  font-size: 16px;
-  color: #555;
-  line-height: 1.5;
+.event-entry {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  background-color: #f9f9f9;
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
+
+.event-entry:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.event-entry img {
+  width: 100%;
+  max-width: 200px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.5rem 0.5rem 0 0;
+  margin-bottom: 0.5rem;
+}
+
+.event-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.event-content .location {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #333;
+  padding: 0.2rem 0.4rem;
+}
+
+.event-content .time {
+  font-size: 0.75rem;
+  color: #555;
+}
+
+/* Color classes based on type */
+.event-entry.bg-activity { background-color: #e6f3ff; }
+.event-entry.bg-food { background-color: #e6ffe6; }
+.event-entry.bg-accommodation { background-color: #fff3e6; }
+.event-entry.bg-travel { background-color: #f0e6ff; }
+.event-entry.bg-other { background-color: #e6e6e6; }
 
 /* Empty cart message */
 .empty-cart-container {
   text-align: center;
-  padding: 40px;
+  padding: 2%;
   background-color: #ffffff;
-  border: 2px dashed #61dafb;
-  border-radius: 8px;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
-  margin: 20px auto;
+  border: 0.125rem dashed #61dafb;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
+  margin: 1.5% auto;
 }
 
 .empty-cart {
-  font-size: 20px;
+  font-size: 1.125rem;
   color: #555;
-  margin-bottom: 25px;
+  margin-bottom: 1.25rem;
   font-weight: 500;
 }
 
 /* Add items button */
 .add-items-button {
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 1% 2%;
+  font-size: 0.875rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
   background-color: #007bff;
   color: #fff;
@@ -209,31 +326,203 @@ section.shopping-cart-page .sub-header {
 .add-items-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 0.3125rem rgba(0, 123, 255, 0.3);
 }
 
 /* Empty timetable message */
 .empty-timetable {
   text-align: center;
-  padding: 40px;
+  padding: 2%;
   background-color: #ffffff;
-  border: 2px dashed #61dafb;
-  border-radius: 8px;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
-  margin: 20px auto;
+  border: 0.125rem dashed #61dafb;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
+  margin: 1.5% auto;
 }
 
 .empty-timetable p {
-  font-size: 20px;
+  font-size: 1.125rem;
   color: #555;
   margin: 0;
   font-weight: 500;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for medium screens (Bootstrap md) */
 @media (max-width: 768px) {
   .cart-flex-container {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    gap: 1.5vw;
+    padding: 0;
+  }
+
+  .timetable-col {
+    max-width: 100%;
+    min-width: 100%;
+    margin-top: 1rem;
+  }
+
+  .cart-col {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: 100%;
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+    box-shadow: none;
+    padding: 1rem;
+    margin-right: 0;
+    margin-top: 1rem;
+  }
+
+  .cart-items-list {
+    width: 100%;
+    max-height: 32vh;
+  }
+
+  .timetable {
+    min-height: 32vh;
+  }
+
+  .day-entry {
+    min-width: 200px;
+    padding: 0.75rem;
+  }
+
+  .day-entry h4 {
+    font-size: 0.875rem;
+  }
+
+  .event-entry {
+    padding: 0.375rem;
+  }
+
+  .event-entry img {
+    height: 80px;
+    max-width: 180px;
+  }
+
+  .event-content .location {
+    font-size: 0.6875rem;
+    padding: 0.15rem 0.3rem;
+  }
+
+  .event-content .time {
+    font-size: 0.6875rem;
+  }
+
+  .cart-description {
+    font-size: 0.75rem;
+  }
+}
+
+/* Responsive adjustments for small screens (Bootstrap sm) */
+@media (max-width: 576px) {
+  section.shopping-cart-page {
+    min-height: 100vh;
+  }
+
+  .sub-header {
+    font-size: 1.125rem;
+  }
+
+  .cart-flex-container {
+    gap: 1vw;
+    padding: 0;
+  }
+
+  .timetable-col,
+  .cart-col {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: 100%;
+    margin-top: 1rem;
+  }
+
+  .cart-col {
+    border-left: none;
+    border-top: 1px solid #e0e0e0;
+    box-shadow: none;
+    padding: 1rem;
+    margin-right: 0;
+  }
+
+  .timetable {
+    min-height: 24vh;
+    padding: 0.5rem;
+  }
+
+  .day-entry {
+    min-width: 150px;
+    padding: 0.5rem;
+  }
+
+  .day-entry h4 {
+    font-size: 0.75rem;
+  }
+
+  .event-entry {
+    padding: 0.25rem;
+  }
+
+  .event-entry img {
+    height: 60px;
+    max-width: 150px;
+  }
+
+  .event-content .location {
+    font-size: 0.625rem;
+    padding: 0.1rem 0.2rem;
+  }
+
+  .event-content .time {
+    font-size: 0.625rem;
+  }
+
+  .cart-items-list {
+    width: 100%;
+    max-height: 24vh;
+  }
+
+  .cart-item {
+    padding: 1%;
+    margin-bottom: 0.625rem;
+  }
+
+  .cart-details h3 {
+    font-size: 1rem;
+  }
+
+  .cart-details p {
+    font-size: 0.75rem;
+  }
+
+  .cart-description {
+    font-size: 0.75rem;
+  }
+
+  .time-inputs input[type="datetime-local"] {
+    font-size: 0.75rem;
+    padding: 0.375rem;
+    max-width: 10rem;
+  }
+
+  .cart-buttons button {
+    font-size: 0.75rem;
+    padding: 0.3125rem 0.625rem;
+  }
+
+  .add-items-button {
+    font-size: 0.75rem;
+    padding: 0.8% 1.6%;
+  }
+
+  .empty-cart-container,
+  .empty-timetable {
+    padding: 1.5%;
+  }
+
+  .empty-cart,
+  .empty-timetable p {
+    font-size: 1rem;
   }
 }
