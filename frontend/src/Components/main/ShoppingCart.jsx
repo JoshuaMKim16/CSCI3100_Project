@@ -4,18 +4,37 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import { jwtDecode } from 'jwt-decode';
 import './shoppingcart.css';
 
 const ShoppingCart = () => {
   const navigate = useNavigate();
 
-  // Helper function to get a consistent identifier from cart items.
+  // Decode JWT from the user object stored in localStorage (if it exists)
+  const getCurrentUserIdFromJWT = () => {
+    try {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        const parsedData = JSON.parse(userData);
+        if (parsedData.token) {
+          const decodedToken = jwtDecode(parsedData.token);
+          // Adjust based on your JWT payload structure (e.g., id or userId)
+          return decodedToken.id || decodedToken.userId;
+        }
+      }
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+    }
+    return 'guest';
+  };
+
+  const userId = getCurrentUserIdFromJWT();
+  const cartKey = `shoppingCart_${userId}`;
   const getSiteId = (item) => item.site_id || item.id;
 
-  // State for cart items: expected to be in the format [{ site_id, startTime, endTime }]
   const [cartItems, setCartItems] = useState(() => {
     try {
-      const savedCart = localStorage.getItem('shoppingCart');
+      const savedCart = localStorage.getItem(cartKey);
       return savedCart ? JSON.parse(savedCart) : [];
     } catch (error) {
       console.error('Error parsing shoppingCart from localStorage:', error);
@@ -23,29 +42,42 @@ const ShoppingCart = () => {
     }
   });
 
-  // State for location details fetched based on site identifier
-  const [locations, setLocations] = useState({});
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      try {
+        const savedCart = localStorage.getItem(cartKey);
+        setCartItems(savedCart ? JSON.parse(savedCart) : []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-  // A ref to track fetched site IDs to avoid duplicate API calls
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate);
+    };
+  }, [cartKey]);
+
+  const [locations, setLocations] = useState({});
   const fetchedSiteIds = useRef(new Set());
 
-  // States for Google Map
+  // States for Google Map.
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const mapRef = useRef(null);
 
-  // Define Google Map container style
+  // Define Google Map container style.
   const containerStyle = {
     width: '100%',
     height: '400px',
   };
 
-  // Save the cart to localStorage whenever it changes
+  // Save the cart to localStorage whenever it changes.
   useEffect(() => {
-    localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    localStorage.setItem(cartKey, JSON.stringify(cartItems));
+  }, [cartItems, cartKey]);
 
-  // Fetch location details for each site in the cart that's missing from the state
+  // Fetch location details for each site in the cart that's missing from state.
   useEffect(() => {
     const fetchLocationDetails = async () => {
       const locationData = {};
@@ -76,7 +108,6 @@ const ShoppingCart = () => {
                     locationData[id].lat = lat;
                     locationData[id].lng = lng;
                     setIsMapLoaded(true);
-                    // Set map center to first successfully fetched geocoded item.
                     if (Object.keys(locationData).length === 1) {
                       setMapCenter({ lat, lng });
                     }
@@ -107,19 +138,17 @@ const ShoppingCart = () => {
     }
   }, [cartItems, locations]);
 
-  // Function to remove an item from the cart
+  // Function to remove an item from the cart.
   const removeFromCart = (id) => {
     const updatedCart = cartItems.filter((item) => getSiteId(item) !== id);
     setCartItems(updatedCart);
-    // Remove location details from state if no longer in cart
     const updatedLocations = { ...locations };
     delete updatedLocations[id];
     setLocations(updatedLocations);
-    // Remove the id from the fetched set to allow re-fetching if needed
     fetchedSiteIds.current.delete(id);
   };
 
-  // Function to set the starting time for a cart item
+  // Function to set the starting time for a cart item.
   const setStartingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, startTime: time } : item
@@ -127,7 +156,7 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
-  // Function to set the ending time for a cart item
+  // Function to set the ending time for a cart item.
   const setEndingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, endTime: time } : item
@@ -135,7 +164,7 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
-  // Generate a simple weekly timetable based on the cart items
+  // Generate a simple weekly timetable from cart items.
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const renderTimetable = () => {
@@ -147,7 +176,6 @@ const ShoppingCart = () => {
     cartItems.forEach((item) => {
       if (item.startTime && item.endTime) {
         const startDate = new Date(item.startTime);
-        // Adjust so that Monday is index 0 and Sunday is index 6.
         const dayIndex = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
         const id = getSiteId(item);
         const locationName = (locations[id] && locations[id].name) || `Site ${id}`;
@@ -164,12 +192,11 @@ const ShoppingCart = () => {
   const timetableData = renderTimetable();
   const hasEvents = timetableData.some((dayEntry) => dayEntry.events.length > 0);
 
-  // Function to export the timetable to Excel with enhanced formatting using ExcelJS
+  // Function to export the timetable to Excel using ExcelJS.
   const handleExportExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Timetable');
 
-    // Define columns with headers, keys, and custom widths.
     worksheet.columns = [
       { header: 'Day', key: 'day', width: 15 },
       { header: 'Location', key: 'location', width: 30 },
@@ -177,7 +204,6 @@ const ShoppingCart = () => {
       { header: 'End Time', key: 'end', width: 15 },
     ];
 
-    // Apply styling to the header row.
     const headerRow = worksheet.getRow(1);
     headerRow.font = { bold: true, size: 12 };
     headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
@@ -185,7 +211,7 @@ const ShoppingCart = () => {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FFFFCC00' }, // gold/yellow fill
+        fgColor: { argb: 'FFFFCC00' },
       };
       cell.border = {
         top: { style: 'thin' },
@@ -195,7 +221,6 @@ const ShoppingCart = () => {
       };
     });
 
-    // Add timetable events rows.
     timetableData.forEach((dayEntry) => {
       dayEntry.events.forEach((event) => {
         worksheet.addRow({
@@ -207,7 +232,6 @@ const ShoppingCart = () => {
       });
     });
 
-    // Generate buffer from the workbook and trigger a file download.
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -215,7 +239,7 @@ const ShoppingCart = () => {
     saveAs(blob, 'timetable.xlsx');
   };
 
-  // Custom component to load Google Script only if needed
+  // Custom component to conditionally load the Google Map script.
   class LoadScriptOnlyIfNeeded extends LoadScript {
     componentDidMount() {
       const cleaningUp = true;
@@ -226,7 +250,7 @@ const ShoppingCart = () => {
         document.querySelector('body.first-hit-completed');
       if (!isAlreadyLoaded && isBrowser) {
         if (window.google && !cleaningUp) {
-          console.error('google api is already presented');
+          console.error('Google API is already loaded');
           return;
         }
         this.isCleaningUp().then(this.injectScript);
@@ -243,7 +267,7 @@ const ShoppingCart = () => {
       <Container>
         <h2 className="cart-header">Your Planner</h2>
         <div className="cart-flex-container">
-          {/* Timetable Column (Left) */}
+          {/* Timetable Column */}
           <div className="timetable-col">
             <h3 className="sub-header">Weekly Timetable</h3>
             <Button color="success" onClick={handleExportExcel} className="mb-3">
@@ -275,7 +299,7 @@ const ShoppingCart = () => {
             </div>
           </div>
 
-          {/* Cart Items Column (Right) */}
+          {/* Cart Items Column */}
           <div className="cart-col">
             <h3 className="sub-header">Saved Locations</h3>
             {cartItems.length === 0 ? (
@@ -329,13 +353,10 @@ const ShoppingCart = () => {
       <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
         {isMapLoaded && (
           <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-            {Object.values(locations).map((location) => {
-              if (location.lat && location.lng) {
+            {Object.values(locations).map((locationItem) => {
+              if (locationItem.lat && locationItem.lng) {
                 return (
-                  <MarkerF
-                    key={location.id || location._id}
-                    position={{ lat: location.lat, lng: location.lng }}
-                  />
+                  <MarkerF key={locationItem.id || locationItem._id} position={{ lat: locationItem.lat, lng: locationItem.lng }} />
                 );
               }
               return null;

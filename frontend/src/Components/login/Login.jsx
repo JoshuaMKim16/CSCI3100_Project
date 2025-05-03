@@ -1,6 +1,7 @@
+// Login.jsx
 import React, { useState, useContext } from 'react';
 import Axios from 'axios';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
 import '../../App.css';
 
@@ -15,19 +16,26 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     Axios.post('http://localhost:3000/auth/login', { email, password })
       .then(response => {
         if (response.data.status) {
-          const userData = response.data.user;
-          // Persist user information in localStorage for session persistence.
+          // Merge the token into the user object since the token is returned separately.
+          const userData = { ...response.data.user, token: response.data.token };
+
+          // Persist the combined user data (with token) in localStorage.
           localStorage.setItem('user', JSON.stringify(userData));
-          // Update the context with the user data.
+          
+          // Optionally set up default Axios header for future requests.
+          Axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
+
+          // Update the AuthContext with the user data.
           setUser(userData);
 
           setMessage("Login successful! Redirecting...");
           setError('');
-          
-          // Redirect based on user role (admin or regular user)
+
+          // Redirect user based on role.
           if (userData.is_admin) {
             setTimeout(() => {
               navigate('/admin');
@@ -45,7 +53,7 @@ const Login = () => {
       .catch(err => {
         setMessage('');
         setError("Invalid email or password.");
-        console.log(err);
+        console.error(err);
       });
   };
 

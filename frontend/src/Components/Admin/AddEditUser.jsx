@@ -24,6 +24,11 @@ const AddEditUser = () => {
 
   const userId = locationState?.user?._id;
 
+  const getAuthHeader = () => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    return { Authorization: `Bearer ${storedUser?.token}` };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,9 +42,13 @@ const AddEditUser = () => {
 
     try {
       if (userId) {
-        await axios.put(`http://localhost:3000/api/users/${userId}`, userData);
+        await axios.put(`http://localhost:3000/api/users/${userId}`, userData, {
+          headers: getAuthHeader(),
+        });
       } else {
-        await axios.post('http://localhost:3000/api/users', userData);
+        await axios.post('http://localhost:3000/api/users', userData, {
+          headers: getAuthHeader(),
+        });
       }
       navigate('/admin/users');
     } catch (error) {

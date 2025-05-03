@@ -1,3 +1,4 @@
+// UserActivity.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Container,
@@ -20,10 +21,17 @@ const UserActivity = () => {
 
   useEffect(() => {
     if (user && user._id) {
+      const token = user.token || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).token);
       const fetchUserComments = async () => {
         try {
           const response = await fetch(
-            `http://localhost:3000/api/comments/user/${user._id}`
+            `http://localhost:3000/api/comments/user/${user._id}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              }
+            }
           );
           if (!response.ok) {
             throw new Error('Error fetching comments');

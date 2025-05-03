@@ -1,23 +1,22 @@
 const express = require("express");
 const router = express.Router();
-
-// Import signupUser from auth.controller.js instead of using createUser from user.controller.js
+const { authenticateToken } = require('../middlewares/auth.middleware');
 const { getUsers, getUser, updateUser, deleteUser } = require('../controllers/user.controller');
 const { signupUser } = require('../controllers/auth.controller'); 
 
-// browse list of users
-router.get('/', getUsers);
+// browse list of users (protected)
+router.get('/', authenticateToken, getUsers);
 
-// search a user with id
-router.get("/:id", getUser);
+// search a user with id (protected)
+router.get("/:id", authenticateToken, getUser);
 
-// create a user using the signupUser function (which handles password hashing)
+// create a user using the signupUser function (signup endpoint can remain unprotected if needed)
 router.post("/", signupUser);
 
-// update a user
-router.put("/:id", updateUser);
+// update a user (protected)
+router.put("/:id", authenticateToken, updateUser);
 
-// delete a user
-router.delete("/:id", deleteUser);
+// delete a user (protected)
+router.delete("/:id", authenticateToken, deleteUser);
 
 module.exports = router;

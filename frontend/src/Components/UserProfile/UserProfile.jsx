@@ -26,12 +26,16 @@ const UserProfile = () => {
     if (!window.confirm("Are you sure you want to unsubscribe?")) {
       return;
     }
+    
+    // Retrieve the token from user or localStorage.
+    const token = user.token || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).token);
 
     try {
       const response = await fetch(`http://localhost:3000/api/license/${user._id}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
       });
       

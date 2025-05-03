@@ -21,10 +21,16 @@ const UserManagement = () => {
   const usersPerPage = 15;
   const navigate = useNavigate();
 
-  // Fetch users from API
+  const getAuthHeader = () => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    return { Authorization: `Bearer ${storedUser?.token}` };
+  };
+
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3000/api/users');
+      const { data } = await axios.get('http://localhost:3000/api/users', {
+        headers: getAuthHeader(),
+      });
       setUsers(data);
     } catch (error) {
       console.error('Error fetching users', error);
@@ -38,7 +44,9 @@ const UserManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/users/${id}`);
+        await axios.delete(`http://localhost:3000/api/users/${id}`, {
+          headers: getAuthHeader(),
+        });
         fetchUsers();
       } catch (error) {
         console.error('Error deleting user', error);
@@ -50,14 +58,12 @@ const UserManagement = () => {
     navigate('/admin/users/edit', { state: { user } });
   };
 
-  // Filter users by name or email.
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(filterQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(filterQuery.toLowerCase())
   );
 
-  // Pagination logic.
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);

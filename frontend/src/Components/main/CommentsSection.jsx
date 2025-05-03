@@ -1,14 +1,14 @@
+// CommentsSection.jsx
 import React, { useState, useEffect } from 'react';
 
 const CommentsSection = ({ locationId }) => {
-  // Retrieve logged-in user info (adjust this logic to match your auth implementation)
   const loggedInUser = JSON.parse(localStorage.getItem('user')) || {};
   const userId = loggedInUser._id;
+  const token = loggedInUser.token || '';
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
     content: '',
-    // use logged in user's _id for the author field
     author: userId,
     location: locationId,
   });
@@ -23,7 +23,12 @@ const CommentsSection = ({ locationId }) => {
   // Fetch comments for the given location ID
   const fetchComments = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/comments/location/${locationId}`);
+      const response = await fetch(`http://localhost:3000/api/comments/location/${locationId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -52,7 +57,10 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(newComment),
       });
       if (!response.ok) {
@@ -74,6 +82,10 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}`, {
         method: 'DELETE',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -108,7 +120,10 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ content }),
       });
       if (!response.ok) {
@@ -132,6 +147,10 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}/like`, {
         method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -152,6 +171,10 @@ const CommentsSection = ({ locationId }) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}/dislike`, {
         method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
       });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);

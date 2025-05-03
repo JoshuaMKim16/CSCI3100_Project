@@ -26,6 +26,11 @@ const AddEditLocation = () => {
 
   const locId = locationState?.location?._id;
 
+  const getAuthHeader = () => {
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    return { Authorization: `Bearer ${storedUser?.token}` };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,9 +46,13 @@ const AddEditLocation = () => {
 
     try {
       if (locId) {
-        await axios.put(`http://localhost:3000/api/locations/${locId}`, locationData);
+        await axios.put(`http://localhost:3000/api/locations/${locId}`, locationData, {
+          headers: getAuthHeader(),
+        });
       } else {
-        await axios.post('http://localhost:3000/api/locations', locationData);
+        await axios.post('http://localhost:3000/api/locations', locationData, {
+          headers: getAuthHeader(),
+        });
       }
       navigate('/admin/locations');
     } catch (error) {

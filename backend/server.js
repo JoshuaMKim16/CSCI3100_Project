@@ -1,3 +1,4 @@
+// server.js
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -11,6 +12,7 @@ const authRoute = require('./routes/auth.route.js');
 const licenseRoutes = require('./routes/licenseRoutes.js');
 const cloudinaryRoutes = require('./routes/cloudinaryRoutes.js');
 const AIchatRoutes = require('./routes/AIchatRoutes.js');
+const adminRoute = require('./routes/admin.route.js'); // Import admin routes
 
 // Import Models (for reference)
 const User = require('./models/user.model.js');
@@ -35,19 +37,16 @@ app.use("/api/users", userRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/locations", locationRoute); 
 app.use("/auth", authRoute); 
+app.use("/api/admin", adminRoute); // Mount admin routes here
 app.use("/api/license", licenseRoutes); 
 app.use("/api/photos", cloudinaryRoutes); 
-app.use('/', AIchatRoutes); //for AI Chatbot
-
-// app.get('/', (req, res) => {
-//   res.send('Hello from Node Server Updated');
-// });
+app.use('/', AIchatRoutes); // For AI Chatbot
 
 // Socket.IO
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "*", // Adjust this in production for security
+    origin: "*", // Adjust for production
     methods: ["GET", "POST"]
   }
 });

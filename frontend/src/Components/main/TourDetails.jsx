@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import CommentsSection from './CommentsSection';
+import { jwtDecode } from 'jwt-decode';
 import "./tour-details.css";
 
 const containerStyle = {
@@ -12,10 +13,10 @@ const containerStyle = {
 };
 
 const TourDetails = () => {
-  // Get parameters from url
+  // Get parameters from URL
   const { id } = useParams();
 
-  // States for fetching location attributes
+  // States for fetching location details
   const [location, setLocation] = useState([]);
   const [error, setError] = useState(null);
 
@@ -28,6 +29,28 @@ const TourDetails = () => {
   // States for fetching images
   const [specificImage, setSpecificImage] = useState(null);
   const [fetchError, setFetchError] = useState('');
+
+  // Helper function to retrieve the current user ID from the JWT
+  const getCurrentUserIdFromJWT = () => {
+    try {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        const parsedData = JSON.parse(userData);
+        if (parsedData.token) {
+          const decodedToken = jwtDecode(parsedData.token);
+          // Adjust based on your JWT payload structure (e.g., id or userId)
+          return decodedToken.id || decodedToken.userId;
+        }
+      }
+    } catch (error) {
+      console.error('Error decoding JWT:', error);
+    }
+    return 'guest';
+  };
+
+  // Use the JWT-derived user identifier to form a unique storage key.
+  const userId = getCurrentUserIdFromJWT();
+  const cartKey = `shoppingCart_${userId}`;
 
   // Fetch location details by ID
   const fetchLocationByID = async (id) => {
@@ -78,7 +101,9 @@ const TourDetails = () => {
     if (!location?.address) return;
     const geocodeAddress = async () => {
       try {
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${process.env.REACT_APP_MAP_APIKEY}`);
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location.address)}&key=${process.env.REACT_APP_MAP_APIKEY}`
+        );
         const data = await response.json();
         if (data.status === 'OK') {
           const { lat, lng } = data.results[0].geometry.location;
@@ -94,7 +119,7 @@ const TourDetails = () => {
     geocodeAddress();
   }, [location?.address]);
 
-  // Handle 'google api already presented' error
+  // Custom LoadScript component to avoid duplicate Google API injections
   class LoadScriptOnlyIfNeeded extends LoadScript {
     componentDidMount() {
       const cleaningUp = true;
@@ -108,20 +133,19 @@ const TourDetails = () => {
           console.error("google api is already presented");
           return;
         }
-  
         this.isCleaningUp().then(this.injectScript);
       }
-  
+
       if (isAlreadyLoaded) {
         this.setState({ loaded: true });
       }
     }
   }
 
-  // Handle Add to Cart
+  // Handle Add to Cart using the same cartKey as ShoppingCart
   const handleAddToCart = (e) => {
     e.preventDefault();
-    const currentCart = JSON.parse(localStorage.getItem('shoppingCart')) || [];
+    const currentCart = JSON.parse(localStorage.getItem(cartKey)) || [];
     const isAlreadyInCart = currentCart.some(item => item.id === location._id);
     if (!isAlreadyInCart) {
       const newCartItem = {
@@ -130,7 +154,9 @@ const TourDetails = () => {
         price: location.price
       };
       currentCart.push(newCartItem);
-      localStorage.setItem('shoppingCart', JSON.stringify(currentCart));
+      localStorage.setItem(cartKey, JSON.stringify(currentCart));
+      // Dispatch custom event to notify ShoppingCart
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
 
     const userWantsToCheck = window.confirm("It is added to the planner. Do you want to check?");
@@ -139,7 +165,7 @@ const TourDetails = () => {
     }
   };
 
-  // New handler for navigating to profile page
+  // New handler for navigating to the profile page
   const handleProfileNavigation = () => {
     navigate('/profile');
   };
@@ -183,7 +209,7 @@ const TourDetails = () => {
               {location.description ? (
                 <p>{location.description}</p>
               ) : (
-                <p>No description available</p>
+                <p>No description available.</p>
               )}
             </div>
             <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
@@ -202,7 +228,6 @@ const TourDetails = () => {
             </GoogleMap>
           )}
         </LoadScriptOnlyIfNeeded>
-        {/* Insert the CommentsSection component and pass the location ID */}
         {location._id && <CommentsSection locationId={location._id} />}
       </Container>
     </section>
