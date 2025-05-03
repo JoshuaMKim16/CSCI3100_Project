@@ -34,7 +34,7 @@ const chatController = async (req, res) => {
             stop: null,
             stream: false,
             stream_options: null,
-            temperature: 0.7,
+            temperature: 1.3,
             top_p: 1,
             tools: null,
             tool_choice: "none",
