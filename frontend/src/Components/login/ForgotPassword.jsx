@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../App.css';
+import './Login.css';
 import Axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
@@ -27,8 +27,9 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className='sign-up-container'>
-      <form className='sign-up-form' onSubmit={handleSubmit}>
+    <div className='body'>
+    <div className='signup-container'>
+      <form className='signup-form' onSubmit={handleSubmit}>
         <h2>Password Reset</h2>
         <label htmlFor='email'>Email:</label>
         <input
@@ -41,6 +42,7 @@ const ForgotPassword = () => {
         />
         <button type='submit'>Send</button>
       </form>
+    </div>
     </div>
   );
 };

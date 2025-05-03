@@ -71,11 +71,12 @@ const AddEditLocation = () => {
           gap: 2,
           p: { xs: 2, sm: 3 },
           borderRadius: 2,
-          boxShadow: 2,
+          boxShadow: 0,
           bgcolor: 'background.paper',
+          width: '500px'
         }}
       >
-        <Typography variant="h5" align="center">
+        <Typography variant="h5" align="left" sx={{ fontWeight: 'bold'}}>
           {locId ? 'Edit Location' : 'Add New Location'}
         </Typography>
         <TextField

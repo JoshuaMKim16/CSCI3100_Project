@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../App.css';
+import './Login.css';
 import Axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -36,8 +36,9 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className='sign-up-container'>
-      <form className='sign-up-form' onSubmit={handleSubmit}>
+    <div className='body'>
+    <div className='login-container'>
+      <form className='login-form' onSubmit={handleSubmit}>
         <h2>Reset Password</h2>
         {/* If email is not provided from the previous step, ask for it */}
         {!email && (
@@ -75,6 +76,7 @@ const ResetPassword = () => {
 
         <button type='submit'>Reset Password</button>
       </form>
+    </div>
     </div>
   );
 };

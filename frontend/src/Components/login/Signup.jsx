@@ -1,6 +1,6 @@
 // Signup.jsx
 import React, { useState } from 'react';
-import '../../App.css';
+import './Login.css';
 import Axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -24,18 +24,21 @@ const Signup = () => {
         })
         .then(response => {
             if(response.data.status){
+                setMessage("Sign up successful! Redirecting...");
                 navigate('/login');
             }
         })
         .catch(err => {
+            setMessage('');
             setError("An error occurred. Please try again.");
             console.log(err);
         });
     };
 
     return (
-        <div className='form-container'>
-            <form className='form' onSubmit={handleSubmit}>
+        <div className='body'>
+        <div className='signup-container'>
+            <form className='signup-form' onSubmit={handleSubmit}>
                 <h2>Sign Up</h2>
 
                 <label htmlFor='username'>Username:</label>
@@ -73,6 +76,7 @@ const Signup = () => {
                 <button type='submit'>Sign Up</button>
                 <p>Have an Account? <Link to='/login'>Login</Link></p> 
             </form>
+        </div>
         </div>
     )
 }

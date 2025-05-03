@@ -1,18 +1,7 @@
-// UserManagement.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import {Typography, Box, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton}from '@mui/material';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -70,38 +59,46 @@ const UserManagement = () => {
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
-    <Box sx={{ my: 2 }}>
-      <Typography variant="h5" gutterBottom>
-        User Management
-      </Typography>
-      <Box sx={{ mb: 2 }}>
-        <TextField
-          fullWidth
-          label="Filter by name or email"
-          value={filterQuery}
-          onChange={(e) => {
-            setFilterQuery(e.target.value);
-            setCurrentPage(1);
-          }}
-        />
+    <Box sx={{ my: 2, padding: 2, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* Header and filter container */}
+      <Box sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, padding: 2, boxShadow: 'none' }}>
+        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}> 
+          User Management
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Box sx={{ flex: 7, mr: 2 }}>
+            <TextField
+              fullWidth
+              label="Filter by name/ email"
+              value={filterQuery}
+              size="small"
+              onChange={(e) => {
+                setFilterQuery(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+          </Box>
+          <Box sx={{ flex: 3 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => navigate('/admin/users/add')}
+            >
+              Add New User
+            </Button>
+          </Box>
+        </Box>
       </Box>
-      <Box sx={{ mb: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/admin/users/add')}
-        >
-          Add New User
-        </Button>
-      </Box>
-      <TableContainer component={Paper}>
+
+      {/* Table for displaying users */}
+      <TableContainer component={Paper} sx={{ flex: 1, backgroundColor: '#f0f0f0', overflow: 'auto',  }}>
         <Table aria-label="users table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: 'lightgrey', position: 'sticky', top: 0, zIndex: 1 }}>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Subscription</TableCell>
-              <TableCell>Is Admin?</TableCell>
+              <TableCell>Admin</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>

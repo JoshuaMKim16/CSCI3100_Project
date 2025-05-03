@@ -1,9 +1,10 @@
 // Login.jsx
 import React, { useState, useContext } from 'react';
+import './Login.css';
 import Axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
-import '../../App.css';
+
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
@@ -58,8 +59,9 @@ const Login = () => {
   };
 
   return (
-    <div className='sign-up-container'>
-      <form className='sign-up-form' onSubmit={handleSubmit}>
+    <div className='body'>
+    <div className='login-container'>
+      <form className='login-form' onSubmit={handleSubmit}>
         <h2>Log in</h2>
         
         {message && <div className="success-message">{message}</div>}
@@ -89,6 +91,7 @@ const Login = () => {
           Don't Have An Account? <Link to="/signup">Sign Up</Link>
         </p>
       </form>
+    </div>   
     </div>
   );
 };

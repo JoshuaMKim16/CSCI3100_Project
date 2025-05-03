@@ -1,18 +1,11 @@
-// LocationManagement.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Typography, Box, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const LocationManagement = () => {
   const [locations, setLocations] = useState([]);
@@ -26,6 +19,7 @@ const LocationManagement = () => {
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
+  // Fetch locations from API
   const fetchLocations = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/api/locations', {
@@ -69,34 +63,48 @@ const LocationManagement = () => {
   const currentLocations = filteredLocations.slice(indexOfFirstLocation, indexOfLastLocation);
   const totalPages = Math.ceil(filteredLocations.length / locationsPerPage);
 
+  const handlePageChange = (e) => {
+    const page = Number(e.target.value);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
-    <Box sx={{ my: 2 }}>
-      <Typography variant="h5" gutterBottom>
-        Location Management
-      </Typography>
-      <Box sx={{ mb: 2 }}>
-        <TextField
-          fullWidth
-          label="Filter by name or address"
-          value={filterQuery}
-          onChange={(e) => {
-            setFilterQuery(e.target.value);
-            setCurrentPage(1);
-          }}
-        />
+    <Box sx={{ my: 2, padding: 2, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* Header and filter container */}
+      <Box sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, padding: 2 }}>
+        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}> 
+          Location Management
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <Box sx={{ flex: 7, mr: 2 }}>
+            <TextField
+              fullWidth
+              label="Filter by name or address"
+              value={filterQuery}
+              onChange={(e) => {
+                setFilterQuery(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+          </Box>
+          <Box sx={{ flex: 3 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => navigate('/admin/locations/add')}
+            >
+              Add New Location
+            </Button>
+          </Box>
+        </Box>
       </Box>
-      <Box sx={{ mb: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/admin/locations/add')}
-        >
-          Add New Location
-        </Button>
-      </Box>
-      <TableContainer component={Paper}>
+
+      {/* Table for displaying locations */}
+      <TableContainer component={Paper} sx={{ flex: 1, backgroundColor: '#f0f0f0' }}>
         <Table aria-label="locations table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: 'lightgrey', position: 'sticky', top: 0, zIndex: 1 }}>
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell>Address</TableCell>
@@ -135,18 +143,50 @@ const LocationManagement = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Pagination with icons and enlarged input for page number */}
       {totalPages > 1 && (
-        <Box sx={{ textAlign: 'center', mt: 2 }}>
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <Button
-              key={index}
-              variant={currentPage === index + 1 ? 'contained' : 'outlined'}
-              sx={{ mx: 0.5 }}
-              onClick={() => setCurrentPage(index + 1)}
-            >
-              {index + 1}
-            </Button>
-          ))}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}>
+          <IconButton
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+            aria-label="First Page"
+            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
+          >
+            <FirstPageIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            aria-label="Previous Page"
+            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
+          >
+            <ChevronLeftIcon />
+          </IconButton>
+          <TextField
+            type="number"
+            value={currentPage}
+            onChange={handlePageChange}
+            inputProps={{ min: 1, max: totalPages }}
+            sx={{ width: 80, mx: 1 }} // Enlarged input box
+          />
+          <Typography variant="body1">of {totalPages}</Typography>
+          <IconButton
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            aria-label="Next Page"
+            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
+          >
+            <ChevronRightIcon />
+          </IconButton>
+          <IconButton
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages}
+            aria-label="Last Page"
+            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
+          >
+            <LastPageIcon />
+          </IconButton>
         </Box>
       )}
     </Box>

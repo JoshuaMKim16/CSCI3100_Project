@@ -1,57 +1,129 @@
-// Admin.jsx
-import React from 'react';
+// Components/Admin/Admin.jsx
+import React, { useState } from 'react';
+import {
+  Container,
+  Box,
+  Typography,
+  Paper,
+  Button,
+  IconButton,
+  CircularProgress
+} from '@mui/material';
 import { Link, Outlet } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip
+} from 'recharts';
 
 const Admin = () => {
+  const [isOpen, setIsOpen] = useState(true); // Sidebar toggle state
+
+  const toggleSidebar = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <Container
-      maxWidth="lg"
-      // Ensures the overall container takes full viewport height and allows vertical scrolling
+      maxWidth={false}
       sx={{
-        maxHeight: '100vh',
-        overflowY: 'auto',
-        pb: 4,
+        height: '100vh',
+        width: '100%',
+        overflow: 'none',
+        position: 'relative'
       }}
     >
-      {/* Sticky header so the h4 and nav remain always visible at the top */}
-      <Box
+      {/* Header Menu Icon Button */}
+      <IconButton
+        onClick={toggleSidebar}
         sx={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          bgcolor: 'background.paper',
-          pt: 2,
-          pb: 2,
-          boxShadow: 1,
+          position: 'absolute',
+          top: 10,
+          left: 10,
+          zIndex: 101,
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%'
         }}
       >
-        <Typography variant="h4" align="center" gutterBottom>
-          Admin Dashboard
-        </Typography>
+        {isOpen ? <CloseIcon /> : <MenuIcon />}
+      </IconButton>
+
+      {/* Sidebar */}
+      {isOpen && (
         <Box
-          component="nav"
           sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '200px',
+            height: '100%',
+            bgcolor: 'background.paper',
+            boxShadow: 0,
+            zIndex: 100,
+            pt: 2,
             display: 'flex',
-            justifyContent: 'center',
-            gap: 2,
-            flexWrap: 'wrap',
+            flexDirection: 'column',
+            alignItems: 'flex-start'
           }}
         >
-          <Button variant="contained" component={Link} to="/admin/users">
-            Manage Users
-          </Button>
-          <Button variant="contained" component={Link} to="/admin/locations">
-            Manage Locations
-          </Button>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 5, ml: 3 }}>
+            Welcome! Admin.
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, ml: 2 }}>
+            <Button
+              variant="text"
+              sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }}
+              component={Link}
+              to="/admin"
+            >
+              Dashboard
+            </Button>
+            <Button
+              variant="text"
+              sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }}
+              component={Link}
+              to="/admin/users"
+            >
+              Manage Users
+            </Button>
+            <Button
+              variant="text"
+              sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }}
+              component={Link}
+              to="/admin/locations"
+            >
+              Manage Locations
+            </Button>
+            <Button
+              variant="text"
+              color="warning"
+              sx={{ textAlign: 'left', justifyContent: 'flex-start' }}
+              component={Link}
+              to="/login"
+            >
+              Log Out
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      )}
 
-      {/* The rendered child pages will appear below the header inside this scrollable container */}
-      <Box sx={{ mt: 2 }}>
+      {/* Main Content Area */}
+      <Box
+        sx={{
+          ml: isOpen ? '200px' : 0,
+          mt: 2,
+          transition: 'margin-left 0.3s',
+          p: 2
+        }}
+      >
+        {/* This renders the matched nested route */}
         <Outlet />
       </Box>
     </Container>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import '../../App.css'; // Import your CSS file for styling
+import './Login.css';
 
 const Start = () => {
   const navigate = useNavigate(); // Initialize navigate
@@ -11,12 +11,14 @@ const Start = () => {
   };
 
   return (
+    <div className='body'>
     <div className="main-container">
       <h1 className="site-title">Traveltailor</h1>
       <p className="welcome-message">Tailored recommendations for every visitor</p>
       <button className="start-button" onClick={handleStartClick}>
         Start
       </button>
+    </div>
     </div>
   );
 };
