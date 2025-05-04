@@ -7,7 +7,8 @@ import ForgotPassword from './Components/login/ForgotPassword';
 import ResetPassword from './Components/login/ResetPassword';
 
 import SearchPage from './Components/main/SearchPage';
-import Tours from './Components/main/Tours';
+import Tours from './Components/main/Tours'; // for main page
+import TourList from "./Components/main/TourList"; // for tour page
 import TourDetails from './Components/main/TourDetails';
 import ShoppingCart from './Components/main/ShoppingCart';
 import UserProfile from './Components/UserProfile/UserProfile';
@@ -57,6 +58,7 @@ function App() {
               <Route path="/searchpage" element={<SearchPage />} />
               <Route path="/main" element={<Tours />} />
               <Route path="/tours/:id" element={<TourDetails />} />
+              <Route path="/tour" element={<TourList />} />
               <Route path="/planner" element={<ShoppingCart />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/activity" element={<UserActivity />} />

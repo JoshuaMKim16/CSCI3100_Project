@@ -147,8 +147,14 @@ const Tours = () => {
               boxShadow: "none",
             }}
           >
-            <Toolbar style={{ display: "flex", justifyContent: "space-between", alignItems: "center", // Vertically center all items in the navbar
-      position: "relative"}}>
+            <Toolbar
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center", // Vertically center all items in the navbar
+                position: "relative",
+              }}
+            >
               {/* Left Section (Logo) */}
               <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
                 <Button
@@ -164,16 +170,21 @@ const Tours = () => {
               </div>
 
               {/* Center Section (Navbar Items) */}
-              <div style={{ position: "absolute", // Position absolutely relative to the toolbar
-                            left: "50%", // Center horizontally
-                            top: "50%", // Center vertically
-                            transform: "translate(-50%, -50%)", // Adjust for exact center alignment
-                            display: "flex",
-                            gap: "30px",
-                            textAlign: "center", 
-                            }}>
+              <div
+                style={{
+                  position: "absolute", // Position absolutely relative to the toolbar
+                  left: "50%", // Center horizontally
+                  top: "50%", // Center vertically
+                  transform: "translate(-50%, -50%)", // Adjust for exact center alignment
+                  display: "flex",
+                  gap: "30px",
+                  textAlign: "center",
+                }}
+              >
+                {/* Home Navigation */}
                 <Button
                   color="inherit"
+                  onClick={() => navigate("/main")} // Navigate to /main
                   style={{
                     color: navbarFontColor,
                     fontSize: "18px",
@@ -182,9 +193,11 @@ const Tours = () => {
                 >
                   HOME
                 </Button>
+
+                {/* Tour Navigation */}
                 <Button
                   color="inherit"
-                  onClick={handleScrollToTours}
+                  onClick={() => navigate("/tour")} // Navigate to /tour
                   style={{
                     color: navbarFontColor,
                     fontSize: "18px",
@@ -193,8 +206,11 @@ const Tours = () => {
                 >
                   TOUR
                 </Button>
+
+                {/* Forum Navigation */}
                 <Button
                   color="inherit"
+                  onClick={() => navigate("/forum")} // Navigate to /forum
                   style={{
                     color: navbarFontColor,
                     fontSize: "18px",
@@ -203,6 +219,7 @@ const Tours = () => {
                 >
                   FORUM
                 </Button>
+
                 <Button
                   color="inherit"
                   onClick={handleNavigateToPlanner}
@@ -239,7 +256,6 @@ const Tours = () => {
                 <Button
                   onClick={handleLogout}
                   style={{
-                     // Red color for logout
                     color: "skyblue",
                     fontFamily: "Poppins, sans-serif",
                     padding: "5px 15px",
