@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -9,7 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Carousel from 'react-material-ui-carousel';
-import hkBackground from "./hk_background.png"; // Import the fallback image
+import hkBackground from "./hk_background.png"; // Fallback image
 
 const SearchPage = () => {
   const { state } = useLocation();
@@ -20,15 +20,19 @@ const SearchPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const resultsPerPage = 4;
 
-  const [filteredCategories, setFilteredCategories] = useState([]); // Categories from search results
-  const [selectedCategories, setSelectedCategories] = useState([]); // User-selected categories
+  const [filteredCategories, setFilteredCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const [carouselLocations, setCarouselLocations] = useState([]); // Randomly chosen 7 locations for Carousel
-  const [hasSearched, setHasSearched] = useState(false); // Tracks if the user has submitted the search
+  // Select 7 random locations for the carousel.
+  const [carouselLocations, setCarouselLocations] = useState([]);
+  // Object to store pre-fetched image URLs for carousel locations.
+  const [carouselImages, setCarouselImages] = useState({});
+
+  const [hasSearched, setHasSearched] = useState(false);
 
   const navigate = useNavigate();
 
-  // Fetch locations from the backend
+  // Fetch all locations from the backend.
   const fetchLocations = async () => {
     try {
       const response = await fetch('http://localhost:3000/api/locations');
@@ -44,7 +48,7 @@ const SearchPage = () => {
     fetchLocations();
   }, []);
 
-  // When locations change, select 7 random locations for the Carousel
+  // When locations change, randomly choose 7 locations for the carousel.
   useEffect(() => {
     if (locations.length > 0) {
       const shuffled = [...locations].sort(() => Math.random() - 0.5);
@@ -52,46 +56,66 @@ const SearchPage = () => {
     }
   }, [locations]);
 
-  // Handle search submission
+  // Fetch images only for these 7 carousel locations.
+  useEffect(() => {
+    const fetchCarouselImages = async () => {
+      const newImages = {};
+      await Promise.all(
+        carouselLocations.map(async (loc) => {
+          try {
+            if (loc.picture && loc.picture.length > 0) {
+              const filename = loc.picture[0].split('/').pop().split('.')[0];
+              const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
+              if (!response.ok) {
+                throw new Error('Fetching specific image failed');
+              }
+              const data = await response.json();
+              // Expect the API to return an object with secure_url property
+              newImages[loc._id] = data.secure_url ? data.secure_url : hkBackground;
+            } else {
+              newImages[loc._id] = hkBackground;
+            }
+          } catch (err) {
+            console.error('Error fetching carousel image for', loc.name, ":", err);
+            newImages[loc._id] = hkBackground;
+          }
+        })
+      );
+      setCarouselImages(newImages);
+    };
+
+    if (carouselLocations.length > 0) {
+      fetchCarouselImages();
+    }
+  }, [carouselLocations]);
+
+  // Handle search submission.
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    setHasSearched(true); // Mark the search as submitted
-    filterLocations(); // Filter locations based on the search input and selected categories
+    setHasSearched(true);
+    filterLocations();
   };
 
-  // Handle location clicks
+  // Navigate to individual tour page.
   const handleLocationClick = (id) => {
-    navigate(`/tours/${id}`); // Navigate to the tour page with the location ID
+    navigate(`/tours/${id}`);
   };
 
-  // Filter locations based on search input and selected categories (using AND logic for categories)
+  // Filter locations based on search input and selected categories.
   const filterLocations = () => {
     const queryLower = searchInput.toLowerCase();
-
-    // Filter locations based on search query and selected categories
     const matches = locations.filter((location) => {
-      // Check if the search input matches the name or description
       const matchesSearch =
         (location.name || '').toLowerCase().includes(queryLower) ||
         (location.description || '').toLowerCase().includes(queryLower);
-
-      // Check if the location's categories include all selected categories (AND logic)
       const matchesCategory =
-        selectedCategories.length === 0 || // If no category is selected, show all
-        selectedCategories.every((selectedCategory) =>
-          location.type.includes(selectedCategory) // Ensure ALL selected categories are in the location's `type`
-        );
-
+        selectedCategories.length === 0 ||
+        selectedCategories.every((selectedCategory) => location.type.includes(selectedCategory));
       return matchesSearch && matchesCategory;
     });
-
     setFilteredLocations(matches);
-    setCurrentPage(1); // Reset to the first page on new filter
-
-    // Update categories based on the filtered locations
-    const categoriesFromResults = Array.from(
-      new Set(matches.flatMap((location) => location.type))
-    );
+    setCurrentPage(1);
+    const categoriesFromResults = Array.from(new Set(matches.flatMap((location) => location.type)));
     setFilteredCategories(categoriesFromResults);
   };
 
@@ -101,12 +125,11 @@ const SearchPage = () => {
     }
   }, [selectedCategories]);
 
-  // Handle category checkbox change
   const handleCategoryChange = (category) => {
     setSelectedCategories((prevSelected) =>
       prevSelected.includes(category)
-        ? prevSelected.filter((c) => c !== category) // Remove if already selected
-        : [...prevSelected, category] // Add if not selected
+        ? prevSelected.filter((c) => c !== category)
+        : [...prevSelected, category]
     );
   };
 
@@ -119,13 +142,13 @@ const SearchPage = () => {
     setCurrentPage(value);
   };
 
-  // Helper function to format categories
+  // Helper to format category names
   const formatCategory = (categoryArray) => {
-    if (!Array.isArray(categoryArray)) return ''; // Ensure it's an array
+    if (!Array.isArray(categoryArray)) return '';
     return categoryArray
       .map((category) =>
         category
-          .split('_') // Split each string on underscores
+          .split('_')
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ')
       )
@@ -137,33 +160,17 @@ const SearchPage = () => {
       {/* Navbar */}
       <AppBar
         position="fixed"
-        sx={{
-          backgroundColor: "transparent",
-          boxShadow: "none",
-          zIndex: 1300,
-        }}
+        sx={{ backgroundColor: "transparent", boxShadow: "none", zIndex: 1300 }}
       >
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            position: "relative",
-          }}
-        >
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }}>
           <Box sx={{ display: "flex", gap: "20px", textAlign: "left" }}>
             <Button
               color="inherit"
-              sx={{
-                color: "black",
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
+              sx={{ color: "black", fontSize: "18px", fontFamily: "Poppins, sans-serif" }}
             >
               LOGO
             </Button>
           </Box>
-
           <Box
             sx={{
               position: "absolute",
@@ -178,49 +185,32 @@ const SearchPage = () => {
             <Button
               color="inherit"
               onClick={() => navigate("/main")}
-              sx={{
-                color: "black",
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
+              sx={{ color: "black", fontSize: "18px", fontFamily: "Poppins, sans-serif" }}
             >
               HOME
             </Button>
             <Button
               color="inherit"
               onClick={() => navigate("/tour")}
-              sx={{
-                color: "black",
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
+              sx={{ color: "black", fontSize: "18px", fontFamily: "Poppins, sans-serif" }}
             >
               TOUR
             </Button>
             <Button
               color="inherit"
               onClick={() => navigate("/forum")}
-              sx={{
-                color: "black",
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
+              sx={{ color: "black", fontSize: "18px", fontFamily: "Poppins, sans-serif" }}
             >
               FORUM
             </Button>
             <Button
               color="inherit"
               onClick={() => navigate("/planner")}
-              sx={{
-                color: "black",
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
+              sx={{ color: "black", fontSize: "18px", fontFamily: "Poppins, sans-serif" }}
             >
               PLANNER
             </Button>
           </Box>
-
           <Box sx={{ display: "flex", gap: "15px", textAlign: "right" }}>
             <Button
               color="inherit"
@@ -257,7 +247,6 @@ const SearchPage = () => {
 
       {/* Search Bar */}
       <Box
-        className="muiBox-root css-15hzn80"
         sx={{
           position: 'absolute',
           top: '80px',
@@ -306,10 +295,12 @@ const SearchPage = () => {
 
       {/* Main Content Wrapper */}
       <Box sx={{ position: 'relative', marginTop: '165px', width: '100%' }}>
-        {/* Carousel of Random Locations */}
+        {/* Carousel of Random Locations (Only 7 images will be displayed) */}
         {!hasSearched && carouselLocations.length > 0 && (
-          <Box className="muiBox-root css-7v3zop" sx={{ width: '80%', margin: 'auto' }}>
-            <h2 style={{ textAlign: 'center', marginBottom: '20px', color: 'lightblue' }}>Trending Destinations</h2>
+          <Box sx={{ width: '80%', margin: 'auto' }}>
+            <h2 style={{ textAlign: 'center', marginBottom: '20px', color: 'lightblue' }}>
+              Trending Destinations
+            </h2>
             <Carousel
               autoPlay={true}
               interval={5000}
@@ -335,16 +326,34 @@ const SearchPage = () => {
                     cursor: 'pointer',
                   }}
                 >
-                  <img
-                    src={location.image ? location.image : hkBackground}
-                    alt={location.name}
-                    style={{
-                      width: '75%',
-                      height: '600px',
-                      objectFit: 'cover',
-                      borderRadius: '8px',
-                    }}
-                  />
+                  {/* Render the image from the pre-fetched carouselImages mapping */}
+                  {carouselImages[location._id] ? (
+                    <img
+                      src={carouselImages[location._id]}
+                      alt={location.name}
+                      style={{
+                        width: '75%',
+                        height: '600px',
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                      }}
+                    />
+                  ) : (
+                    // Loading indicator if the API call is still in progress.
+                    <div
+                      style={{
+                        width: '75%',
+                        height: '600px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#f0f0f0',
+                        borderRadius: '8px'
+                      }}
+                    >
+                      <p>Loading...</p>
+                    </div>
+                  )}
                   <h3 style={{ marginTop: '10px' }}>{location.name}</h3>
                 </Box>
               ))}

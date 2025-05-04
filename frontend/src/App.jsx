@@ -13,6 +13,7 @@ import TourDetails from './Components/main/TourDetails';
 import ShoppingCart from './Components/main/ShoppingCart';
 import UserProfile from './Components/UserProfile/UserProfile';
 import UserActivity from './Components/UserProfile/UserActivity';
+import Chat from "./Components/main/LiveChat"
 
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
@@ -26,10 +27,6 @@ import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';
 import AppLayout from './Components/utils/AppLayout';
 import SubscribePage from './Components/Advertisement/SubscribePage';
-
-
-////////////// Testing DONE ///////////////
-import Chat from "./TESTING/chat_testing"
 
 import './App.css';
 
@@ -46,11 +43,6 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset_password" element={<ResetPassword />} />
 
-
-          {/* CHAT TESTING DONE */}
-          <Route path="/chat" element={<Chat />} />
-
-
           {/* Protected Routes for Registered (Non-Admin) Users */}
           <Route element={<ProtectedRoute />}>
             {/* Wrap regular user pages with AppLayout */}
@@ -59,6 +51,7 @@ function App() {
               <Route path="/main" element={<Tours />} />
               <Route path="/tours/:id" element={<TourDetails />} />
               <Route path="/tour" element={<TourList />} />
+              <Route path="/forum" element={<Chat />} />
               <Route path="/planner" element={<ShoppingCart />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/activity" element={<UserActivity />} />
