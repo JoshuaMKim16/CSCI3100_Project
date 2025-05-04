@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Card,  Button } from 'react-bootstrap';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from'react-icons/fa'
-import "./tour-card.css"; 
+import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from 'react-icons/fa';
 
 const TourCard = ({ location }) => {
   const [specificImage, setSpecificImage] = useState(null);
   const [fetchError, setFetchError] = useState('');
-  const [isImageLoading, setIsImageLoading] = useState(true); // Add loading state
+  const [isImageLoading, setIsImageLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchSpecificImage = async () => {
@@ -24,7 +29,7 @@ const TourCard = ({ location }) => {
       console.error('Error fetching specific image:', err);
       setFetchError('Error fetching specific image: ' + err.message);
     } finally {
-      setIsImageLoading(false); // Set loading to false when done
+      setIsImageLoading(false);
     }
   };
 
@@ -41,81 +46,109 @@ const TourCard = ({ location }) => {
 
   return (
     <Card
-      className="tour_card"
-      style={{
-        width: '400px',
-        height: 'auto',
-        boxShadow: '20px',
-        borderRadius: '5px',
+      sx={{
+        width: 400,
+        height: 450, // Fixed card height
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 2,
+        boxShadow: 3,
       }}
     >
-      {isImageLoading ? ( // Show a loading placeholder while the image is being fetched
-        <div
-          style={{
+      {isImageLoading ? (
+        <Box
+          sx={{
             width: '100%',
-            height: '200px',
+            height: 200,
+            backgroundColor: '#f0f0f0',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: '#f0f0f0',
           }}
         >
-          <p>Loading...</p>
-        </div>
+          <Typography>Loading...</Typography>
+        </Box>
       ) : (
-        <Card.Img
-          variant="top"
-          src={specificImage?.secure_url}
+        <CardMedia
+          component="img"
+          image={specificImage?.secure_url}
           alt={specificImage?.public_id}
-          style={{
-            height: 'auto',
-            width: 'auto',
-            borderRadius: '5px',
+          sx={{
+            height: 200,
+            objectFit: 'cover',
             cursor: 'pointer',
           }}
           onClick={() => navigate(`/tours/${location._id}`)}
         />
       )}
-      <Card.Body style={{ padding: '10px' }}>
-        <Card.Title>
+      <CardContent
+        sx={{
+          flexGrow: 1,
+          overflow: 'hidden',
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="div"
+          sx={{ fontWeight: 'bold', color: 'black', mb: 1 }}
+        >
           <Link
             to={`/tours/${location._id}`}
-            style={{
-              color: 'blue',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              textDecoration: 'none',
-            }}
-          >{` ${location.name}`}</Link>
-        </Card.Title>
-        <br />
-        <Card.Subtitle style={{ color: 'grey' }}>
-          <FaMapMarkerAlt />
-          {` ${location.address}`}
-        </Card.Subtitle>
-        <Card.Subtitle style={{ color: 'grey' }}>
-          <FaTag />
-          {` ${location.type.join(', ')}`}
-        </Card.Subtitle>
-        <Card.Subtitle style={{ color: 'grey' }}>
-          <FaMoneyBillWave />
-          {location.price ? `${location.price}` : ' N/A '}/ person
-        </Card.Subtitle>
-        <br />
-        <Button
-          variant="primary"
-          size="sm"
-          style={{
-            width: '30%',
-            position: 'relative',
-            marginBottom: '10px',
-            left: '65%',
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            {location.name}
+          </Link>
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            mb: 0.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
-          onClick={handleClick}
         >
+          <FaMapMarkerAlt style={{ marginRight: 5 }} />
+          {location.address}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            mb: 0.5,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <FaTag style={{ marginRight: 5 }} />
+          {location.type.join(', ')}
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <FaMoneyBillWave style={{ marginRight: 5 }} />
+          {location.price ? `${location.price}` : 'N/A'}/ person
+        </Typography>
+      </CardContent>
+      <CardActions sx={{ justifyContent: 'flex-end', pr: 2, pb: 2 }}>
+        <Button variant="contained" size="small" onClick={handleClick}>
           View Details
         </Button>
-      </Card.Body>
+      </CardActions>
     </Card>
   );
 };
