@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaTag } from 'react-icons/fa';
 
 const TourCard = ({ location }) => {
   const [specificImage, setSpecificImage] = useState(null);
@@ -48,7 +48,7 @@ const TourCard = ({ location }) => {
     <Card
       sx={{
         width: 400,
-        height: 450, // Fixed card height
+        height: 455, // Fixed card height
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 2,
@@ -84,7 +84,7 @@ const TourCard = ({ location }) => {
       <CardContent
         sx={{
           flexGrow: 1,
-          overflow: 'hidden',
+          overflow: 'auto',
         }}
       >
         <Typography
@@ -106,9 +106,8 @@ const TourCard = ({ location }) => {
             display: 'flex',
             alignItems: 'center',
             mb: 0.5,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+            // Allow wrapping instead of cutting off text
+            whiteSpace: 'normal',
           }}
         >
           <FaMapMarkerAlt style={{ marginRight: 5 }} />
@@ -120,28 +119,12 @@ const TourCard = ({ location }) => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            mb: 0.5,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+            // Allow wrapping instead of cutting off text
+            whiteSpace: 'normal',
           }}
         >
           <FaTag style={{ marginRight: 5 }} />
-          {location.type.join(', ')}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          <FaMoneyBillWave style={{ marginRight: 5 }} />
-          {location.price ? `${location.price}` : 'N/A'}/ person
+          {Array.isArray(location.type) ? location.type.join(', ') : location.type}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end', pr: 2, pb: 2 }}>

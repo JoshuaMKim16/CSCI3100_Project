@@ -126,6 +126,19 @@ const TourList = () => {
     navigate("/login");
   };
 
+  // Helper function to randomly pick n items from an array
+  const getRandomItems = (arr, n) => {
+    // Create a copy to avoid mutating original array
+    const arrCopy = [...arr];
+    // Shuffle the array
+    for (let i = arrCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
+    }
+    // Return first n items or the full array if not enough items.
+    return arrCopy.slice(0, n);
+  };
+
   const fetchLocations = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/locations");
@@ -143,9 +156,9 @@ const TourList = () => {
       });
 
       setCategories({
-        museum: categorized["museum"]?.slice(0, 4) || [],
-        tourist_attraction: categorized["tourist_attraction"]?.slice(0, 4) || [],
-        restaurant: categorized["restaurant"]?.slice(0, 4) || [],
+        museum: getRandomItems(categorized["museum"] || [], 4),
+        tourist_attraction: getRandomItems(categorized["tourist_attraction"] || [], 4),
+        restaurant: getRandomItems(categorized["restaurant"] || [], 4),
       });
     } catch (error) {
       console.error("Error fetching locations:", error);
@@ -168,7 +181,7 @@ const TourList = () => {
     return <WbSunnyIcon fontSize="medium" />;
   };
 
-  // Fetch forecast data (Hong Kong 9 day forecast) from the provided API.
+  // Fetch forecast data (Hong Kong 7-day forecast) from the provided API.
   const fetchForecast = async () => {
     try {
       const response = await fetch(
@@ -234,7 +247,7 @@ const TourList = () => {
           {label}
         </Typography>
         <Grid container spacing={2} justifyContent="center">
-          {items.slice(0, 4).map((location, index) => (
+          {items.map((location, index) => (
             <Grid
               item
               key={index}
