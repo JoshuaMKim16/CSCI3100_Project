@@ -34,7 +34,7 @@ const Start = () => {
           alignItems: 'flex-start'
         }}
       >
-      <img src={logo} alt="Logo" style={{ width: '10%', marginBottom: '20px' }} />
+      <img src={logo} alt="Logo" style={{ width: '10%', marginBottom: '15px' }} />
         <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2, justifyContent: 'flex-end', width: '100%' }}>
           <Button
             variant="outlined"
@@ -65,7 +65,7 @@ const Start = () => {
         <img 
           src={require('./demo.gif')} 
           alt="Demo" 
-          style={{ width: '80%', maxWidth: '600px' }} // Adjust size
+          style={{ width: '90%', maxWidth: '700px' }} // Adjust size
         />
       </div>
 
