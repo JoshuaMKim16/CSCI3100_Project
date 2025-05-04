@@ -13,7 +13,8 @@ import TourDetails from './Components/main/TourDetails';
 import ShoppingCart from './Components/main/ShoppingCart';
 import UserProfile from './Components/UserProfile/UserProfile';
 import UserActivity from './Components/UserProfile/UserActivity';
-import Chat from "./Components/main/LiveChat"
+import Chat from "./Components/main/LiveChat"; // for socket.io chatting
+import AIChat from "./Components/utils/AIChatbot"; // for AI Chatbot
 
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
@@ -47,8 +48,8 @@ function App() {
           <Route element={<ProtectedRoute />}>
             {/* Wrap regular user pages with AppLayout */}
             <Route element={<AppLayout />}>
-              <Route path="/searchpage" element={<SearchPage />} />
               <Route path="/main" element={<Tours />} />
+              <Route path="/searchpage" element={<SearchPage />} />
               <Route path="/tours/:id" element={<TourDetails />} />
               <Route path="/tour" element={<TourList />} />
               <Route path="/forum" element={<Chat />} />

@@ -6,6 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import CommentsSection from './CommentsSection';
 import "./tour-details.css";
+import ChatbotFAB from "../utils/AIChatbot";
 
 const containerStyle = {
   width: '100%',
@@ -228,6 +229,7 @@ const TourDetails = () => {
         {/* Insert the CommentsSection component and pass the location ID */}
         {location._id && <CommentsSection locationId={location._id} />}
       </Container>
+      <ChatbotFAB/>
     </section>
   );
 };

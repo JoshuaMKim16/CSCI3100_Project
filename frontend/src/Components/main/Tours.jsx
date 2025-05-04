@@ -16,6 +16,8 @@ import {
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "../../App.css";
+// Import the chatbot component from utils folder
+import ChatbotFAB from "../utils/AIChatbot";
 
 const Tours = () => {
   const [touristAttractions, setTouristAttractions] = useState([]);
@@ -354,6 +356,8 @@ const Tours = () => {
           </div>
         </div>
       )}
+      {/* Integrate the AI Chatbot FAB here so it appears on all pages */}
+      <ChatbotFAB />
     </div>
   );
 };

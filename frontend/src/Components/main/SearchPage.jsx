@@ -10,6 +10,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Carousel from 'react-material-ui-carousel';
 import hkBackground from "./hk_background.png"; // Fallback image
+import ChatbotFAB from "../utils/AIChatbot";
 
 const SearchPage = () => {
   const { state } = useLocation();
@@ -458,6 +459,7 @@ const SearchPage = () => {
           </Box>
         )}
       </Box>
+      <ChatbotFAB/>
     </div>
   );
 };

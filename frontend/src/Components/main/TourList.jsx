@@ -15,6 +15,7 @@ import hkBackground from "./hk_background1.jpg";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import CloudIcon from "@mui/icons-material/Cloud";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
+import ChatbotFAB from "../utils/AIChatbot";
 
 // FakeCommentsCarousel Component
 const FakeCommentsCarousel = () => {
@@ -640,6 +641,7 @@ const TourList = () => {
           </Box>
         </Box>
       </Modal>
+      <ChatbotFAB/>
     </Box>
   );
 };

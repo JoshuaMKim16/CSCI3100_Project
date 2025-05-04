@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import ChatbotFAB from "../utils/AIChatbot";
 
 const ENDPOINT = "http://localhost:3000";
 let socket;
@@ -373,6 +374,7 @@ const LiveChat = () => {
           </button>
         </form>
       </div>
+      <ChatbotFAB/>
     </div>
   );
 };
