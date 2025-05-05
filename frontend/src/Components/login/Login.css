@@ -1,23 +1,29 @@
 .body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-image: url('./background.jpg');
-    background-size: cover; 
-    background-position: center;  
-    height: 100vh; 
-    width: 100vw;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: none; /* Ensure no background is set */
+}
 
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+}
   /* login page */
   .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgb(0, 0, 0);
-    background-color: #ffffff;
+    width: 100%; /* Ensure it doesn't add a layer */
+    height: 100%; /* Ensure it covers the viewport */
+    background: none; /* Remove any background */
   }
   
   .login-form {
@@ -34,7 +40,6 @@
     justify-content: center;
     align-items: center;
     color: rgb(0, 0, 0);
-    background-color: #ffffff;
   }
   
   .signup-form {
@@ -75,9 +80,6 @@
     cursor: pointer;   
   }
   
-  button:hover {
-    background-color: #a9dafd;
-  }
   
   .error-message {
     color: red;
@@ -85,4 +87,17 @@
     font-size: 15px;
     margin-bottom: 16px;
   }
+
+  /* Remove hover effects for all buttons */
+.MuiButton-root:hover {
+  background-color: unset !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+/* Add hover effect for the "LOGIN" button specifically */
+.login-button:hover {
+  background-color: #0288d1 !important; /* Slightly darker blue */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+}
   

@@ -1,10 +1,10 @@
-// Login.jsx
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import './Login.css';
 import Axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
-
+import { Button } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
@@ -14,29 +14,32 @@ const Login = () => {
   const [message, setMessage] = useState('');
 
   const navigate = useNavigate();
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    // Set playback rate to 0.6x when the component mounts
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.6;
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     Axios.post('http://localhost:3000/auth/login', { email, password })
-      .then(response => {
+      .then((response) => {
         if (response.data.status) {
-          // Merge the token into the user object since the token is returned separately.
           const userData = { ...response.data.user, token: response.data.token };
 
-          // Persist the combined user data (with token) in localStorage.
+          // Persist user data in localStorage
           localStorage.setItem('user', JSON.stringify(userData));
-          
-          // Optionally set up default Axios header for future requests.
           Axios.defaults.headers.common['Authorization'] = `Bearer ${userData.token}`;
-
-          // Update the AuthContext with the user data.
           setUser(userData);
 
-          setMessage("Login successful! Redirecting...");
+          setMessage('Login successful! Redirecting...');
           setError('');
 
-          // Redirect user based on role.
+          // Redirect based on role
           if (userData.is_admin) {
             setTimeout(() => {
               navigate('/admin');
@@ -48,50 +51,154 @@ const Login = () => {
           }
         } else {
           setMessage('');
-          setError("Invalid email or password.");
+          setError('Invalid email or password.');
         }
       })
-      .catch(err => {
+      .catch((err) => {
         setMessage('');
-        setError("Invalid email or password.");
+        setError('Invalid email or password.');
         console.error(err);
       });
   };
 
   return (
-    <div className='body'>
-    <div className='login-container'>
-      <form className='login-form' onSubmit={handleSubmit}>
-        <h2>Log in</h2>
-        
-        {message && <div className="success-message">{message}</div>}
-        {error && <div className="error-message">{error}</div>}
+    <div className="body" style={{ fontFamily: 'Poppins, sans-serif', position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      {/* Video Background */}
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: -1,
+        }}
+      >
+        <source src={require('./LogInVideo.mp4')} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-        <label htmlFor='email'>Email:</label>
-        <input 
-          type='email' 
-          placeholder='Email' 
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+      {/* Login Form */}
+      <div className="login-container" style={{ zIndex: 1, position: 'relative' }}>
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            padding: '30px',
+            borderRadius: '50px',
+            width: '350px',
+            boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)',
+            zIndex: 2,
+            position: 'relative', // Ensures absolute children are positioned within the form
+          }}
+        >
+          {/* Back Arrow */}
+          <div
+            className="back-arrow"
+            style={{
+              position: 'absolute',
+              top: '17px',
+              left: '20px',
+              cursor: 'pointer',
+              zIndex: 3,
+            }}
+          >
+            <Button
+              onClick={() => navigate('/')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                color: 'black',
+                textTransform: 'none',
+                fontSize: '16px',
+              }}
+            >
+              <ArrowBackIcon style={{ marginRight: '5px' }} /> Back
+            </Button>
+          </div>
 
-        <label htmlFor='password'>Password:</label>
-        <input 
-          type='password' 
-          placeholder='******'
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <h2 style={{ textAlign: 'center', marginBottom: '10px', marginTop: '30px' }}>Log in</h2>
 
-        <button type='submit'>Login</button>
-        <p>
-          <Link to="/forgotPassword">Forgot Password?</Link>
-        </p>
-        <p>
-          Don't Have An Account? <Link to="/signup">Sign Up</Link>
-        </p>
-      </form>
-    </div>   
+          {message && <div className="success-message" style={{ color: 'green', textAlign: 'center', marginBottom: '10px' }}>{message}</div>}
+          {error && <div className="error-message" style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>{error}</div>}
+
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{
+              width: '100%',
+              padding: '12px',
+              marginBottom: '20px',
+              borderRadius: '8px',
+              border: '1px solid #ccc',
+              fontSize: '16px',
+            }}
+          />
+
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            placeholder="******"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              width: '100%',
+              padding: '12px',
+              marginBottom: '20px',
+              borderRadius: '8px',
+              border: '1px solid #ccc',
+              fontSize: '16px',
+            }}
+          />
+
+          {/* Login Button */}
+          <Button
+            type="submit"
+            variant="contained"
+            className="login-button"
+            style={{
+              width: '100%',
+              backgroundColor: 'skyblue',
+              color: 'white',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              marginBottom: '15px',
+              padding: '12px',
+            }}
+          >
+            Login
+          </Button>
+
+          <p style={{ textAlign: 'center', marginBottom: '10px' }}>
+            <Button
+              variant="text"
+              onClick={() => navigate('/forgotPassword')}
+              style={{ fontSize: '14px', color: 'skyblue', textTransform: 'none' }}
+            >
+              Forgot Password?
+            </Button>
+          </p>
+          <p style={{ textAlign: 'center' }}>
+            Don't Have An Account?{' '}
+            <Button
+              variant="text"
+              onClick={() => navigate('/signup')}
+              style={{ fontSize: '14px', color: 'skyblue', textTransform: 'none', fontWeight: 'bold' }}
+            >
+              Sign Up
+            </Button>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
