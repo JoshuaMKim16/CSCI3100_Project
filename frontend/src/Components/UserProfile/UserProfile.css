@@ -72,3 +72,22 @@ background-size: cover;
 background-position: center;
 z-index: 1000; /* Ensure the banner is above other elements */
 }
+
+.profile-image-container {
+  background-image: url('./profile_none.png'); /* Adjust path as necessary */
+  background-size: cover; /* Ensure the background covers the grid item */
+  background-position: center; /* Center the image */
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.profile-image {
+  width: 100px; /* Set width as needed */
+  height: 100px; /* Set height to match width for a perfect circle */
+  width: 200px;
+  height: 200px;
+  border-radius: 50%; /* This creates the circular shape */
+  object-fit: cover; /* Ensures the image covers the area */
+  display: block; /* Ensures proper spacing */
+}

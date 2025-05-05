@@ -3,6 +3,7 @@ import { Container, Grid, Button, Alert, Typography, Box, AppBar, Toolbar, } fro
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
 import logo from '../login/Logo.png';
+import ChatbotFAB from "../utils/AIChatbot"
 
 
 import './UserProfile.css';
@@ -90,6 +91,7 @@ const UserProfile = () => {
   const navbarFontColor = "white";
 
   return (
+    <div>
     <Container className="user-profile-container">
       {/* Fixed Banner */}
 
@@ -236,12 +238,12 @@ const UserProfile = () => {
           </AppBar>
 
       <Grid container spacing={3} className="profile-header" sx={{ marginTop: '160px', width: '100%' }}> 
-        <Grid item md={3}>
-          <img
-            src={user.picture || '/default-profile.png'}
-            className="profile-image"
-          />
-        </Grid>
+      <Grid item md={3} className="profile-image-container">
+        <img
+          src={user.picture || '/profile_none.png'} // Fallback for other images
+          className="profile-image"
+        />
+      </Grid>
 
         <Grid item md={9}>
           <Box sx={{ mb: 2 }}>
@@ -322,6 +324,8 @@ const UserProfile = () => {
         </Grid>
       </Grid>
     </Container>
+    <ChatbotFAB />
+    </div>
   );
 };
 
