@@ -69,7 +69,7 @@ const Start = () => {
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: "bold",
               }}
-              onClick={() => navigate("/main")}
+              onClick={() => navigate("/")}
             >
               LOGO
             </Button>

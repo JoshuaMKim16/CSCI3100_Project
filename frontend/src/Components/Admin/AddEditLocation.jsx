@@ -1,12 +1,7 @@
-// AddEditLocation.jsx
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Container, Box, TextField, Button, Typography } from '@mui/material';
 
 const AddEditLocation = () => {
   const navigate = useNavigate();
@@ -61,75 +56,115 @@ const AddEditLocation = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ my: 4 }}>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          p: { xs: 2, sm: 3 },
-          borderRadius: 2,
-          boxShadow: 0,
-          bgcolor: 'background.paper',
-          width: '500px'
-        }}
-      >
-        <Typography variant="h5" align="left" sx={{ fontWeight: 'bold'}}>
-          {locId ? 'Edit Location' : 'Add New Location'}
-        </Typography>
-        <TextField
-          label="Name"
-          value={name}
-          required
-          onChange={(e) => setName(e.target.value)}
-        />
-        <TextField
-          label="Address"
-          value={address}
-          required
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <TextField
-          label="Price"
-          type="number"
-          value={price}
-          required
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <TextField
-          label="Categories (comma separated)"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        />
-        <TextField
-          label="Pictures (comma separated file names)"
-          value={picture}
-          onChange={(e) => setPicture(e.target.value)}
-        />
-        <TextField
-          label="Coordinates (longitude, latitude)"
-          value={coordinates}
-          required
-          onChange={(e) => setCoordinates(e.target.value)}
-        />
-        <TextField
-          label="Opening Hours (e.g., 900,1700)"
-          value={openingHours}
-          required
-          onChange={(e) => setOpeningHours(e.target.value)}
-        />
-        <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 2 }}>
-          <Button variant="contained" type="submit">
-            {locId ? 'Update Location' : 'Create Location'}
-          </Button>
-          <Button variant="outlined" onClick={() => navigate(-1)}>
-            Back
-          </Button>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f0f2f5',
+        fontFamily: 'Poppins, sans-serif',
+      }}
+    >
+      <Container maxWidth="sm">
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            padding: 4,
+            borderRadius: 4,
+            boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)',
+          }}
+        >
+          <Typography variant="h5" align="center" sx={{ fontWeight: 'bold', mb: 2 }}>
+            {locId ? 'Edit Location' : 'Add New Location'}
+          </Typography>
+
+          <TextField
+            label="Name"
+            value={name}
+            fullWidth
+            required
+            onChange={(e) => setName(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Address"
+            value={address}
+            fullWidth
+            required
+            onChange={(e) => setAddress(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Price"
+            type="number"
+            value={price}
+            fullWidth
+            required
+            onChange={(e) => setPrice(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Categories (comma separated)"
+            value={type}
+            fullWidth
+            onChange={(e) => setType(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Pictures (comma separated file names)"
+            value={picture}
+            fullWidth
+            onChange={(e) => setPicture(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Coordinates (longitude, latitude)"
+            value={coordinates}
+            fullWidth
+            required
+            onChange={(e) => setCoordinates(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Opening Hours (e.g., 900,1700)"
+            value={openingHours}
+            fullWidth
+            required
+            onChange={(e) => setOpeningHours(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                width: '48%',
+                backgroundColor: 'skyblue',
+                color: 'white',
+                fontWeight: 'bold',
+              }}
+            >
+              {locId ? 'Update Location' : 'Create Location'}
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => navigate(-1)}
+              sx={{
+                width: '48%',
+                color: 'skyblue',
+                borderColor: 'skyblue',
+                fontWeight: 'bold',
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

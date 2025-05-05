@@ -1,17 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Typography, Box, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import {
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Pagination,
+} from '@mui/material';
 
 const LocationManagement = () => {
   const [locations, setLocations] = useState([]);
   const [filterQuery, setFilterQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const locationsPerPage = 6;
+  // Display 5 items per page
+  const locationsPerPage = 5;
   const navigate = useNavigate();
 
   const getAuthHeader = () => {
@@ -19,7 +29,6 @@ const LocationManagement = () => {
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
-  // Fetch locations from API
   const fetchLocations = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/api/locations', {
@@ -63,132 +72,170 @@ const LocationManagement = () => {
   const currentLocations = filteredLocations.slice(indexOfFirstLocation, indexOfLastLocation);
   const totalPages = Math.ceil(filteredLocations.length / locationsPerPage);
 
-  const handlePageChange = (e) => {
-    const page = Number(e.target.value);
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
   return (
-    <Box sx={{ my: 2, padding: 2, display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      {/* Header and filter container */}
-      <Box sx={{ position: 'sticky', top: 0, backgroundColor: 'white', zIndex: 10, padding: 2 }}>
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}> 
-          Location Management
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Box sx={{ flex: 7, mr: 2 }}>
+    <Box
+      sx={{
+        width: '100%',
+        height: '100vh', // Fixed height to fill viewport
+        overflowY: 'scroll', // Outer container is scrollable
+        boxSizing: 'border-box',
+        p: { xs: 2, sm: 3 }, // Responsive padding
+        backgroundColor: '#f9f9f9',
+      }}
+    >
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: { xs: '100%', md: '1200px' },
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+        }}
+      >
+        {/* Header & Search Section */}
+        <Box
+          sx={{
+            backgroundColor: 'white',
+            p: { xs: 2, sm: 3 },
+            borderRadius: 2,
+            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+            Location Management
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center', // Vertically align items
+              gap: 2, // Space between the search bar and button
+            }}
+          >
+            {/* Search Bar */}
             <TextField
               fullWidth
-              label="Filter by name or address"
+              label="Search by name or address"
               value={filterQuery}
               onChange={(e) => {
                 setFilterQuery(e.target.value);
                 setCurrentPage(1);
               }}
-            />
-          </Box>
-          <Box sx={{ flex: 3 }}>
-            <Button
               variant="outlined"
-              color="primary"
+              sx={{
+                fontSize: '14px',
+                flex: 3, // Takes 3/4 of the available space
+              }}
+            />
+            {/* Add Button */}
+            <Button
+              variant="contained"
+              disableElevation
               onClick={() => navigate('/admin/locations/add')}
+              fullWidth
+              sx={{
+                fontSize: '14px',
+                flex: 1, // Takes 1/4 of the available space
+                backgroundColor: 'skyblue',
+                '&:hover': {
+                  backgroundColor: 'skyblue',
+                },
+                color: 'white', // Ensure text remains visible
+                whiteSpace: 'nowrap', // Prevents text wrapping
+                boxShadow: 'none', // Removes hover shadow effect
+                padding: '15px 20px'
+              }}
             >
-              Add New Location
+              Add Location
             </Button>
           </Box>
         </Box>
-      </Box>
 
-      {/* Table for displaying locations */}
-      <TableContainer component={Paper} sx={{ flex: 1, backgroundColor: '#f0f0f0' }}>
-        <Table aria-label="locations table">
-          <TableHead sx={{ backgroundColor: 'lightgrey', position: 'sticky', top: 0, zIndex: 1 }}>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Categories</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {currentLocations.map((loc) => (
-              <TableRow key={loc._id}>
-                <TableCell>{loc.name}</TableCell>
-                <TableCell>{loc.address}</TableCell>
-                <TableCell>${loc.price}</TableCell>
-                <TableCell>{(loc.type || []).join(', ')}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    sx={{ mr: 1 }}
-                    onClick={() => handleEdit(loc)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    color="error"
-                    onClick={() => handleDelete(loc._id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        {/* Table & Pagination Section */}
+        <Box
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: 2,
+            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+            overflow: 'hidden',
+          }}
+        >
+          <TableContainer component={Paper} sx={{ overflow: 'auto' }}>
+            <Table stickyHeader>
+              <TableHead sx={{ backgroundColor: '#1976d2' }}>
+                <TableRow>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Address</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Categories</TableCell>
+                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentLocations.map((loc) => (
+                  <TableRow key={loc._id}>
+                    <TableCell>{loc.name}</TableCell>
+                    <TableCell>{loc.address}</TableCell>
+                    <TableCell>${loc.price}</TableCell>
+                    <TableCell>{(loc.type || []).join(', ')}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        size="small"
+                        sx={{
+                          backgroundColor: 'skyblue',
+                          '&:hover': {
+                            backgroundColor: 'skyblue',
+                          },
+                          color: 'white', // Ensure text remains visible
+                          boxShadow: 'none', // No shadow effect
+                          mr: 1,
+                        }}
+                        onClick={() => handleEdit(loc)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="error"
+                        onClick={() => handleDelete(loc._id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-      {/* Pagination with icons and enlarged input for page number */}
-      {totalPages > 1 && (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 2 }}>
-          <IconButton
-            onClick={() => setCurrentPage(1)}
-            disabled={currentPage === 1}
-            aria-label="First Page"
-            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              p: { xs: 1, sm: 2 },
+              borderTop: '1px solid #e0e0e0',
+              mt: 2,
+              mb: { xs: 12, sm: 10 },
+            }}
           >
-            <FirstPageIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-            aria-label="Previous Page"
-            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
-          >
-            <ChevronLeftIcon />
-          </IconButton>
-          <TextField
-            type="number"
-            value={currentPage}
-            onChange={handlePageChange}
-            inputProps={{ min: 1, max: totalPages }}
-            sx={{ width: 80, mx: 1 }} // Enlarged input box
-          />
-          <Typography variant="body1">of {totalPages}</Typography>
-          <IconButton
-            onClick={() => setCurrentPage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            aria-label="Next Page"
-            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
-          >
-            <ChevronRightIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => setCurrentPage(totalPages)}
-            disabled={currentPage === totalPages}
-            aria-label="Last Page"
-            sx={{ borderRadius: '50%',  width: '20px', height: '20px' }} // Round icon button
-          >
-            <LastPageIcon />
-          </IconButton>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={(e, page) => setCurrentPage(page)}
+              variant="outlined"
+              shape="rounded"
+              color="primary"
+            />
+          </Box>
         </Box>
-      )}
+      </Box>
     </Box>
   );
 };

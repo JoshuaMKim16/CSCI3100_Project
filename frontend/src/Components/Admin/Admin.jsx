@@ -1,29 +1,16 @@
-// Components/Admin/Admin.jsx
 import React, { useState } from 'react';
 import {
-  Container,
   Box,
   Typography,
-  Paper,
-  Button,
   IconButton,
-  CircularProgress
+  Container,
 } from '@mui/material';
 import { Link, Outlet } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  BarChart,
-  Bar,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip
-} from 'recharts';
 
 const Admin = () => {
-  const [isOpen, setIsOpen] = useState(true); // Sidebar toggle state
+  const [isOpen, setIsOpen] = useState(false); // Sidebar toggle state
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -33,97 +20,196 @@ const Admin = () => {
     <Container
       maxWidth={false}
       sx={{
+        fontFamily: 'Poppins, sans-serif',
         height: '100vh',
         width: '100%',
-        overflow: 'none',
-        position: 'relative'
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
       }}
     >
-      {/* Header Menu Icon Button */}
-      <IconButton
-        onClick={toggleSidebar}
+      {/* Sidebar */}
+      <Box
         sx={{
-          position: 'absolute',
-          top: 10,
-          left: 10,
-          zIndex: 101,
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%'
+          width: isOpen ? '270px' : '0px', // Sidebar width
+          height: '100%',
+          bgcolor: 'background.paper',
+          boxShadow: 2,
+          position: 'fixed', // Keep sidebar fixed
+          top: 0,
+          left: 0,
+          transition: 'width 0.3s ease-in-out', // Smooth transition for width
+          overflow: 'hidden', // Prevent content overflow when closed
+          zIndex: 100,
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {isOpen ? <CloseIcon /> : <MenuIcon />}
-      </IconButton>
+        {/* Sidebar Header */}
+        {isOpen && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '16px',
+              bgcolor: 'background.default',
+              boxShadow: 1,
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '18px',
+              }}
+            >
+              Welcome, Admin
+            </Typography>
 
-      {/* Sidebar */}
-      {isOpen && (
+            {/* Close Icon */}
+            <IconButton
+              onClick={toggleSidebar}
+              color="error"
+              sx={{
+                padding: '4px',
+                width: 'auto', // Prevent full width expansion
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        )}
+
+        {/* Sidebar Content */}
         <Box
           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '200px',
-            height: '100%',
-            bgcolor: 'background.paper',
-            boxShadow: 0,
-            zIndex: 100,
-            pt: 2,
+            mt: 2,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start'
+            alignItems: 'center', // Center navigation items
           }}
         >
-          <Typography variant="h6" sx={{ fontWeight: 'bold', mt: 5, ml: 3 }}>
-            Welcome! Admin.
+          <Typography
+            component={Link}
+            to="/admin"
+            sx={{
+              mb: 2,
+              textDecoration: 'none',
+              width: '90%', // Set a fixed width
+              maxWidth: '240px',
+              fontSize: '16px', // Increased font size
+              fontWeight: 'bold',
+              color: '#333',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            Dashboard
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, ml: 2 }}>
-            <Button
-              variant="text"
-              sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }}
-              component={Link}
-              to="/admin"
-            >
-              Dashboard
-            </Button>
-            <Button
-              variant="text"
-              sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }}
-              component={Link}
-              to="/admin/users"
-            >
-              Manage Users
-            </Button>
-            <Button
-              variant="text"
-              sx={{ mb: 1, textAlign: 'left', justifyContent: 'flex-start' }}
-              component={Link}
-              to="/admin/locations"
-            >
-              Manage Locations
-            </Button>
-            <Button
-              variant="text"
-              color="warning"
-              sx={{ textAlign: 'left', justifyContent: 'flex-start' }}
-              component={Link}
-              to="/login"
-            >
-              Log Out
-            </Button>
-          </Box>
+          <Typography
+            component={Link}
+            to="/admin/users"
+            sx={{
+              mb: 2,
+              textDecoration: 'none',
+              width: '90%',
+              maxWidth: '240px',
+              fontSize: '16px', // Increased font size
+              fontWeight: 'bold',
+              color: '#333',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            Manage Users
+          </Typography>
+          <Typography
+            component={Link}
+            to="/admin/locations"
+            sx={{
+              mb: 2,
+              textDecoration: 'none',
+              width: '90%',
+              maxWidth: '240px',
+              fontSize: '16px', // Increased font size
+              fontWeight: 'bold',
+              color: '#333',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            Manage Locations
+          </Typography>
+          <Typography
+            component={Link}
+            to="/login"
+            sx={{
+              textDecoration: 'none',
+              width: '90%',
+              maxWidth: '240px',
+              fontSize: '16px', // Increased font size
+              fontWeight: 'bold',
+              color: 'error.main',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            Log Out
+          </Typography>
         </Box>
-      )}
+      </Box>
 
       {/* Main Content Area */}
       <Box
         sx={{
-          ml: isOpen ? '200px' : 0,
-          mt: 2,
-          transition: 'margin-left 0.3s',
-          p: 2
+          flex: 1,
+          bgcolor: '#f5f5f5',
+          ml: isOpen ? '270px' : '0px', // Adjust margin based on sidebar width
+          width: `calc(100% - ${isOpen ? '270px' : '0px'})`, // Dynamically resize content
+          transition: 'margin-left 0.3s ease-in-out, width 0.3s ease-in-out', // Smooth transition
+          p: 3,
         }}
       >
-        {/* This renders the matched nested route */}
+        {/* Header */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            mb: 3,
+          }}
+        >
+          {/* Hamburger Icon */}
+          {!isOpen && (
+            <IconButton
+              onClick={toggleSidebar}
+              color="primary"
+              sx={{
+                padding: '4px',
+                mr: 2, // Space between icon and heading
+                width: 'auto', // Prevent IconButton from expanding
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 'bold',
+              fontSize: '20px',
+            }}
+          >
+            Admin Panel
+          </Typography>
+        </Box>
+
+        {/* Outlet for Nested Routes */}
         <Outlet />
       </Box>
     </Container>
