@@ -1,26 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {
-  Typography,
-  Box,
-  TextField,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Pagination,
-} from '@mui/material';
+import { Typography, Box, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
 
 const LocationManagement = () => {
   const [locations, setLocations] = useState([]);
   const [filterQuery, setFilterQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  // Display 5 items per page
   const locationsPerPage = 5;
   const navigate = useNavigate();
 
@@ -29,6 +15,7 @@ const LocationManagement = () => {
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
+  // Fetch locations from API
   const fetchLocations = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/api/locations', {
@@ -72,17 +59,24 @@ const LocationManagement = () => {
   const currentLocations = filteredLocations.slice(indexOfFirstLocation, indexOfLastLocation);
   const totalPages = Math.ceil(filteredLocations.length / locationsPerPage);
 
+  const handlePageChange = (e) => {
+    const page = Number(e.target.value);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
     <Box
       sx={{
         width: '100%',
-        height: '100vh', // Fixed height to fill viewport
-        overflowY: 'scroll', // Outer container is scrollable
+        height: '100vh',
+        overflowY: 'scroll',
         boxSizing: 'border-box',
-        p: { xs: 2, sm: 3 }, // Responsive padding
+        p: { xs: 2, sm: 3 },
         backgroundColor: '#f9f9f9',
       }}
-    >
+    >      
       <Box
         sx={{
           width: '100%',
@@ -92,8 +86,8 @@ const LocationManagement = () => {
           flexDirection: 'column',
           gap: 3,
         }}
-      >
-        {/* Header & Search Section */}
+      >  
+        {/* Header and filter container */}
         <Box
           sx={{
             backgroundColor: 'white',
@@ -103,31 +97,26 @@ const LocationManagement = () => {
           }}
         >
           <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
-            Location Management
+          Location Management
           </Typography>
           <Box
             sx={{
               display: 'flex',
-              alignItems: 'center', // Vertically align items
-              gap: 2, // Space between the search bar and button
+              alignItems: 'center',
+              gap: 2,
             }}
           >
-            {/* Search Bar */}
             <TextField
               fullWidth
-              label="Search by name or address"
+              label="Filter by name/ address"
               value={filterQuery}
+              variant="outlined"
               onChange={(e) => {
                 setFilterQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              variant="outlined"
-              sx={{
-                fontSize: '14px',
-                flex: 3, // Takes 3/4 of the available space
-              }}
+              sx={{ fontSize: '14px', flex: 3 }}
             />
-            {/* Add Button */}
             <Button
               variant="contained"
               disableElevation
@@ -135,24 +124,24 @@ const LocationManagement = () => {
               fullWidth
               sx={{
                 fontSize: '14px',
-                flex: 1, // Takes 1/4 of the available space
+                flex: 1,
                 backgroundColor: 'skyblue',
                 '&:hover': {
                   backgroundColor: 'skyblue',
                 },
-                color: 'white', // Ensure text remains visible
-                whiteSpace: 'nowrap', // Prevents text wrapping
-                boxShadow: 'none', // Removes hover shadow effect
-                padding: '15px 20px'
+                color: 'black',
+                whiteSpace: 'nowrap',
+                boxShadow: 'none',
+                padding: '15px 20px',
               }}
             >
-              Add Location
+              Add New Location
             </Button>
           </Box>
         </Box>
 
-        {/* Table & Pagination Section */}
-        <Box
+      {/* Table for displaying locations */}
+      <Box
           sx={{
             backgroundColor: 'white',
             borderRadius: 2,
@@ -163,58 +152,60 @@ const LocationManagement = () => {
             overflow: 'hidden',
           }}
         >
-          <TableContainer component={Paper} sx={{ overflow: 'auto' }}>
-            <Table stickyHeader>
-              <TableHead sx={{ backgroundColor: '#1976d2' }}>
+        <TableContainer component={Paper} sx={{ overflow: 'auto' }}>
+          <Table stickyHeader>
+            <TableHead sx={{ backgroundColor: '#1976d2' }}>
                 <TableRow>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Address</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Categories</TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {currentLocations.map((loc) => (
-                  <TableRow key={loc._id}>
-                    <TableCell>{loc.name}</TableCell>
-                    <TableCell>{loc.address}</TableCell>
-                    <TableCell>${loc.price}</TableCell>
-                    <TableCell>{(loc.type || []).join(', ')}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        disableElevation
-                        size="small"
-                        sx={{
-                          backgroundColor: 'skyblue',
-                          '&:hover': {
-                            backgroundColor: 'skyblue',
-                          },
-                          color: 'white', // Ensure text remains visible
-                          boxShadow: 'none', // No shadow effect
-                          mr: 1,
-                        }}
-                        onClick={() => handleEdit(loc)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color="error"
-                        onClick={() => handleDelete(loc._id)}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Address</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Categories</TableCell>
+                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+              </TableRow>
+            </TableHead>
 
-          <Box
+          <TableBody>
+            {currentLocations.map((loc) => (
+              <TableRow key={loc._id}>
+                <TableCell>{loc.name}</TableCell>
+                <TableCell>{loc.address}</TableCell>
+                <TableCell>${loc.price}</TableCell>
+                <TableCell>{(loc.type || []).join(', ')}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    disableElevation
+                    size="small"
+                    sx={{
+                      backgroundColor: 'skyblue',
+                      outline: '1px',
+                      '&:hover': {
+                        backgroundColor: 'skyblue',
+                      },
+                      color: 'black',
+                      boxShadow: 'none',
+                      mr: 1,
+                    }}
+                    onClick={() => handleEdit(loc)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="error"
+                    onClick={() => handleDelete(loc._id)}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+<Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
