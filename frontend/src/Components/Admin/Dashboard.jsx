@@ -5,7 +5,6 @@ import {
   CircularProgress,
   Card,
   CardContent,
-  Grid,
 } from "@mui/material";
 import {
   ResponsiveContainer,
@@ -47,9 +46,7 @@ const Dashboard = () => {
     const fetchAdminProfile = async () => {
       if (!adminId) return;
       try {
-        const response = await fetch(`${baseUrl}/api/users/${adminId}`, {
-          headers,
-        });
+        const response = await fetch(`${baseUrl}/api/users/${adminId}`, { headers });
         if (!response.ok) throw new Error("Failed to fetch admin profile");
         const data = await response.json();
         setAdminProfile(data);
@@ -154,7 +151,6 @@ const Dashboard = () => {
       <Box
         sx={{
           height: "100vh",
-          width: "100vw",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -168,25 +164,24 @@ const Dashboard = () => {
   return (
     <Box
       sx={{
-        width: "100vw",
-        height: "100vh",
-        overflow: "auto", // Enable scrolling
+        height: "100vh", // Ensure full viewport height
+        width: "100%",
+        overflowY: "auto", // Enable vertical scrolling
         display: "flex",
         flexDirection: "column",
-        p: 2,
-        paddingBottom:20,
-        paddingRight:10,
+        p: { xs: 2, md: 3 },
+        pb: { xs: 8, md: 12 }, // Extra bottom padding for more spacing
+        pr: { xs: 2, md: 4 },
         boxSizing: "border-box",
       }}
     >
       {/* Top Row: Admin Profile & Dashboard Metrics */}
       <Box
         sx={{
-          flexGrow: 1,
           display: "flex",
           gap: 2,
           mb: 2,
-          minHeight: { xs: "auto", md: "300px" }, // Dynamic height for smaller screens
+          flexDirection: { xs: "column", md: "row" },
         }}
       >
         <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 2 }}>
@@ -218,84 +213,110 @@ const Dashboard = () => {
             )}
           </CardContent>
         </Card>
-        <Card sx={{ flex: 2, boxShadow: 3, borderRadius: 2 }}>
+
+        <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 2 }}>
           <CardContent>
             <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
               Dashboard Metrics
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                data={metricsChartData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="total" fill="#8884d8">
-                  <LabelList dataKey="total" position="top" style={{ fill: "#000" }} />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <Box sx={{ width: "100%", height: 300 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={metricsChartData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="total" fill="#8884d8">
+                    <LabelList
+                      dataKey="total"
+                      position="top"
+                      style={{ fill: "#000" }}
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </Box>
           </CardContent>
         </Card>
       </Box>
 
-      {/* Bottom Row: The remaining charts */}
+      {/* Bottom Row: Charts */}
       <Box
         sx={{
-          flexGrow: 2,
           display: "flex",
           gap: 2,
-          flexWrap: "wrap", // Wrap charts for smaller screens
+          flexWrap: "wrap",
         }}
       >
         <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 2, minWidth: "300px" }}>
           <CardContent>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontWeight: "bold" }}
+            >
               Users Over Time
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={userData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="total" stroke="#8884d8" />
-              </LineChart>
-            </ResponsiveContainer>
+            <Box sx={{ width: "100%", height: 300 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={userData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="total" stroke="#8884d8" />
+                </LineChart>
+              </ResponsiveContainer>
+            </Box>
           </CardContent>
         </Card>
+
         <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 2, minWidth: "300px" }}>
           <CardContent>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontWeight: "bold" }}
+            >
               Comments Over Time
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={commentData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="total" stroke="#82ca9d" />
-              </LineChart>
-            </ResponsiveContainer>
+            <Box sx={{ width: "100%", height: 300 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={commentData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="total" stroke="#82ca9d" />
+                </LineChart>
+              </ResponsiveContainer>
+            </Box>
           </CardContent>
         </Card>
+
         <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 2, minWidth: "300px" }}>
           <CardContent>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontWeight: "bold" }}
+            >
               Locations Over Time
             </Typography>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={locationData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="total" stroke="#ffc658" />
-              </LineChart>
-            </ResponsiveContainer>
+            <Box sx={{ width: "100%", height: 300 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={locationData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="total" stroke="#ffc658" />
+                </LineChart>
+              </ResponsiveContainer>
+            </Box>
           </CardContent>
         </Card>
       </Box>
