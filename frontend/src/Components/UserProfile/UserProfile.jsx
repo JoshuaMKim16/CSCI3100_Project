@@ -303,13 +303,9 @@ const UserProfile = () => {
             )}
 
             <Button
-                variant="text"
-                sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start', }} 
-                 onClick={() => {
-                localStorage.removeItem('user');
-                setUser(null);
-                navigate('/profile/edit_user');
-              }}
+              variant="text"
+              sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start', }} 
+              onClick={() => navigate('/edituser', { state: { user } })} // Pass the user data via state
             >
               Edit Profile
             </Button>

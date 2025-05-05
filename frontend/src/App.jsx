@@ -15,6 +15,7 @@ import UserProfile from './Components/UserProfile/UserProfile';
 import UserActivity from './Components/UserProfile/UserActivity';
 import Chat from "./Components/main/LiveChat"; // for socket.io chatting
 import AIChat from "./Components/utils/AIChatbot"; // for AI Chatbot
+import EditUser from './Components/UserProfile/EditUser';
 
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
@@ -57,6 +58,7 @@ function App() {
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/activity" element={<UserActivity />} />
               <Route path="/subscribe" element={<SubscribePage />} />
+              <Route path="/edituser" element={<EditUser />} />
             </Route>
           </Route>
 
