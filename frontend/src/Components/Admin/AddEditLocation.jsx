@@ -2,71 +2,152 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Box, TextField, Button, Typography } from '@mui/material';
+import { useDropzone } from 'react-dropzone';
 
 const AddEditLocation = () => {
   const navigate = useNavigate();
   const locationState = useLocation().state;
 
+  // State variables
   const [name, setName] = useState(locationState?.location?.name || '');
   const [address, setAddress] = useState(locationState?.location?.address || '');
   const [price, setPrice] = useState(locationState?.location?.price || '');
   const [type, setType] = useState(locationState?.location?.type?.join(', ') || '');
-  const [picture, setPicture] = useState(locationState?.location?.picture?.join(', ') || '');
   const [coordinates, setCoordinates] = useState(
     (locationState?.location?.location || [0, 0]).join(', ')
   );
   const [openingHours, setOpeningHours] = useState(
     (locationState?.location?.opening_hour || [0, 0]).join(', ')
   );
+  const [description, setDescription] = useState(locationState?.location?.description || '');
+  const [pictures, setPictures] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   const locId = locationState?.location?._id;
 
+  // Get authentication headers from localStorage
   const getAuthHeader = () => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
+  // Handle picture upload to Cloudinary
+  const handlePictureUpload = async () => {
+    const cloudinaryUrl = 'http://localhost:3000/api/photos/upload'; // Cloudinary API endpoint
+    const formData = new FormData();
+
+    // Append each selected file to the FormData object
+    pictures.forEach((file) => {
+      formData.append('file', file);
+    });
+
+    try {
+      const response = await axios.post(cloudinaryUrl, formData, {
+        headers: {
+          ...getAuthHeader(),
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      // Check if response.data is an array or a single object
+      if (Array.isArray(response.data)) {
+        return response.data.map((file) => file.secure_url); // Return array of URLs
+      } else {
+        return [response.data.secure_url]; // Return single URL in an array
+      }
+    } catch (error) {
+      console.error('Error uploading pictures to Cloudinary:', error);
+      return [];
+    }
+  };
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setUploading(true);
+    let uploadedPictures = [];
+
+    // Upload pictures to Cloudinary if any pictures are selected
+    if (pictures.length > 0) {
+      uploadedPictures = await handlePictureUpload();
+      if (uploadedPictures.length === 0) {
+        setUploading(false);
+        alert('Failed to upload pictures. Please try again.');
+        return;
+      }
+    }
+
+    // Prepare location data for submission
     const locationData = {
       name,
       address,
       price,
       type: type.split(',').map((item) => item.trim()),
-      picture: picture.split(',').map((item) => item.trim()),
+      picture: uploadedPictures, // Store Cloudinary URLs
       location: coordinates.split(',').map((item) => parseFloat(item.trim())),
       opening_hour: openingHours.split(',').map((item) => parseInt(item.trim(), 10)),
+      description, // Add description to the location data
     };
+
+    console.log('Submitting location data:', locationData);
 
     try {
       if (locId) {
-        await axios.put(`http://localhost:3000/api/locations/${locId}`, locationData, {
-          headers: getAuthHeader(),
-        });
+        // Update an existing location
+        await axios.put(
+          `http://localhost:3000/api/locations/${locId}`,
+          locationData,
+          { headers: getAuthHeader() }
+        );
       } else {
+        // Add a new location
         await axios.post('http://localhost:3000/api/locations', locationData, {
           headers: getAuthHeader(),
         });
       }
       navigate('/admin/locations');
     } catch (error) {
-      console.error('Error saving location data', error);
+      console.error('Error saving location data:', error.response?.data || error.message);
+      alert('Failed to save location data. Please check your input and try again.');
+    } finally {
+      setUploading(false);
     }
   };
+
+  // Dropzone for drag-and-drop file upload
+  const onDrop = (acceptedFiles) => {
+    setPictures([...pictures, ...acceptedFiles]);
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif'],
+    },
+  });
 
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-start', // Align items at the top
         height: '100vh',
         backgroundColor: '#f0f2f5',
         fontFamily: 'Poppins, sans-serif',
+        paddingTop: '20px', // Push the form up
       }}
     >
-      <Container maxWidth="sm">
+      <Container
+        maxWidth="sm"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+        }}
+      >
+        {/* Scrollable form container */}
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -75,6 +156,11 @@ const AddEditLocation = () => {
             padding: 4,
             borderRadius: 4,
             boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)',
+            overflowY: 'auto', // Enable vertical scrolling
+            flexGrow: 1, // Allow the form to grow dynamically
+            display: 'flex',
+            flexDirection: 'column',
+            paddingBottom: '120px', // Increased bottom padding for more separation
           }}
         >
           <Typography variant="h5" align="center" sx={{ fontWeight: 'bold', mb: 2 }}>
@@ -114,10 +200,11 @@ const AddEditLocation = () => {
             sx={{ mb: 2 }}
           />
           <TextField
-            label="Pictures (comma separated file names)"
-            value={picture}
+            label="Description"
+            value={description}
             fullWidth
-            onChange={(e) => setPicture(e.target.value)}
+            required
+            onChange={(e) => setDescription(e.target.value)}
             sx={{ mb: 2 }}
           />
           <TextField
@@ -136,32 +223,89 @@ const AddEditLocation = () => {
             onChange={(e) => setOpeningHours(e.target.value)}
             sx={{ mb: 2 }}
           />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{
-                width: '48%',
-                backgroundColor: 'skyblue',
-                color: 'white',
-                fontWeight: 'bold',
-              }}
-            >
-              {locId ? 'Update Location' : 'Create Location'}
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => navigate(-1)}
-              sx={{
-                width: '48%',
-                color: 'skyblue',
-                borderColor: 'skyblue',
-                fontWeight: 'bold',
-              }}
-            >
-              Cancel
-            </Button>
+
+          {/* Drag-and-drop file uploader */}
+          <Box
+            {...getRootProps()}
+            sx={{
+              border: '2px dashed skyblue',
+              borderRadius: 4,
+              padding: 4,
+              textAlign: 'center',
+              backgroundColor: isDragActive ? '#e3f2fd' : 'transparent',
+              cursor: 'pointer',
+              mt: 3,
+            }}
+          >
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <Typography variant="body2" color="textSecondary">
+                Drop the files here...
+              </Typography>
+            ) : (
+              <Typography variant="body2" color="textSecondary">
+                Drag and drop some files here, or click to select files
+              </Typography>
+            )}
           </Box>
+
+          {/* List of selected files */}
+          {pictures.length > 0 && (
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                Selected Files:
+              </Typography>
+              {pictures.map((file, index) => (
+                <Typography key={index} variant="body2" sx={{ ml: 2 }}>
+                  {file.name}
+                </Typography>
+              ))}
+            </Box>
+          )}
+        </Box>
+
+        {/* Sticky button container */}
+        <Box
+          sx={{
+            position: 'sticky',
+            bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            padding: 2,
+            borderTop: '1px solid #ddd',
+            display: 'flex',
+            justifyContent: 'space-between',
+            zIndex: 10, // Ensure it stays above other elements
+          }}
+        >
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{
+              width: '48%',
+              backgroundColor: 'skyblue',
+              color: 'white',
+              fontWeight: 'bold',
+            }}
+            disabled={uploading}
+          >
+            {uploading
+              ? 'Uploading...'
+              : locId
+              ? 'Update Location'
+              : 'Create Location'}
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigate(-1)}
+            sx={{
+              width: '48%',
+              color: 'skyblue',
+              borderColor: 'skyblue',
+              fontWeight: 'bold',
+            }}
+          >
+            Cancel
+          </Button>
         </Box>
       </Container>
     </div>
