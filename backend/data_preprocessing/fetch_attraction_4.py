@@ -1,3 +1,5 @@
+####### the fetch_attraction_4.py file retreives unfinished data. The data also need to be processed by change_time_to_range.py #######
+
 # import requests
 # import time
 # import os
