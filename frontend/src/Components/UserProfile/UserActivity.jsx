@@ -1,15 +1,13 @@
-// UserActivity.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Container,
-  Row,
-  Col,
+  Typography,
   Alert,
   Card,
   CardHeader,
-  CardBody,
-  Button,
-} from 'reactstrap';
+  CardContent,
+  Grid,
+} from '@mui/material';
 import { AuthContext } from '../utils/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -29,8 +27,8 @@ const UserActivity = () => {
             {
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              }
+                'Authorization': `Bearer ${token}`,
+              },
             }
           );
           if (!response.ok) {
@@ -49,16 +47,15 @@ const UserActivity = () => {
 
   if (!user) {
     return (
-      <Container className="py-5">
-        <Alert color="warning">Please log in to view your activity.</Alert>
+      <Container sx={{ py: 5 }}>
+        <Alert severity="warning">Please log in to view your activity.</Alert>
       </Container>
     );
   }
 
   // Group comments by location
   const groupedByLocation = activity.reduce((groups, comment) => {
-    const locationId =
-      comment.location && comment.location._id ? comment.location._id : 'unknown';
+    const locationId = comment.location && comment.location._id ? comment.location._id : 'unknown';
     if (!groups[locationId]) {
       groups[locationId] = {
         location: comment.location || { name: 'Unknown Location', _id: 'unknown' },
@@ -72,56 +69,95 @@ const UserActivity = () => {
   const groupedData = Object.values(groupedByLocation);
 
   return (
-    <Container className="py-5">
-      <h2 className="mb-4">Your Activity</h2>
-      {error && <Alert color="danger">{error}</Alert>}
-      {groupedData.length === 0 ? (
-        <Alert color="info">No activity found. You haven't made any comments yet.</Alert>
-      ) : (
-        groupedData.map(group => (
-          <Card key={group.location._id || group.location.name} className="mb-4 shadow-sm">
-            <CardHeader className="d-flex justify-content-between align-items-center bg-primary text-white">
-              <span
-                style={{ cursor: group.location._id !== 'unknown' ? 'pointer' : 'default' }}
-                onClick={() => {
-                  if (group.location._id !== 'unknown') {
-                    navigate(`/tours/${group.location._id}`);
+    <div
+      sx={{
+        Height: '100%',
+        bgcolor: '#f0f8ff',
+        fontFamily: 'Poppins, sans-serif',
+        minwidth: '100%', 
+      }}
+    >
+      <Container 
+        sx={{ 
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          minwidth: '100%', 
+          bgcolor: '#f0f8ff', 
+          py: 2, 
+          zIndex: 100,
+        }}
+      >
+        <Typography variant="h4" sx={{ color: 'black', padding: 2, fontWeight: 'bold', mb: 1 }}>
+          Your Activity
+        </Typography>
+        <Typography variant="h8" sx={{ color: 'black', padding: 2 }}> Click on the cards below to view details. </Typography>
+        <button 
+          className="close-button" 
+          style={{
+            position: 'fixed', 
+            top: '10px', 
+            right: '10px', 
+            width: '50px', 
+            height: '50px', 
+          }}
+          onClick={() => navigate(`/profile`)}> 
+          X
+        </button>
+
+        {error && <Alert severity="error">{error}</Alert>}
+      </Container>
+
+      <Container sx={{ pt: 18, maxWidth: { xs: '100%', md: '1200px' }, ml: 1}}>
+      <Grid container spacing={1} > 
+          {groupedData.map(group => (
+            <Grid item xs={12} sm={4} key={group.location._id || group.location.name}>
+              <Card sx={{ mb: 4, boxShadow: 3, width: '300px', mx: 'auto' }}> {/* Center the card */}
+                <CardHeader
+                  title={group.location.name || 'Unknown Location'}
+                  action={
+                    group.location._id !== 'unknown'
                   }
-                }}
-              >
-                {group.location.name || 'Unknown Location'}
-              </span>
-              {group.location._id !== 'unknown' && (
-                <Button
-                  color="light"
-                  size="sm"
-                  onClick={() => navigate(`/tours/${group.location._id}`)}
-                >
-                  View Details
-                </Button>
-              )}
-            </CardHeader>
-            <CardBody>
-              {group.comments.map(comment => (
-                <Row
-                  key={comment._id}
-                  className="mb-3 p-3 border rounded align-items-center"
-                >
-                  <Col xs="12" md="9">
-                    <p className="mb-1">
-                      <strong>Comment:</strong> {comment.content}
-                    </p>
-                    <p className="mb-0 text-muted" style={{ fontSize: '0.85rem' }}>
-                      Posted on: {new Date(comment.createdAt).toLocaleString()}
-                    </p>
-                  </Col>
-                </Row>
-              ))}
-            </CardBody>
-          </Card>
-        ))
-      )}
-    </Container>
+                  variant="h5"
+                  sx={{
+                    backgroundColor: 'skyblue',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: group.location._id !== 'unknown' ? 'pointer' : 'default',
+                  }}
+                  onClick={() => {
+                    if (group.location._id !== 'unknown') {
+                      navigate(`/tours/${group.location._id}`);
+                    }
+                  }}
+                />
+                <CardContent>
+                  {group.comments.map(comment => (
+                    <Grid
+                      key={comment._id}
+                      container
+                      spacing={2}
+                      sx={{ mb: 2, p: 2, border: '1px solid #ccc', borderRadius: 1 }}
+                    >
+                      <Grid item xs={12}>
+                        <Typography variant="body1" sx={{ wordWrap: 'break-word' }}>
+                          <strong>Comment:</strong> {comment.content}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          Posted on: {new Date(comment.createdAt).toLocaleString()}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </div>
   );
 };
 

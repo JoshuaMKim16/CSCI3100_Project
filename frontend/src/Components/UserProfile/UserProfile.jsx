@@ -92,7 +92,7 @@ const UserProfile = () => {
 
   return (
     <div>
-    <Container className="user-profile-container">
+    <Container className="user-profile-container" sx={{ width: '100%', bgcolor: 'transparent', py: 2}}>
       {/* Fixed Banner */}
 
       <Box className="banner">
