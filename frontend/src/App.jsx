@@ -58,7 +58,7 @@ function App() {
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/activity" element={<UserActivity />} />
               <Route path="/subscribe" element={<SubscribePage />} />
-              <Route path="/edit_user" element={<EditUser />} />
+              <Route path="/edituser" element={<EditUser />} />
             </Route>
           </Route>
 

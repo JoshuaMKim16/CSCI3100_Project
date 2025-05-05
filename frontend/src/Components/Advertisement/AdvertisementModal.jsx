@@ -37,15 +37,14 @@ const AdvertisementModal = ({ onDismiss }) => {
           {countdown > 0 ? (
             <span className="countdown">{countdown}</span>
           ) : (
-            <button className="close-button" onClick={onDismiss}>
+            <button className="close-button" onClick={onDismiss} style={{ width: '50px', height: '50px' }}>
               X
             </button>
           )}
         </div>
-        <p>
-          This site is free but displays ads. Subscribe now for an ad‑free experience!
-        </p>
-        <button className="subscribe-btn" onClick={handleSubscribeClick}>
+        <p style={{ textAlign: 'left' }}>This site is free but displays ads.</p>
+        <p style={{ textAlign: 'left' }}>Subscribe now for an ad‑free experience!</p>
+        <button className="subscribe-btn" style={{ backgroundColor: 'lightblue', color: 'black' }} onClick={handleSubscribeClick}>
           Subscribe Now
         </button>
       </div>

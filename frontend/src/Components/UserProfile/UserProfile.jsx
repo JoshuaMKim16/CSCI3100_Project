@@ -305,11 +305,7 @@ const UserProfile = () => {
             <Button
                 variant="text"
                 sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start', }} 
-                 onClick={() => {
-                localStorage.removeItem('user');
-                setUser(null);
-                navigate('/edit_user');
-              }}
+                onClick={() => navigate('/edituser', { state: { user } })}
             >
               Edit Profile
             </Button>
