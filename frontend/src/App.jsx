@@ -13,6 +13,7 @@ import TourDetails from './Components/main/TourDetails';
 import ShoppingCart from './Components/main/ShoppingCart';
 import UserProfile from './Components/UserProfile/UserProfile';
 import UserActivity from './Components/UserProfile/UserActivity';
+import EditUser from './Components/UserProfile/EditUser';
 import Chat from "./Components/main/LiveChat"; // for socket.io chatting
 import AIChat from "./Components/utils/AIChatbot"; // for AI Chatbot
 
@@ -57,6 +58,7 @@ function App() {
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/activity" element={<UserActivity />} />
               <Route path="/subscribe" element={<SubscribePage />} />
+              <Route path="/edit_user" element={<EditUser />} />
             </Route>
           </Route>
 

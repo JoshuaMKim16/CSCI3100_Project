@@ -89,6 +89,18 @@ const UserProfile = () => {
 
   const navbarFontColor = "white";
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Update the user's picture or handle the image as needed
+        setUser((prevUser) => ({ ...prevUser, picture: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <Container className="user-profile-container">
       {/* Fixed Banner */}
@@ -236,12 +248,27 @@ const UserProfile = () => {
           </AppBar>
 
       <Grid container spacing={3} className="profile-header" sx={{ marginTop: '160px', width: '100%' }}> 
-        <Grid item md={3}>
-          <img
-            src={user.picture || '/default-profile.png'}
-            className="profile-image"
-          />
-        </Grid>
+      <Grid item md={3}>
+        <img
+          src={user.picture || require('./images/profile_none.png')} // Adjust path as necessary
+          alt="Profile"
+          className="profile-image"
+        />
+      </Grid>
+      <Grid item md={3}>
+        <input
+          type="file"
+          accept="image/*"
+          id="image-upload"
+          style={{ display: 'none' }}
+          onChange={handleImageChange} // Function to handle image change
+        />
+        <label htmlFor="image-upload">
+          <Button variant="contained" component="span">
+            Choose Image
+          </Button>
+        </label>
+      </Grid>
 
         <Grid item md={9}>
           <Box sx={{ mb: 2 }}>
@@ -314,7 +341,6 @@ const UserProfile = () => {
               Edit Profile
             </Button>
           </Box>
-
         </Grid>
       </Grid>
 
