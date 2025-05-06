@@ -1,12 +1,23 @@
 // /client/src/Components/TourDetails.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import CommentsSection from './CommentsSection';
 import "./tour-details.css";
 import ChatbotFAB from "../utils/AIChatbot";
+import hkBackground from "./hk_background1.jpg";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Container,
+  TextField,
+  Box,
+  IconButton,
+} from "@mui/material";
 
 const containerStyle = {
   width: '100%',
@@ -158,52 +169,254 @@ const TourDetails = () => {
     }
   };
 
+  // NavBar
+  const navbarFontColor = "black";
+  const [navbarVisible, setNavbarVisible] = useState(true);
+  const backgroundRef = useRef(null);
+
+  const handleNavigateToPlanner = () => {
+    navigate("/planner");
+  };
+
+  const handleNavigateToProfile = () => {
+    navigate("/profile");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // Remove the user from local storage
+    navigate("/login"); // Navigate back to the login page
+  };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      setNavbarVisible(entry.isIntersecting);
+    }, {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0
+    });
+
+    if (backgroundRef.current) {
+      observer.observe(backgroundRef.current);
+    }
+
+    return () => {
+      if (backgroundRef.current) {
+        observer.unobserve(backgroundRef.current);
+      }
+    };
+  }, []);
+
   return (
+    <div
+    style={{
+      width: "100vw",
+      height: "100vh",
+      margin: 0,
+      padding: 0,
+      fontFamily: "Poppins, sans-serif",
+    }}
+    >
     <section>
+    {/* Navbar */}
+    {navbarVisible && (
+        <AppBar
+          position="fixed"
+          style={{
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+        >
+        <Toolbar
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center", // Vertically center all items in the navbar
+            position: "relative",
+          }}
+        >
+          {/* Left Section (Logo) */}
+          <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
+            <Button
+              color="inherit"
+              style={{
+                color: navbarFontColor,
+                fontSize: "18px",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
+              LOGO
+            </Button>
+          </div>
+
+          {/* Center Section (Navbar Items) */}
+          <div
+            style={{
+              position: "absolute", // Position absolutely relative to the toolbar
+              left: "50%", // Center horizontally
+              top: "50%", // Center vertically
+              transform: "translate(-50%, -50%)", // Adjust for exact center alignment
+              display: "flex",
+              gap: "30px",
+              textAlign: "center",
+            }}
+          >
+            {/* Home Navigation */}
+            <Button
+              color="inherit"
+              onClick={() => navigate("/main")} // Navigate to /main
+              style={{
+                color: navbarFontColor,
+                fontSize: "18px",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
+              HOME
+            </Button>
+
+            {/* Tour Navigation */}
+            <Button
+              color="inherit"
+              onClick={() => navigate("/tour")} // Navigate to /tour
+              style={{
+                color: navbarFontColor,
+                fontSize: "18px",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
+              TOUR
+            </Button>
+
+            {/* Forum Navigation */}
+            <Button
+              color="inherit"
+              onClick={() => navigate("/forum")} // Navigate to /forum
+              style={{
+                color: navbarFontColor,
+                fontSize: "18px",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
+              FORUM
+            </Button>
+
+            <Button
+              color="inherit"
+              onClick={handleNavigateToPlanner}
+              style={{
+                color: navbarFontColor,
+                fontSize: "18px",
+                fontFamily: "Poppins, sans-serif",
+              }}
+            >
+              PLANNER
+            </Button>
+          </div>
+
+          {/* Right Section (Profile Button) */}
+          <div style={{ display: "flex", gap: "15px", textAlign: "right" }}>
+            <Button
+              color="inherit"
+              onClick={handleNavigateToProfile}
+              style={{
+                color: navbarFontColor,
+                fontFamily: "Poppins, sans-serif",
+                border: "2px solid white",
+                borderRadius: "10%",
+                padding: "5px 10px",
+                minWidth: "40px",
+                height: "40px",
+                fontSize: "14px",
+              }}
+            >
+              PROFILE
+            </Button>
+
+            {/* Logout Button */}
+            <Button
+              onClick={handleLogout}
+              style={{
+                color: "skyblue",
+                fontFamily: "Poppins, sans-serif",
+                padding: "5px 15px",
+                borderRadius: "5px", // Rounded edges
+                fontSize: "14px",
+                fontWeight: "bold",
+              }}
+            >
+              LOGOUT
+            </Button>
+          </div>
+        </Toolbar>
+      </AppBar>
+      )}
+
+      {/* First Section: Background Image */}
+      <div
+        ref = {backgroundRef}
+        style={{
+          backgroundImage: `url(${hkBackground})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          width: "100vw",
+          height: "60vh",
+        }}
+      >
+      </div>
+
       {/*Picture and Details*/}
-      <Container style={{height: '90vh', width: '100%', margin: '0 auto'}}>
+      <Container style={{height: '100vh', width: '100%', margin: '0 auto'}}>
         <Row style={{display: 'flex', marginTop: '1rem'}}>
-          <Col style={{width: '60%'}}>
+          <Col style={{width: '60%', marginRight: '1rem'}}>
             {specificImage && (
               <div>
                 {specificImage.secure_url && (
                   <img
                     src={specificImage.secure_url}
-                    alt={specificImage.public_id}
+                    alt='Loading...'
                     style={{ width: '100%', height: 'auto', borderRadius: '5px'}}
                   />
                 )}
               </div>
             )}
           </Col>
-          <Col style={{width: '40%'}}>
+          <Col style={{width: '40%', height: 'auto', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)', borderRadius: '10px'}}>
             <div className="tour_info">
-              <h2>{location.name}</h2>
+              <h1 style={{marginTop: '0'}}>{location.name}</h1>
+              <hr/>
               <div className="d-flex align-items-center gap-5">
-                <span>
+                <h5 style={{textDecoration: 'underline', marginTop: '0'}}>Details</h5>
                   <FaMapMarkerAlt/>{location.address}
-                </span>
-                <span>
-                  <p onClick={handleAddressClick} style={{cursor: 'pointer', color: 'blue'}}>View address on Google Map</p>
-                </span>
+                  <p onClick={handleAddressClick} style={{cursor: 'pointer', color: 'blue', marginTop: '0'}}>View on Google Map</p>
               </div>
               <div className="tour_extra-details">
                 <span>
                   <FaMoneyBillWave/>
                   ${location.price} /person
-                  <FaTag/>
-                  {location.type && location.type.join(', ')}
                 </span>
               </div>
-              <h5>Description</h5>
+              <div>
+                {location.type && location.type.map((type) => (
+                  <div style={{ marginBottom: '0'}}>
+                      <FaTag/>{type}
+                      <br/>
+                  </div>
+                 ))}
+              </div>
+              <hr/>
+              <h5 style={{textDecoration: 'underline', margin: '0'}}>Description</h5>
               {location.description ? (
-                <p>{location.description}</p>
+                <p style={{marginTop: '0'}}>{location.description}</p>
               ) : (
-                <p>No description available</p>
+                <p style={{marginTop: '0', color: 'grey'}}>No description available</p>
               )}
-              <Button className="btn primary__btn w-100 mt-4" onClick={handleAddToCart}>
+              <button
+                className='addToCartBtn'
+                onClick={handleAddToCart}
+              >
                 Add to Cart
-              </Button>
+              </button>
             </div>
           </Col>
         </Row>
@@ -213,8 +426,9 @@ const TourDetails = () => {
         {showSidebar && (
           <div className={`sidebar ${showSidebar ? 'active' : ''}`}>
             <div className="sidebar-content">
-              <h3>Google Map</h3>
-              <p onClick={handleSidebarClose} style={{ cursor: 'pointer', color: 'blue'}}>Close</p>
+              <h1 style={{margin: '0'}}>{location.name}</h1>
+              <h3 style={{margin: '0'}}>Google Map</h3>
+              <p onClick={handleSidebarClose} style={{ cursor: 'pointer', color: 'blue', marginTop: '0'}}>Close</p>
               <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
                 {isMapLoaded && (
                   <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
@@ -227,10 +441,14 @@ const TourDetails = () => {
         )}
 
         {/* Insert the CommentsSection component and pass the location ID */}
-        {location._id && <CommentsSection locationId={location._id} />}
+        <Container style={{marginTop: '0.5rem'}}>
+          {location._id && <CommentsSection locationId={location._id} />}
+        </Container>
+
       </Container>
       <ChatbotFAB/>
     </section>
+    </div>
   );
 };
 

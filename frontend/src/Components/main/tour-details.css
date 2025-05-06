@@ -125,9 +125,10 @@
     position: fixed;
     top: 0;
     right: 0;
-    width: 70%;
-    height: 100%;
+    width: 60%;
+    height: 100vh;
     background-color: #fff;
+    border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
@@ -143,3 +144,22 @@
     height: 100%;
     overflow-y: auto;
 }
+
+.addToCartBtn {
+    height: 2.5rem;
+    padding: 1% 2%;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 0.3125rem;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .addToCartBtn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: 0 0 0.3125rem rgba(0, 123, 255, 0.3);
+  }
