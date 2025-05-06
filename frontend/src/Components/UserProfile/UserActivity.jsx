@@ -108,8 +108,8 @@ const UserActivity = () => {
         {error && <Alert severity="error">{error}</Alert>}
       </Container>
 
-      <Container sx={{ pt: 18, maxWidth: { xs: '100%', md: '1200px' }, ml: 1}}>
-      <Grid container spacing={1} > 
+      <Container sx={{ pt: 18, maxHeight: 'calc(100vh - 80px)', width: '100%', ml: -10}}>
+      <Grid container spacing={1} justifyContent="center"> {/* Center the grid items */}
           {groupedData.map(group => (
             <Grid item xs={12} sm={4} key={group.location._id || group.location.name}>
               <Card sx={{ mb: 4, boxShadow: 3, width: '300px', mx: 'auto' }}> {/* Center the card */}

@@ -96,7 +96,7 @@ const UserProfile = () => {
       {/* Fixed Banner */}
 
       <Box className="banner">
-        <Typography variant="h3" sx={{ color: 'white', padding: 2, mt:10, fontweight: 'bold'}}>Profile</Typography>
+        <Typography variant="h3" sx={{ color: 'white', padding: 2, mt:10, fontweight: 'bold', textShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)'}}>Profile</Typography>
       </Box>
 
       {/* Navbar */}
