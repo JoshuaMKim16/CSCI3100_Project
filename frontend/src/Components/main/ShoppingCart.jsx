@@ -9,12 +9,36 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { Button as MuiButton } from '@mui/material';
 import Box from '@mui/material/Box';
-import hkBackground from './hk_background.png'; // Fallback image
+import Typography from '@mui/material/Typography';
 import './shoppingcart.css';
 import ChatbotFAB from "../utils/AIChatbot";
+import fallbackImage from "./hk_background1.jpg";
+
+// Simple throttle function to limit scroll event frequency
+const throttle = (func, limit) => {
+  let lastFunc;
+  let lastRan;
+  return function (...args) {
+    const context = this;
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function () {
+        if (Date.now() - lastRan >= limit) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  };
+};
 
 const ShoppingCart = () => {
   const navigate = useNavigate();
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
 
   // Decode JWT from the user object stored in localStorage (if it exists)
   const getCurrentUserIdFromJWT = () => {
@@ -63,7 +87,6 @@ const ShoppingCart = () => {
 
   const [locations, setLocations] = useState({});
   const [specificImages, setSpecificImages] = useState({});
-  const [imageLoading, setImageLoading] = useState({});
   const fetchedSiteIds = useRef(new Set());
   const fetchedImageIds = useRef(new Set());
 
@@ -130,7 +153,6 @@ const ShoppingCart = () => {
       }
 
       if (hasNewFetches) {
-        console.log('Locations state updated:', locationData);
         setLocations((prev) => ({ ...prev, ...locationData }));
       }
     };
@@ -142,72 +164,32 @@ const ShoppingCart = () => {
 
   useEffect(() => {
     const fetchSpecificImage = async (id, pictureUrl) => {
-      if (fetchedImageIds.current.has(id)) {
-        console.log(`Image for location ${id} already fetched, skipping.`);
-        return;
-      }
+      if (!pictureUrl || fetchedImageIds.current.has(id)) return;
 
-      setImageLoading((prev) => ({ ...prev, [id]: true }));
       try {
-        // If no picture URL, use fallback
-        if (!pictureUrl) {
-          console.warn(`No picture URL for location ${id}, using fallback image.`);
-          setSpecificImages((prev) => ({
-            ...prev,
-            [id]: { url: hkBackground },
-          }));
-          fetchedImageIds.current.add(id);
-          return;
-        }
-
         const filename = pictureUrl.split('/').pop().split('.')[0];
-        console.log(`Fetching image for location ${id}, filename: ${filename}`);
         const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
         if (!response.ok) {
-          throw new Error(`Fetching image for ${filename} failed with status ${response.status}`);
+          throw new Error('Fetching specific image failed');
         }
         const data = await response.json();
-        // Handle various API response formats
-        const imageUrl = data.secure_url || data.url || data.image_url || hkBackground;
-        console.log(`Image fetched for location ${id}: ${imageUrl}`);
         setSpecificImages((prev) => ({
           ...prev,
-          [id]: { url: imageUrl },
+          [id]: data.secure_url,
         }));
         fetchedImageIds.current.add(id);
       } catch (err) {
-        console.error(`Error fetching image for location ${id}:`, err);
-        setSpecificImages((prev) => ({
-          ...prev,
-          [id]: { url: hkBackground },
-        }));
-        fetchedImageIds.current.add(id);
-      } finally {
-        setImageLoading((prev) => ({ ...prev, [id]: false }));
+        console.error('Error fetching specific image:', err);
       }
     };
 
-    // Initialize specificImages with fallback for all locations
-    const initialImages = {};
     Object.keys(locations).forEach((id) => {
-      if (!specificImages[id]) {
-        initialImages[id] = { url: hkBackground };
+      const picture = locations[id]?.picture?.[0];
+      if (picture) {
+        fetchSpecificImage(id, picture);
       }
     });
-    setSpecificImages((prev) => ({ ...prev, ...initialImages }));
-
-    // Fetch images for locations with pictures
-    Object.keys(locations).forEach((id) => {
-      const picture = Array.isArray(locations[id]?.picture)
-        ? locations[id].picture[0]
-        : typeof locations[id]?.picture === 'string'
-        ? locations[id].picture
-        : null;
-      console.log(`Checking image for location ${id}, picture: ${picture}`);
-      fetchSpecificImage(id, picture);
-    });
-    console.log('Specific images state:', specificImages);
-  }, [locations, specificImages]);
+  }, [locations]);
 
   const removeFromCart = (id) => {
     const updatedCart = cartItems.filter((item) => getSiteId(item) !== id);
@@ -236,55 +218,43 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
-  const handleImageError = (e, id) => {
-    console.error(`Image failed to load for location ${id}: ${e.target.src}`);
-    // Fallback to a known good public image for testing
-    e.target.src = 'https://via.placeholder.com/150?text=Fallback';
-  };
-
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const renderTimetable = () => {
-    try {
-      const timetable = daysOfWeek.map((day) => ({
-        day,
-        events: [],
-      }));
+    const timetable = daysOfWeek.map((day) => ({
+      day,
+      events: [],
+    }));
 
-      cartItems.forEach((item) => {
-        if (item.startTime && item.endTime) {
-          const startDate = new Date(item.startTime);
-          const dayIndex = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
-          const id = getSiteId(item);
-          const locationName = (locations[id] && locations[id].name) || `Site ${id}`;
-          const locationImage = specificImages[id]?.url || hkBackground;
-          console.log(`Rendering timetable for location ${id}, image: ${locationImage}`);
-          const locationTypes = (locations[id] && locations[id].type) || [];
-          const isRestaurantOrCafe = locationTypes.some((type) =>
-            ['restaurant', 'cafe'].includes(type.toLowerCase())
-          );
-          const bgClass = isRestaurantOrCafe ? 'bg-creamy-peach' : 'bg-creamy-mint';
+    cartItems.forEach((item) => {
+      if (item.startTime && item.endTime) {
+        const startDate = new Date(item.startTime);
+        const dayIndex = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
+        const id = getSiteId(item);
+        const locationName = (locations[id] && locations[id].name) || `Site ${id}`;
+        const locationImage = specificImages[id] || '';
+        const locationTypes = (locations[id] && locations[id].type) || [];
+        const isRestaurantOrCafe = locationTypes.some((type) =>
+          ['restaurant', 'cafe'].includes(type.toLowerCase())
+        );
+        const bgClass = isRestaurantOrCafe ? 'bg-creamy-peach' : 'bg-creamy-mint';
 
-          timetable[dayIndex].events.push({
-            startDate,
-            location: locationName,
-            start: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            end: new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            bgClass,
-            image: locationImage,
-          });
-        }
-      });
+        timetable[dayIndex].events.push({
+          startDate,
+          location: locationName,
+          start: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+          end: new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+          bgClass,
+          image: locationImage,
+        });
+      }
+    });
 
-      timetable.forEach((dayEntry) => {
-        dayEntry.events.sort((a, b) => a.startDate - b.startDate);
-      });
+    timetable.forEach((dayEntry) => {
+      dayEntry.events.sort((a, b) => a.startDate - b.startDate);
+    });
 
-      return timetable;
-    } catch (error) {
-      console.error('Error rendering timetable:', error);
-      return daysOfWeek.map((day) => ({ day, events: [] }));
-    }
+    return timetable;
   };
 
   const timetableData = renderTimetable();
@@ -347,24 +317,64 @@ const ShoppingCart = () => {
     }
   }
 
+  // Handle navbar visibility on scroll with throttling
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      try {
+        const currentScrollPos = window.pageYOffset;
+        setIsNavbarVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+        setPrevScrollPos(currentScrollPos);
+      } catch (error) {
+        console.error('Error in scroll handler:', error);
+      }
+    }, 100); // Throttle to run every 100ms
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []); // Empty dependency array to prevent re-adding the listener unnecessarily
+
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', backgroundColor: '#fdfcfc' }}>
+    <div
+      style={{
+        width: '100vw',
+        margin: 0,
+        padding: 0,
+        fontFamily: 'Poppins, sans-serif',
+        position: 'relative',
+        minHeight: '100vh',
+      }}
+    >
       {/* Navbar */}
       <AppBar
         position="fixed"
-        sx={{ backgroundColor: 'transparent', boxShadow: 'none', zIndex: 1300 }}
+        style={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          transform: isNavbarVisible ? 'translateY(0)' : 'translateY(-100%)',
+          transition: 'transform 0.3s ease-in-out',
+        }}
       >
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-          <Box sx={{ display: 'flex', gap: '20px', textAlign: 'left' }}>
+        <Toolbar
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            position: 'relative',
+          }}
+        >
+          {/* Left Section (Logo) */}
+          <div style={{ display: 'flex', gap: '20px', textAlign: 'left' }}>
             <MuiButton
               color="inherit"
               sx={{ color: 'black', fontSize: '18px', fontFamily: 'Poppins, sans-serif' }}
             >
               LOGO
             </MuiButton>
-          </Box>
-          <Box
-            sx={{
+          </div>
+
+          {/* Center Section (Navbar Items) */}
+          <div
+            style={{
               position: 'absolute',
               left: '50%',
               top: '50%',
@@ -381,6 +391,7 @@ const ShoppingCart = () => {
             >
               HOME
             </MuiButton>
+
             <MuiButton
               color="inherit"
               onClick={() => navigate('/tour')}
@@ -388,6 +399,7 @@ const ShoppingCart = () => {
             >
               TOUR
             </MuiButton>
+
             <MuiButton
               color="inherit"
               onClick={() => navigate('/forum')}
@@ -395,6 +407,7 @@ const ShoppingCart = () => {
             >
               FORUM
             </MuiButton>
+
             <MuiButton
               color="inherit"
               onClick={handleNavigateToPlanner}
@@ -402,8 +415,10 @@ const ShoppingCart = () => {
             >
               PLANNER
             </MuiButton>
-          </Box>
-          <Box sx={{ display: 'flex', gap: '15px', textAlign: 'right' }}>
+          </div>
+
+          {/* Right Section (Profile Button) */}
+          <div style={{ display: 'flex', gap: '15px', textAlign: 'right' }}>
             <MuiButton
               color="inherit"
               onClick={handleNavigateToProfile}
@@ -420,6 +435,8 @@ const ShoppingCart = () => {
             >
               PROFILE
             </MuiButton>
+
+            {/* Logout Button */}
             <MuiButton
               onClick={handleLogout}
               sx={{
@@ -433,10 +450,76 @@ const ShoppingCart = () => {
             >
               LOGOUT
             </MuiButton>
-          </Box>
+          </div>
         </Toolbar>
       </AppBar>
-      <section className="shopping-cart-page" style={{ marginTop: '80px' }}>
+
+      {/* Hero Section with Fallback Image */}
+      <div
+        style={{
+          backgroundImage: `url(${fallbackImage})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'top',
+          width: '100vw',
+          height: '100vh',
+          position: 'relative',
+        }}
+      >
+        <Container
+          style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            color: 'white',
+            textAlign: 'right',
+            paddingBottom: '20px',
+            paddingRight: '20px',
+          }}
+        >
+          <Typography
+            variant="h4"
+            style={{
+              color: 'white',
+              textAlign: 'right',
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: "bold",
+              textShadow: "2px 2px 5px rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            <b>Explore Your Shopping Cart</b>
+          </Typography>
+        </Container>
+      </div>
+
+      {/* Background Layer with Low Opacity */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '100vh', // Start right after the hero section
+          left: 0,
+          width: '100vw',
+          height: 'calc(100% - 100vh)', // Cover the remaining height
+          backgroundImage: `url(${fallbackImage})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'top',
+          opacity: 0.2, // Very low transparency
+          zIndex: 1, // Below the content but above any default background
+        }}
+      />
+
+      {/* Original Page Content */}
+      <section
+        className="shopping-cart-page"
+        style={{
+          marginTop: '0px',
+          position: 'relative',
+          zIndex: 2, // Ensure content is above the background layer
+        }}
+      >
         <Container>
           <div className="cart-flex-container">
             {/* Timetable Column */}
@@ -450,23 +533,42 @@ const ShoppingCart = () => {
                       {dayEntry.events.length > 0 ? (
                         dayEntry.events.map((event, idx) => (
                           <div key={idx} className="event">
-                            <div className={`event-entry ${event.bgClass}`}>
-                              {imageLoading[getSiteId(cartItems[idx])] ? (
-                                <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                  Loading image...
-                                </div>
-                              ) : (
+                            <div className={`event-entry ${event.bgClass}`} style={{ background: 'transparent', display: 'flex', alignItems: 'flex-start' }}>
+                              {event.image && (
                                 <img
                                   src={event.image}
                                   alt={event.location}
-                                  onError={(e) => handleImageError(e, getSiteId(cartItems[idx]))}
+                                  style={{ marginRight: '10px', width: '50px', height: '50px', objectFit: 'cover' }}
+                                  onError={(e) => { e.target.style.display = 'none'; }}
                                 />
                               )}
-                              <div className="event-content">
-                                <span className="location location-banner">
+                              <div
+                                className="event-content"
+                                style={{
+                                  display: 'block',
+                                  justifyContent: 'flex-start',
+                                }}
+                              >
+                                <span
+                                  className="location location-banner"
+                                  style={{
+                                    background: 'transparent',
+                                    margin: 0,
+                                    padding: 0,
+                                    display: 'block',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
                                   {event.location}
                                 </span>
-                                <span className="time">
+                                <span
+                                  className="time"
+                                  style={{
+                                    margin: 0,
+                                    padding: 0,
+                                    display: 'block',
+                                  }}
+                                >
                                   {event.start} - {event.end}
                                 </span>
                               </div>
@@ -474,7 +576,7 @@ const ShoppingCart = () => {
                           </div>
                         ))
                       ) : (
-                        <p>No events scheduled.</p>
+                        <p>No events scheduled for this day.</p>
                       )}
                     </div>
                   ))
@@ -484,12 +586,31 @@ const ShoppingCart = () => {
                   </div>
                 )}
               </div>
-              <Button color="success" onClick={handleExportExcel} className="mb-3">
+              <Button
+                color="success"
+                onClick={handleExportExcel}
+                className="mb-3"
+                style={{
+                  display: 'inline-block',
+                  width: 'fit-content',
+                  padding: '4px 8px',
+                  fontSize: '14px',
+                  fontFamily: 'Poppins, sans-serif',
+                  color: '#000000',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #000000',
+                  borderRadius: '5px',
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                }}
+                onMouseOver={(e) => (e.target.style.color = '#61dafb')}
+                onMouseOut={(e) => (e.target.style.color = '#000000')}
+              >
                 Export Timetable to Excel
               </Button>
             </div>
             {/* Cart Items Column (Right) */}
-            <div className="cart-col">
+            <div className="timetable-col">
               <h3 className="sub-header"></h3>
               {cartItems.length === 0 ? (
                 <div className="empty-cart-container">
@@ -559,7 +680,7 @@ const ShoppingCart = () => {
           )}
         </LoadScriptOnlyIfNeeded>
       </section>
-      <ChatbotFAB />
+      <ChatbotFAB/>
     </div>
   );
 };

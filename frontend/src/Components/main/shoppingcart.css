@@ -12,6 +12,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden; /* Prevent horizontal scrolling at body level */
 }
 
 .cart-page-wrapper {
@@ -21,6 +22,7 @@ body {
   background-repeat: no-repeat;
   min-height: 100vh;
   position: relative;
+  width: 100%; /* Ensure it takes full viewport width */
 }
 
 /* Optional overlay for readability */
@@ -45,6 +47,7 @@ body {
   min-height: 100vh;
   font-family: Arial, sans-serif;
   padding: 20px;
+  width: 100%; /* Ensure full width */
 }
 
 /* Container adjustments */
@@ -54,79 +57,7 @@ body {
   padding-left: 15px;
   padding-right: 15px;
   box-sizing: border-box;
-}
-
-/* Toggle button wrapper */
-.toggle-button-wrapper {
-  position: fixed !important;
-  bottom: 30px !important;
-  right: 30px !important;
-  background: yellow !important;
-  z-index: 2999 !important;
-  padding: 10px !important;
-}
-
-/* Toggle cart button */
-.toggle-cart-button {
-  position: fixed !important;
-  bottom: 40px !important;
-  right: 40px !important;
-  width: 80px !important;
-  height: 80px !important;
-  background-color: #007bff !important;
-  background-color: #ff4500 !important; /* Fallback for debugging */
-  color: #fff !important;
-  z-index: 3000 !important;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3) !important;
-  border: 5px solid red !important; /* Debugging border */
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s !important;
-}
-
-.toggle-cart-button:hover {
-  transform: scale(1.15) !important;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
-}
-
-.toggle-cart-button.cart-expanded {
-  background-color: #dc3545 !important;
-}
-
-.toggle-cart-button.cart-expanded:hover {
-  background-color: #c82333 !important;
-}
-
-/* CSS Tooltip */
-.toggle-cart-button {
-  position: relative !important;
-}
-
-.toggle-cart-button::after {
-  content: attr(data-tooltip) !important;
-  position: absolute !important;
-  right: 100% !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  margin-right: 10px !important;
-  background-color: #333 !important;
-  color: #fff !important;
-  font-size: 1rem !important;
-  padding: 8px 12px !important;
-  border-radius: 4px !important;
-  white-space: nowrap !important;
-  z-index: 3100 !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  transition: opacity 0.2s, visibility 0.2s !important;
-}
-
-.toggle-cart-button:hover::after {
-  visibility: visible !important;
-  opacity: 1 !important;
+  overflow-x: hidden; /* Prevent overflow within container */
 }
 
 /* Add items button */
@@ -227,9 +158,10 @@ body {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
-/* Timetable column styles */
+/* Timetable column styles (unchanged as per request) */
 .timetable-col {
   flex: 1 1 auto;
   max-width: none;
@@ -244,13 +176,15 @@ body {
   flex: 1 1 auto;
 }
 
-/* Cart column styles */
+/* Cart column styles - adjusted to fit content and prevent overflow */
 .cart-col {
   flex: 0 0 auto;
-  max-width: 180px;
-  min-width: 150px;
+  max-width: 25%; /* Percentage-based max width to adapt to viewport */
+  min-width: 150px; /* Minimum width to ensure usability */
+  width: fit-content; /* Fit to content, constrained by max-width */
   margin-left: auto;
   transition: all 0.3s ease-in-out;
+  box-sizing: border-box; /* Ensure padding/margins don’t add to width */
 }
 
 .cart-expanded {
@@ -272,7 +206,7 @@ body {
 
 /* List of cart items */
 .cart-items-list {
-  width: 100%;
+  width: 70%;
   text-align: left;
   max-height: 84vh;
   overflow-y: auto;
