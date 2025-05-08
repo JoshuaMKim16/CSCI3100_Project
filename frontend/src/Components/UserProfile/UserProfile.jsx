@@ -1,19 +1,25 @@
-// UserProfile.jsx
-import React, { useContext } from 'react';
-import { Container, Row, Col, Button, Alert } from 'reactstrap';
+import React, { useState, useContext, useRef } from 'react';
+import { Container, Grid, Button, Alert, Typography, Box, AppBar, Toolbar, } from '@mui/material'; // Updated to MUI
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
+import logo from '../login/Logo.png';
+import ChatbotFAB from "../utils/AIChatbot"
+
+
 import './UserProfile.css';
 
 const UserProfile = () => {
   const { user, setUser } = useContext(AuthContext);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const tourSectionRef = useRef(null);
+
 
   // If there's no user, show message.
   if (!user) {
     return (
       <Container className="user-profile-container">
-        <p>User is not logged in.</p>
+        <Typography variant="body1">User is not logged in.</Typography>
       </Container>
     );
   }
@@ -26,7 +32,7 @@ const UserProfile = () => {
     if (!window.confirm("Are you sure you want to unsubscribe?")) {
       return;
     }
-    
+
     // Retrieve the token from user or localStorage.
     const token = user.token || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).token);
 
@@ -38,14 +44,14 @@ const UserProfile = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to unsubscribe');
       }
 
       // Update the AuthContext with the updated user data
       const updatedUser = await response.json();
-      
+
       // Update user in context and localStorage
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
@@ -56,73 +62,270 @@ const UserProfile = () => {
     }
   };
 
+  //Navbar
+  // Logout logic
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // Remove the user from local storage
+    navigate("/login"); // Navigate back to the login page
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate("/searchpage", { state: { query: searchTerm } });
+  };
+
+  const handleScrollToTours = () => {
+    if (tourSectionRef.current) {
+      tourSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleNavigateToPlanner = () => {
+    navigate("/planner");
+  };
+
+  const handleNavigateToProfile = () => {
+    navigate("/profile");
+  };
+
+  const navbarFontColor = "white";
+
   return (
-    <Container className="user-profile-container">
-      <Row className="profile-header">
-        <Col md="3">
-          <img
-            src={user.picture || '/default-profile.png'}
-            alt="Profile"
-            className="profile-image"
-          />
-        </Col>
-        <Col md="9">
-          <h2>{user.name}</h2>
-          <p>Email: {user.email}</p>
-          <p>Region: Hong Kong</p>
-          {/* Display subscription status */}
-          {isSubscribed ? (
-            <Alert color="success">
-              Subscription Status: Ad-Free
-            </Alert>
-          ) : (
-            <Alert color="warning">
-              Subscription Status: Not Subscribed. Enjoy an ad‑free experience by subscribing.
-            </Alert>
-          )}
-          
-          <div className="profile-actions">
-            <Button color="primary" onClick={() => navigate('/activity')}>
+    <div>
+    <Container className="user-profile-container" sx={{ width: '100%', bgcolor: 'transparent', py: 2}}>
+      {/* Fixed Banner */}
+
+      <Box className="banner">
+        <Typography variant="h3" sx={{ color: 'white', padding: 2, mt:10, fontweight: 'bold', textShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)'}}>Profile</Typography>
+      </Box>
+
+      {/* Navbar */}
+      <AppBar
+            position="fixed"
+            style={{
+              backgroundColor: "transparent",
+              boxShadow: "none",
+            }}
+          >
+            <Toolbar
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center", // Vertically center all items in the navbar
+                position: "relative",
+              }}
+            >
+              {/* Left Section (Logo) */}
+              <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
+                <Button
+                  color="inherit"
+                  style={{
+                    padding: 0, // Remove padding for a better fit
+                    background: 'none', // Remove default button background
+                    border: 'none', // Remove border if any
+                  }}
+                >
+                  <img
+                    src="/login/Logo.png" // Use absolute path for public folder
+                    alt="Logo"
+                    style={{
+                      height: "40px", // Adjust height as needed
+                      width: "auto", // Maintain aspect ratio
+                    }}
+                  />
+                </Button>
+              </div>
+
+              {/* Center Section (Navbar Items) */}
+              <div
+                style={{
+                  position: "absolute", // Position absolutely relative to the toolbar
+                  left: "50%", // Center horizontally
+                  top: "50%", // Center vertically
+                  transform: "translate(-50%, -50%)", // Adjust for exact center alignment
+                  display: "flex",
+                  gap: "30px",
+                  textAlign: "center",
+                }}
+              >
+                {/* Home Navigation */}
+                <Button
+                  color="inherit"
+                  onClick={() => navigate("/main")} // Navigate to /main
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  HOME
+                </Button>
+
+                {/* Tour Navigation */}
+                <Button
+                  color="inherit"
+                  onClick={() => navigate("/tour")} // Navigate to /tour
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  TOUR
+                </Button>
+
+                {/* Forum Navigation */}
+                <Button
+                  color="inherit"
+                  onClick={() => navigate("/forum")} // Navigate to /forum
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  FORUM
+                </Button>
+
+                <Button
+                  color="inherit"
+                  onClick={handleNavigateToPlanner}
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  PLANNER
+                </Button>
+              </div>
+
+              {/* Right Section (Profile Button) */}
+              <div style={{ display: "flex", gap: "15px", textAlign: "right" }}>
+                <Button
+                  color="inherit"
+                  onClick={handleNavigateToProfile}
+                  style={{
+                    color: navbarFontColor,
+                    fontFamily: "Poppins, sans-serif",
+                    border: "2px solid white",
+                    borderRadius: "10%",
+                    padding: "5px 10px",
+                    minWidth: "40px",
+                    height: "40px",
+                    fontSize: "14px",
+                  }}
+                >
+                  PROFILE
+                </Button>
+
+                {/* Logout Button */}
+                <Button
+                  onClick={handleLogout}
+                  style={{
+                    color: "skyblue",
+                    fontFamily: "Poppins, sans-serif",
+                    padding: "5px 15px",
+                    borderRadius: "5px", // Rounded edges
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  LOGOUT
+                </Button>
+              </div>
+            </Toolbar>
+          </AppBar>
+
+      <Grid container spacing={3} className="profile-header" sx={{ marginTop: '160px', width: '100%' }}> 
+      <Grid item md={3} className="profile-image-container">
+        <img
+          src={user.picture || '/profile_none.png'} // Fallback for other images
+          className="profile-image"
+        />
+      </Grid>
+
+        <Grid item md={9}>
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>{user.name}</Typography>
+            <Typography sx={{ mb: 1 }}>Email: {user.email}</Typography>
+            <Typography sx={{ mb: 2 }}>Region: Hong Kong</Typography>
+          </Box>
+
+          {/* Display subscription status and button */}
+            {isSubscribed ? (
+              <Alert severity="success" sx={{ color: 'black', lineHeight: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ marginRight: '8px' }}>Subscription Status: Ad-Free</span>
+              </Alert>
+            ) : (
+              <Alert severity="warning" sx={{ color: 'black', lineHeight: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <span>Subscription Status: Not Subscribed.</span>
+                  <br />
+                  <span className="highlight-text">Enjoy an ad‑free experience by subscribing!</span>
+                </div>
+              </Alert>
+            )}
+
+          {/* Action buttons */}
+          <Box className="profile-actions" sx={{ 
+             position: 'fixed',
+             top: '25%',
+             right: '20%',
+             width: '200px',
+             bgcolor: 'transparent',
+             boxShadow: 0,
+             display: 'flex',
+             flexDirection: 'column',
+             alignItems: 'flex-start',}}>           
+            <Button 
+              variant="text" 
+              sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start' }} // Set button text color to dark blue
+              onClick={() => navigate('/activity')}
+            >
               Your Activity
             </Button>
-            { !isSubscribed ? (
+
+            {isSubscribed ? (
               <Button 
-                color="success" 
-                onClick={() => navigate('/subscribe')}
-              >
-                Subscribe
-              </Button>
-            ) : (
-              <Button 
-                color="info"
+                variant="text"  
+                sx={{ color: "darkblue", textAlign: 'left', justifyContent: 'flex-start' }}
                 onClick={handleUnsubscribe}
               >
                 Unsubscribe
               </Button>
+            ) : (
+              <Button 
+                variant="text"  
+                sx={{ color: "darkblue", textAlign: 'left', justifyContent: 'flex-start' }}
+                onClick={() => navigate('/subscribe')}
+              >
+                Subscribe
+              </Button>
             )}
+
             <Button
-              color="danger"
-              onClick={() => {
-                // Log out: remove user from storage and update context.
-                localStorage.removeItem('user');
-                setUser(null);
-                navigate('/login');
-              }}
+                variant="text"
+                sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start', }} 
+                onClick={() => navigate('/edituser', { state: { user } })}
             >
-              LOG OUT
+              Edit Profile
             </Button>
-          </div>
-        </Col>
-      </Row>
-      <Row className="profile-content">
-        <Col>
-          <h3>Welcome, {user.name}!</h3>
-          <p>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Grid container className="profile-content">
+        <Grid item xs={12}>
+          <Typography variant="h6">Welcome, {user.name}!</Typography>
+          <Typography>
             Use the buttons above to view your activity, subscribe for an ad‑free experience, or log out.
-          </p>
-        </Col>
-      </Row>
+          </Typography>
+        </Grid>
+      </Grid>
     </Container>
+    <ChatbotFAB />
+    </div>
   );
 };
 

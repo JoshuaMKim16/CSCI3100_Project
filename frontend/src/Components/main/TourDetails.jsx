@@ -366,7 +366,7 @@ const TourDetails = () => {
       </div>
 
       {/*Picture and Details*/}
-      <Container style={{height: '100vh', width: '100%', margin: '0 auto'}}>
+      <Container style={{height: '90vh', width: '100%', margin: '0 auto'}}>      
         <Row style={{display: 'flex', marginTop: '1rem'}}>
           <Col style={{width: '60%', marginRight: '1rem'}}>
             {specificImage && (
@@ -416,7 +416,20 @@ const TourDetails = () => {
                 onClick={handleAddToCart}
               >
                 Add to Cart
-              </button>
+              </Button>
+              <Button 
+                className="close-button" 
+                style={{
+                  position: 'absolute', 
+                  top: '10px', 
+                  right: '10px', 
+                  width: '50px', 
+                  height: '50px', 
+                  mb: 1 
+                }}
+                onClick={() => navigate(-1)}> 
+                X
+              </Button>
             </div>
           </Col>
         </Row>
