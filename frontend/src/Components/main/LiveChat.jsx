@@ -5,6 +5,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import ChatbotFAB from "../utils/AIChatbot";
 
@@ -143,20 +144,23 @@ const LiveChat = () => {
             position: "relative",
           }}
         >
+          {/* Left Section: TravelTailor Logo in Black */}
           <Box sx={{ display: "flex", gap: "20px", textAlign: "left" }}>
-            <Button
-              color="inherit"
+            <Typography
+              variant="h4"
+              onClick={() => navigate("/")}
               sx={{
+                fontFamily: "cursive",
+                fontSize: "32px",
                 color: "black",
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
+                cursor: "pointer",
               }}
-              onClick={() => navigate("/main")}
             >
-              LOGO
-            </Button>
+              TravelTailor
+            </Typography>
           </Box>
 
+          {/* Center Section (Navbar Items) */}
           <Box
             sx={{
               position: "absolute",
@@ -214,6 +218,7 @@ const LiveChat = () => {
             </Button>
           </Box>
 
+          {/* Right Section (Profile & Logout Buttons) */}
           <Box sx={{ display: "flex", gap: "15px", textAlign: "right" }}>
             <Button
               color="inherit"

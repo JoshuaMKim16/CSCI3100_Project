@@ -1,11 +1,8 @@
 import React, { useState, useContext, useRef } from 'react';
-import { Container, Grid, Button, Alert, Typography, Box, AppBar, Toolbar, } from '@mui/material'; // Updated to MUI
+import { Container, Grid, Button, Alert, Typography, Box, AppBar, Toolbar } from '@mui/material'; // Updated to MUI
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
-import logo from '../login/Logo.png';
-import ChatbotFAB from "../utils/AIChatbot"
-
-
+import ChatbotFAB from "../utils/AIChatbot";
 import './UserProfile.css';
 
 const UserProfile = () => {
@@ -13,7 +10,6 @@ const UserProfile = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const tourSectionRef = useRef(null);
-
 
   // If there's no user, show message.
   if (!user) {
@@ -62,7 +58,7 @@ const UserProfile = () => {
     }
   };
 
-  //Navbar
+  // Navbar
   // Logout logic
   const handleLogout = () => {
     localStorage.removeItem("user"); // Remove the user from local storage
@@ -92,167 +88,163 @@ const UserProfile = () => {
 
   return (
     <div>
-    <Container className="user-profile-container" sx={{ width: '100%', bgcolor: 'transparent', py: 2}}>
-      {/* Fixed Banner */}
+      <Container className="user-profile-container" sx={{ width: '100%', bgcolor: 'transparent', py: 2 }}>
+        {/* Fixed Banner */}
+        <Box className="banner">
+          <Typography variant="h3" sx={{ color: 'white', padding: 2, mt: 10, fontWeight: 'bold', textShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)' }}>
+            Profile
+          </Typography>
+        </Box>
 
-      <Box className="banner">
-        <Typography variant="h3" sx={{ color: 'white', padding: 2, mt:10, fontweight: 'bold', textShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)'}}>Profile</Typography>
-      </Box>
-
-      {/* Navbar */}
-      <AppBar
-            position="fixed"
+        {/* Navbar */}
+        <AppBar
+          position="fixed"
+          style={{
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+        >
+          <Toolbar
             style={{
-              backgroundColor: "transparent",
-              boxShadow: "none",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center", // Vertically center all items in the navbar
+              position: "relative",
             }}
           >
-            <Toolbar
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center", // Vertically center all items in the navbar
-                position: "relative",
-              }}
-            >
-              {/* Left Section (Logo) */}
-              <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
-                <Button
-                  color="inherit"
-                  style={{
-                    padding: 0, // Remove padding for a better fit
-                    background: 'none', // Remove default button background
-                    border: 'none', // Remove border if any
-                  }}
-                >
-                  <img
-                    src="/login/Logo.png" // Use absolute path for public folder
-                    alt="Logo"
-                    style={{
-                      height: "40px", // Adjust height as needed
-                      width: "auto", // Maintain aspect ratio
-                    }}
-                  />
-                </Button>
-              </div>
-
-              {/* Center Section (Navbar Items) */}
-              <div
+            {/* Left Section: White TravelTailor Logo */}
+            <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
+              <Typography
+                variant="h4"
+                onClick={() => navigate("/")}
                 style={{
-                  position: "absolute", // Position absolutely relative to the toolbar
-                  left: "50%", // Center horizontally
-                  top: "50%", // Center vertically
-                  transform: "translate(-50%, -50%)", // Adjust for exact center alignment
-                  display: "flex",
-                  gap: "30px",
-                  textAlign: "center",
+                  fontFamily: "cursive",
+                  fontSize: "32px",
+                  color: "white",
+                  cursor: "pointer",
                 }}
               >
-                {/* Home Navigation */}
-                <Button
-                  color="inherit"
-                  onClick={() => navigate("/main")} // Navigate to /main
-                  style={{
-                    color: navbarFontColor,
-                    fontSize: "18px",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  HOME
-                </Button>
+                TravelTailor
+              </Typography>
+            </div>
 
-                {/* Tour Navigation */}
-                <Button
-                  color="inherit"
-                  onClick={() => navigate("/tour")} // Navigate to /tour
-                  style={{
-                    color: navbarFontColor,
-                    fontSize: "18px",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  TOUR
-                </Button>
+            {/* Center Section (Navbar Items) */}
+            <div
+              style={{
+                position: "absolute", // Position absolutely relative to the toolbar
+                left: "50%", // Center horizontally
+                top: "50%", // Center vertically
+                transform: "translate(-50%, -50%)", // Adjust for exact center alignment
+                display: "flex",
+                gap: "30px",
+                textAlign: "center",
+              }}
+            >
+              {/* Home Navigation */}
+              <Button
+                color="inherit"
+                onClick={() => navigate("/main")} // Navigate to /main
+                style={{
+                  color: navbarFontColor,
+                  fontSize: "18px",
+                  fontFamily: "Poppins, sans-serif",
+                }}
+              >
+                HOME
+              </Button>
 
-                {/* Forum Navigation */}
-                <Button
-                  color="inherit"
-                  onClick={() => navigate("/forum")} // Navigate to /forum
-                  style={{
-                    color: navbarFontColor,
-                    fontSize: "18px",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  FORUM
-                </Button>
+              {/* Tour Navigation */}
+              <Button
+                color="inherit"
+                onClick={() => navigate("/tour")} // Navigate to /tour
+                style={{
+                  color: navbarFontColor,
+                  fontSize: "18px",
+                  fontFamily: "Poppins, sans-serif",
+                }}
+              >
+                TOUR
+              </Button>
 
-                <Button
-                  color="inherit"
-                  onClick={handleNavigateToPlanner}
-                  style={{
-                    color: navbarFontColor,
-                    fontSize: "18px",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  PLANNER
-                </Button>
-              </div>
+              {/* Forum Navigation */}
+              <Button
+                color="inherit"
+                onClick={() => navigate("/forum")} // Navigate to /forum
+                style={{
+                  color: navbarFontColor,
+                  fontSize: "18px",
+                  fontFamily: "Poppins, sans-serif",
+                }}
+              >
+                FORUM
+              </Button>
 
-              {/* Right Section (Profile Button) */}
-              <div style={{ display: "flex", gap: "15px", textAlign: "right" }}>
-                <Button
-                  color="inherit"
-                  onClick={handleNavigateToProfile}
-                  style={{
-                    color: navbarFontColor,
-                    fontFamily: "Poppins, sans-serif",
-                    border: "2px solid white",
-                    borderRadius: "10%",
-                    padding: "5px 10px",
-                    minWidth: "40px",
-                    height: "40px",
-                    fontSize: "14px",
-                  }}
-                >
-                  PROFILE
-                </Button>
+              <Button
+                color="inherit"
+                onClick={handleNavigateToPlanner}
+                style={{
+                  color: navbarFontColor,
+                  fontSize: "18px",
+                  fontFamily: "Poppins, sans-serif",
+                }}
+              >
+                PLANNER
+              </Button>
+            </div>
 
-                {/* Logout Button */}
-                <Button
-                  onClick={handleLogout}
-                  style={{
-                    color: "skyblue",
-                    fontFamily: "Poppins, sans-serif",
-                    padding: "5px 15px",
-                    borderRadius: "5px", // Rounded edges
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  LOGOUT
-                </Button>
-              </div>
-            </Toolbar>
-          </AppBar>
+            {/* Right Section (Profile Button and Logout) */}
+            <div style={{ display: "flex", gap: "15px", textAlign: "right" }}>
+              <Button
+                color="inherit"
+                onClick={handleNavigateToProfile}
+                style={{
+                  color: navbarFontColor,
+                  fontFamily: "Poppins, sans-serif",
+                  border: "2px solid white",
+                  borderRadius: "10%",
+                  padding: "5px 10px",
+                  minWidth: "40px",
+                  height: "40px",
+                  fontSize: "14px",
+                }}
+              >
+                PROFILE
+              </Button>
 
-      <Grid container spacing={3} className="profile-header" sx={{ marginTop: '160px', width: '100%' }}> 
-      <Grid item md={3} className="profile-image-container">
-        <img
-          src={user.picture || '/profile_none.png'} // Fallback for other images
-          className="profile-image"
-        />
-      </Grid>
+              {/* Logout Button */}
+              <Button
+                onClick={handleLogout}
+                style={{
+                  color: "skyblue",
+                  fontFamily: "Poppins, sans-serif",
+                  padding: "5px 15px",
+                  borderRadius: "5px", // Rounded edges
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                }}
+              >
+                LOGOUT
+              </Button>
+            </div>
+          </Toolbar>
+        </AppBar>
 
-        <Grid item md={9}>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>{user.name}</Typography>
-            <Typography sx={{ mb: 1 }}>Email: {user.email}</Typography>
-            <Typography sx={{ mb: 2 }}>Region: Hong Kong</Typography>
-          </Box>
+        <Grid container spacing={3} className="profile-header" sx={{ marginTop: '160px', width: '100%' }}>
+          <Grid item md={3} className="profile-image-container">
+            <img
+              src={user.picture || '/profile_none.png'} // Fallback for other images
+              className="profile-image"
+            />
+          </Grid>
 
-          {/* Display subscription status and button */}
+          <Grid item md={9}>
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="h5" sx={{ fontWeight: 'bold' }}>{user.name}</Typography>
+              <Typography sx={{ mb: 1 }}>Email: {user.email}</Typography>
+              <Typography sx={{ mb: 2 }}>Region: Hong Kong</Typography>
+            </Box>
+
+            {/* Display subscription status */}
             {isSubscribed ? (
               <Alert severity="success" sx={{ color: 'black', lineHeight: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ marginRight: '8px' }}>Subscription Status: Ad-Free</span>
@@ -267,64 +259,65 @@ const UserProfile = () => {
               </Alert>
             )}
 
-          {/* Action buttons */}
-          <Box className="profile-actions" sx={{ 
-             position: 'fixed',
-             top: '25%',
-             right: '20%',
-             width: '200px',
-             bgcolor: 'transparent',
-             boxShadow: 0,
-             display: 'flex',
-             flexDirection: 'column',
-             alignItems: 'flex-start',}}>           
-            <Button 
-              variant="text" 
-              sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start' }} // Set button text color to dark blue
-              onClick={() => navigate('/activity')}
-            >
-              Your Activity
-            </Button>
-
-            {isSubscribed ? (
-              <Button 
-                variant="text"  
-                sx={{ color: "darkblue", textAlign: 'left', justifyContent: 'flex-start' }}
-                onClick={handleUnsubscribe}
-              >
-                Unsubscribe
-              </Button>
-            ) : (
-              <Button 
-                variant="text"  
-                sx={{ color: "darkblue", textAlign: 'left', justifyContent: 'flex-start' }}
-                onClick={() => navigate('/subscribe')}
-              >
-                Subscribe
-              </Button>
-            )}
-
-            <Button
+            {/* Action buttons */}
+            <Box className="profile-actions" sx={{
+              position: 'fixed',
+              top: '25%',
+              right: '20%',
+              width: '200px',
+              bgcolor: 'transparent',
+              boxShadow: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}>
+              <Button
                 variant="text"
-                sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start', }} 
-                onClick={() => navigate('/edituser', { state: { user } })}
-            >
-              Edit Profile
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
+                sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start' }}
+                onClick={() => navigate('/activity')}
+              >
+                Your Activity
+              </Button>
 
-      <Grid container className="profile-content">
-        <Grid item xs={12}>
-          <Typography variant="h6">Welcome, {user.name}!</Typography>
-          <Typography>
-            Use the buttons above to view your activity, subscribe for an ad‑free experience, or log out.
-          </Typography>
+              {isSubscribed ? (
+                <Button
+                  variant="text"
+                  sx={{ color: "darkblue", textAlign: 'left', justifyContent: 'flex-start' }}
+                  onClick={handleUnsubscribe}
+                >
+                  Unsubscribe
+                </Button>
+              ) : (
+                <Button
+                  variant="text"
+                  sx={{ color: "darkblue", textAlign: 'left', justifyContent: 'flex-start' }}
+                  onClick={() => navigate('/subscribe')}
+                >
+                  Subscribe
+                </Button>
+              )}
+
+              <Button
+                variant="text"
+                sx={{ color: 'darkblue', textAlign: 'left', justifyContent: 'flex-start' }}
+                onClick={() => navigate('/edituser', { state: { user } })}
+              >
+                Edit Profile
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
-    <ChatbotFAB />
+
+        <Grid container className="profile-content">
+          <Grid item xs={12}>
+            <Typography variant="h6">Welcome, {user.name}!</Typography>
+            <Typography>
+              Use the buttons above to view your activity, subscribe for an ad‑free experience, or log out.
+            </Typography>
+          </Grid>
+        </Grid>
+      </Container>
+      <ChatbotFAB />
     </div>
   );
 };

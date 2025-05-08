@@ -19,7 +19,7 @@ import ChatbotFAB from "../utils/AIChatbot";
 
 // FakeCommentsCarousel Component
 const FakeCommentsCarousel = () => {
-  // Five fake comments
+  // Six fake comments
   const comments = [
     { name: "Joshua", comment: "I loved exploring these hidden gems!, and CSCI3100" },
     { name: "Esther", comment: "A perfect blend of tradition and modern marvels." },
@@ -127,19 +127,6 @@ const TourList = () => {
     navigate("/login");
   };
 
-  // Helper function to randomly pick n items from an array
-  const getRandomItems = (arr, n) => {
-    // Create a copy to avoid mutating original array
-    const arrCopy = [...arr];
-    // Shuffle the array
-    for (let i = arrCopy.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arrCopy[i], arrCopy[j]] = [arrCopy[j], arrCopy[i]];
-    }
-    // Return first n items or the full array if not enough items.
-    return arrCopy.slice(0, n);
-  };
-
   const fetchLocations = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/locations");
@@ -156,10 +143,11 @@ const TourList = () => {
         });
       });
 
+      // Only take the first four items of each category.
       setCategories({
-        museum: getRandomItems(categorized["museum"] || [], 4),
-        tourist_attraction: getRandomItems(categorized["tourist_attraction"] || [], 4),
-        restaurant: getRandomItems(categorized["restaurant"] || [], 4),
+        museum: (categorized["museum"] || []).slice(0, 4),
+        tourist_attraction: (categorized["tourist_attraction"] || []).slice(0, 4),
+        restaurant: (categorized["restaurant"] || []).slice(0, 4),
       });
     } catch (error) {
       console.error("Error fetching locations:", error);
@@ -205,7 +193,7 @@ const TourList = () => {
     setForecastModalOpen(false);
   };
 
-  // Effect for fetching locations on component mount.
+  // Fetch locations when component mounts.
   useEffect(() => {
     fetchLocations();
   }, []);
@@ -225,57 +213,55 @@ const TourList = () => {
   }, []);
 
   // Render category without forcing the title to align with the leftmost card.
-  const renderCategory = (label, items) => {
-    return (
-      <Box
+  const renderCategory = (label, items) => (
+    <Box
+      sx={{
+        marginBottom: 6,
+        width: "100%",
+        paddingX: "20px",
+      }}
+    >
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
         sx={{
-          marginBottom: 6,
-          width: "100%",
-          paddingX: "20px",
+          fontFamily: "Poppins, sans-serif",
+          mb: 4,
+          fontWeight: "bold",
+          textAlign: "left",
         }}
       >
-        <Typography
-          variant="h4"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontFamily: "Poppins, sans-serif",
-            mb: 4,
-            fontWeight: "bold",
-            textAlign: "left",
-          }}
-        >
-          {label}
-        </Typography>
-        <Grid container spacing={2} justifyContent="center">
-          {items.map((location, index) => (
-            <Grid
-              item
-              key={index}
-              xs={12}   // full width on extra-small screens
-              sm={6}    // 2 per row on small screens
-              md={3}    // 4 per row on medium and up
+        {label}
+      </Typography>
+      <Grid container spacing={2} justifyContent="center">
+        {items.map((location, index) => (
+          <Grid
+            item
+            key={index}
+            xs={12}   // Full width on extra-small screens
+            sm={6}    // 2 per row on small screens
+            md={3}    // 4 per row on medium and up
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Box
               sx={{
                 display: "flex",
-                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
               }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                <TourCard location={location} />
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    );
-  };
+              <TourCard location={location} />
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
 
   return (
     <Box
@@ -309,19 +295,23 @@ const TourList = () => {
               position: "relative",
             }}
           >
+            {/* Left Section: TravelTailor Logo */}
             <Box sx={{ display: "flex", gap: "20px", textAlign: "left" }}>
-              <Button
-                color="inherit"
+              <Typography
+                variant="h4"
+                onClick={() => navigate("/")}
                 sx={{
-                  color: navbarFontColor,
-                  fontSize: "18px",
-                  fontFamily: "Poppins, sans-serif",
+                  fontFamily: "cursive",
+                  fontSize: "32px",
+                  color: "black",
+                  cursor: "pointer",
                 }}
               >
-                LOGO
-              </Button>
+                TravelTailor
+              </Typography>
             </Box>
 
+            {/* Center Section */}
             <Box
               sx={{
                 position: "absolute",
@@ -379,6 +369,7 @@ const TourList = () => {
               </Button>
             </Box>
 
+            {/* Right Section */}
             <Box sx={{ display: "flex", gap: "15px", textAlign: "right" }}>
               <Button
                 color="inherit"
@@ -641,7 +632,7 @@ const TourList = () => {
           </Box>
         </Box>
       </Modal>
-      <ChatbotFAB/>
+      <ChatbotFAB />
     </Box>
   );
 };

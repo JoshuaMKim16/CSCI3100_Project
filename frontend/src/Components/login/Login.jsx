@@ -83,6 +83,21 @@ const Login = () => {
         Your browser does not support the video tag.
       </video>
 
+      {/* Cursive TravelTailor Title in Top Left */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          fontFamily: 'cursive',
+          fontSize: '32px',
+          color: 'black',
+          zIndex: 2,
+        }}
+      >
+        TravelTailor
+      </div>
+
       {/* Login Form */}
       <div className="login-container" style={{ zIndex: 1, position: 'relative' }}>
         <form

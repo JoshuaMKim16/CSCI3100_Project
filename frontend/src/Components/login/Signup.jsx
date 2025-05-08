@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './Login.css'; // Reuse CSS styles
+import './Login.css'; // Reuse your CSS styles
 import Axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Material-UI Back Arrow Icon
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -12,12 +12,12 @@ const Signup = () => {
   const [adminCode, setAdminCode] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // Track loading state
-  
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const videoRef = useRef(null);
 
-  // Adjust the playback rate of the video
+  // Adjust playback rate for the background video
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.playbackRate = 0.6;
@@ -26,7 +26,7 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading
+    setLoading(true);
 
     Axios.post('http://localhost:3000/auth/signup', {
       name: username,
@@ -35,18 +35,18 @@ const Signup = () => {
       adminCode: adminCode
     })
       .then(response => {
-        setLoading(false); // Stop loading
+        setLoading(false);
         if (response.data.status) {
           setMessage("Sign up successful! Redirecting...");
           setError('');
-          setTimeout(() => navigate('/login'), 1500); // Redirect to login after 1.5 seconds
+          setTimeout(() => navigate('/login'), 1500);
         } else {
           setMessage('');
           setError("Sign up failed. Please try again.");
         }
       })
       .catch(err => {
-        setLoading(false); // Stop loading
+        setLoading(false);
         setMessage('');
         setError("An error occurred. Please try again.");
         console.error(err);
@@ -85,19 +85,44 @@ const Signup = () => {
         Your browser does not support the video tag.
       </video>
 
-      {/* Signup Form */}
-      <div className="signup-container" style={{ zIndex: 1, position: 'relative' }}>
+      {/* Cursive TravelTailor Title in Top Left */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          fontFamily: 'cursive',
+          fontSize: '32px',
+          color: 'black',
+          zIndex: 2,
+          cursor: 'pointer'
+        }}
+        onClick={() => navigate("/")}
+      >
+        TravelTailor
+      </div>
+
+      {/* Signup Form Container */}
+      <div
+        className="signup-container"
+        style={{
+          zIndex: 1,
+          position: 'relative',
+          marginTop: '120px', // adjust to ensure the form doesn't overlap the header
+        }}
+      >
         <form
           className="signup-form"
           onSubmit={handleSubmit}
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             padding: '30px',
             borderRadius: '50px',
             width: '400px',
             boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)',
             zIndex: 2,
-            position: 'relative', // Ensures absolute children are positioned within the form
+            position: 'relative',
+            margin: 'auto',
           }}
         >
           {/* Back Arrow */}
@@ -127,8 +152,30 @@ const Signup = () => {
 
           <h2 style={{ textAlign: 'center', marginBottom: '10px', marginTop: '30px' }}>Sign Up</h2>
 
-          {message && <div className="success-message" style={{ color: 'green', textAlign: 'center', marginBottom: '10px' }}>{message}</div>}
-          {error && <div className="error-message" style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>{error}</div>}
+          {message && (
+            <div
+              className="success-message"
+              style={{
+                color: 'green',
+                textAlign: 'center',
+                marginBottom: '10px'
+              }}
+            >
+              {message}
+            </div>
+          )}
+          {error && (
+            <div
+              className="error-message"
+              style={{
+                color: 'red',
+                textAlign: 'center',
+                marginBottom: '10px'
+              }}
+            >
+              {error}
+            </div>
+          )}
 
           {/* Username Field */}
           <label htmlFor="username">Username:</label>
@@ -220,7 +267,12 @@ const Signup = () => {
             <Button
               variant="text"
               onClick={() => navigate('/login')}
-              style={{ fontSize: '14px', color: 'skyblue', textTransform: 'none', fontWeight: 'bold' }}
+              style={{
+                fontSize: '14px',
+                color: 'skyblue',
+                textTransform: 'none',
+                fontWeight: 'bold'
+              }}
             >
               Log In
             </Button>

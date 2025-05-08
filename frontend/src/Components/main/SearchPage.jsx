@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Carousel from 'react-material-ui-carousel';
+import Typography from '@mui/material/Typography';
 import hkBackground from "./hk_background.png"; // Fallback image
 import ChatbotFAB from "../utils/AIChatbot";
 
@@ -165,12 +166,18 @@ const SearchPage = () => {
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }}>
           <Box sx={{ display: "flex", gap: "20px", textAlign: "left" }}>
-            <Button
-              color="inherit"
-              sx={{ color: "black", fontSize: "18px", fontFamily: "Poppins, sans-serif" }}
+            <Typography
+              variant="h4"
+              onClick={() => navigate("/")}
+              sx={{
+                fontFamily: "cursive",
+                fontSize: "32px",
+                color: "black",
+                cursor: "pointer",
+              }}
             >
-              LOGO
-            </Button>
+              TravelTailor
+            </Typography>
           </Box>
           <Box
             sx={{
@@ -459,7 +466,7 @@ const SearchPage = () => {
           </Box>
         )}
       </Box>
-      <ChatbotFAB/>
+      <ChatbotFAB />
     </div>
   );
 };

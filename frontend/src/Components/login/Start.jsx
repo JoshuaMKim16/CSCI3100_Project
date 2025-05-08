@@ -1,27 +1,29 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Start.css';
-import logo from './Logo.png'; // Update the path to your logo image
-import {
-  AppBar,
-  Toolbar,
-  Box,
-  Button,
-} from '@mui/material';
+import { AppBar, Toolbar, Box, Button } from '@mui/material';
 
 const Start = () => {
   const navigate = useNavigate();
-  const videoRef = useRef(null); // Create a reference for the video element
+  const videoRef = useRef(null); // Reference for the video element
 
   useEffect(() => {
-    // Set video playback speed to 0.5x
+    // Set video playback speed to 0.6x
     if (videoRef.current) {
       videoRef.current.playbackRate = 0.6;
     }
   }, []);
 
   return (
-    <div className="header" style={{ fontFamily: 'Poppins, sans-serif', position: 'relative', height: '100vh', overflow: 'hidden' }}>
+    <div
+      className="header"
+      style={{
+        fontFamily: 'Poppins, sans-serif',
+        position: 'relative',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
       {/* Video Background */}
       <video
         ref={videoRef} // Attach the reference to the video element
@@ -46,70 +48,65 @@ const Start = () => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: "transparent",
-          boxShadow: "none",
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
           zIndex: 1300,
         }}
       >
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            position: "relative",
-          }}
-        >
-          {/* Left Section (Logo Button) */}
-          <Box sx={{ display: "flex", gap: "20px", textAlign: "left" }}>
-            <Button
-              color="inherit"
-              sx={{
-                color: "black",
-                fontSize: "24px", // Larger font for the logo
-                fontFamily: "Poppins, sans-serif",
-                fontWeight: "bold",
-              }}
-              onClick={() => navigate("/")}
-            >
-              LOGO
-            </Button>
-          </Box>
+        <Toolbar sx={{ position: 'relative' }}>
+          {/* Cursive TravelTailor Title in Top Left */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '20px',
+              left: '20px',
+              fontFamily: 'cursive',
+              fontSize: '32px',
+              color: 'black',
+              zIndex: 2,
+              cursor: 'pointer',
+            }}
+            onClick={() => navigate('/')}
+          >
+            TravelTailor
+          </div>
 
           {/* Right Section (Login and Signup Buttons) */}
           <Box
             sx={{
-              display: "flex",
-              gap: "20px",
-              textAlign: "right",
-              marginTop: "10px", // Lower the buttons
+              display: 'flex',
+              gap: '20px',
+              textAlign: 'right',
+              marginLeft: 'auto',
+              marginTop: '10px',
             }}
           >
             <Button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate('/login')}
               sx={{
-                color: "black",
-                fontFamily: "Poppins, sans-serif",
-                padding: "10px 30px", // Increased padding for larger buttons
-                borderRadius: "8px",
-                fontSize: "14px", // Larger font size
-                fontWeight: "bold",
-                border: "2px solid black",
+                color: 'black',
+                fontFamily: 'Poppins, sans-serif',
+                padding: '10px 30px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                border: '2px solid black',
               }}
             >
               LOGIN
             </Button>
             <Button
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate('/signup')}
               sx={{
-                color: "white",
-                backgroundColor: "skyblue",
-                fontFamily: "Poppins, sans-serif",
-                padding: "10px 40px", // Increased padding for larger buttons
-                borderRadius: "8px",
-                fontSize: "14px", // Larger font size
-                fontWeight: "bold",
+                color: 'white',
+                backgroundColor: 'skyblue',
+                fontFamily: 'Poppins, sans-serif',
+                padding: '10px 40px',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 'bold',
                 '&:hover': {
-                  backgroundColor: "#008cba", // Slightly darker blue on hover
+                  backgroundColor: '#008cba',
                 },
               }}
             >
@@ -124,11 +121,11 @@ const Start = () => {
         <p
           className="welcome-message"
           style={{
-            fontSize: "50px", // Larger welcome message
-            fontWeight: "bold",
-            textAlign: "center",
-            color: "white", // Ensure text is visible on the video background
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)", // Add text shadow for better contrast
+            fontSize: '50px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            color: 'white',
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)',
           }}
         >
           Your Personalized Travel Companion!
@@ -136,15 +133,15 @@ const Start = () => {
         <p
           className="message"
           style={{
-            fontSize: "25px",
-            textAlign: "center",
-            margin: "20px",
-            color: "white", // Ensure text is visible on the video background
-            textShadow: "1px 1px 3px rgba(0, 0, 0, 0.7)", // Add text shadow for better contrast
+            fontSize: '25px',
+            textAlign: 'center',
+            margin: '20px',
+            color: 'white',
+            textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)',
           }}
         >
-          Traveltailor delivers personalized travel planning with an itinerary
-          builder, location searches, and easy itinerary sharing—all in one!
+          TravelTailor delivers personalized travel planning with an itinerary builder,
+          location searches, and easy itinerary sharing--all in one!
         </p>
       </div>
     </div>

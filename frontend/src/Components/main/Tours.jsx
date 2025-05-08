@@ -154,36 +154,36 @@ const Tours = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center", // Vertically center all items in the navbar
-                position: "relative",
               }}
             >
-              {/* Left Section (Logo) */}
-              <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
-                <Button
-                  color="inherit"
-                  style={{
-                    color: navbarFontColor,
-                    fontSize: "18px",
-                    fontFamily: "Poppins, sans-serif",
-                  }}
-                >
-                  LOGO
-                </Button>
-              </div>
-
-              {/* Center Section (Navbar Items) */}
-              <div
-                style={{
-                  position: "absolute", // Position absolutely relative to the toolbar
-                  left: "50%", // Center horizontally
-                  top: "50%", // Center vertically
-                  transform: "translate(-50%, -50%)", // Adjust for exact center alignment
+              {/* Left Section: TravelTailor Logo */}
+              <Box
+                sx={{
                   display: "flex",
-                  gap: "30px",
-                  textAlign: "center",
+                  alignItems: "center",
                 }}
               >
-                {/* Home Navigation */}
+                <Typography
+                  variant="h4"
+                  onClick={() => navigate("/")}
+                  style={{
+                    fontFamily: "cursive",
+                    fontSize: "32px",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  TravelTailor
+                </Typography>
+              </Box>
+
+              {/* Center Section (Navbar Items) */}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "30px",
+                }}
+              >
                 <Button
                   color="inherit"
                   onClick={() => navigate("/main")} // Navigate to /main
@@ -196,7 +196,6 @@ const Tours = () => {
                   HOME
                 </Button>
 
-                {/* Tour Navigation */}
                 <Button
                   color="inherit"
                   onClick={() => navigate("/tour")} // Navigate to /tour
@@ -209,7 +208,6 @@ const Tours = () => {
                   TOUR
                 </Button>
 
-                {/* Forum Navigation */}
                 <Button
                   color="inherit"
                   onClick={() => navigate("/forum")} // Navigate to /forum
@@ -233,10 +231,16 @@ const Tours = () => {
                 >
                   PLANNER
                 </Button>
-              </div>
+              </Box>
 
-              {/* Right Section (Profile Button) */}
-              <div style={{ display: "flex", gap: "15px", textAlign: "right" }}>
+              {/* Right Section (Profile and Logout Buttons) */}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "15px",
+                  alignItems: "center",
+                }}
+              >
                 <Button
                   color="inherit"
                   onClick={handleNavigateToProfile}
@@ -254,7 +258,6 @@ const Tours = () => {
                   PROFILE
                 </Button>
 
-                {/* Logout Button */}
                 <Button
                   onClick={handleLogout}
                   style={{
@@ -268,7 +271,7 @@ const Tours = () => {
                 >
                   LOGOUT
                 </Button>
-              </div>
+              </Box>
             </Toolbar>
           </AppBar>
 

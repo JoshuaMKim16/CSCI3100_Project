@@ -1,7 +1,6 @@
-// /client/src/Components/TourDetails.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Row, Col } from 'reactstrap';
-import { FaMapMarkerAlt, FaTag, FaMoneyBillWave } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaTag } from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import CommentsSection from './CommentsSection';
@@ -11,21 +10,19 @@ import hkBackground from "./hk_background1.jpg";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Container,
-  TextField,
-  Box,
-  IconButton,
+  Typography,
 } from "@mui/material";
 
+// Container for Google Map
 const containerStyle = {
   width: '100%',
   height: '400px'
 };
 
 const TourDetails = () => {
-  // Get parameters from url
+  // Get parameters from URL
   const { id } = useParams();
 
   // States for fetching location attributes
@@ -116,7 +113,7 @@ const TourDetails = () => {
     setShowSidebar(false);
   };
 
-  // Handle 'google api already presented' error
+  // Handle 'google api already presented' error.
   class LoadScriptOnlyIfNeeded extends LoadScript {
     componentDidMount() {
       const cleaningUp = true;
@@ -130,10 +127,8 @@ const TourDetails = () => {
           console.error("google api is already presented");
           return;
         }
-  
         this.isCleaningUp().then(this.injectScript);
       }
-  
       if (isAlreadyLoaded) {
         this.setState({ loaded: true });
       }
@@ -141,17 +136,13 @@ const TourDetails = () => {
   }
 
   // Handle Add to Cart
-  // Fix: Make sure the cart is stored with the same key as in the shopping cart component
   const handleAddToCart = (e) => {
     e.preventDefault();
-    
-    // Retrieve logged-in user info (adjust logic as per your auth implementation)
     const loggedInUser = JSON.parse(localStorage.getItem('user')) || {};
     const userId = loggedInUser._id || 'guest';
-    // Use the same key as in ShoppingCart.jsx:
     const cartKey = `shoppingCart_${userId}`;
     const currentCart = JSON.parse(localStorage.getItem(cartKey)) || [];
-    
+
     const isAlreadyInCart = currentCart.some(item => item.id === location._id);
     if (!isAlreadyInCart) {
       const newCartItem = {
@@ -169,7 +160,7 @@ const TourDetails = () => {
     }
   };
 
-  // NavBar
+  // Navbar related
   const navbarFontColor = "black";
   const [navbarVisible, setNavbarVisible] = useState(true);
   const backgroundRef = useRef(null);
@@ -209,258 +200,298 @@ const TourDetails = () => {
 
   return (
     <div
-    style={{
-      width: "100vw",
-      height: "100vh",
-      margin: 0,
-      padding: 0,
-      fontFamily: "Poppins, sans-serif",
-    }}
+      style={{
+        width: "100vw",
+        height: "100vh",
+        margin: 0,
+        padding: 0,
+        fontFamily: "Poppins, sans-serif",
+      }}
     >
-    <section>
-    {/* Navbar */}
-    {navbarVisible && (
-        <AppBar
-          position="fixed"
-          style={{
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          }}
-        >
-        <Toolbar
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center", // Vertically center all items in the navbar
-            position: "relative",
-          }}
-        >
-          {/* Left Section (Logo) */}
-          <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
-            <Button
-              color="inherit"
-              style={{
-                color: navbarFontColor,
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
-            >
-              LOGO
-            </Button>
-          </div>
-
-          {/* Center Section (Navbar Items) */}
-          <div
+      <section>
+        {/* Navbar */}
+        {navbarVisible && (
+          <AppBar
+            position="fixed"
             style={{
-              position: "absolute", // Position absolutely relative to the toolbar
-              left: "50%", // Center horizontally
-              top: "50%", // Center vertically
-              transform: "translate(-50%, -50%)", // Adjust for exact center alignment
-              display: "flex",
-              gap: "30px",
-              textAlign: "center",
+              backgroundColor: "transparent",
+              boxShadow: "none",
             }}
           >
-            {/* Home Navigation */}
-            <Button
-              color="inherit"
-              onClick={() => navigate("/main")} // Navigate to /main
+            <Toolbar
               style={{
-                color: navbarFontColor,
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                position: "relative",
               }}
             >
-              HOME
-            </Button>
-
-            {/* Tour Navigation */}
-            <Button
-              color="inherit"
-              onClick={() => navigate("/tour")} // Navigate to /tour
-              style={{
-                color: navbarFontColor,
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
-            >
-              TOUR
-            </Button>
-
-            {/* Forum Navigation */}
-            <Button
-              color="inherit"
-              onClick={() => navigate("/forum")} // Navigate to /forum
-              style={{
-                color: navbarFontColor,
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
-            >
-              FORUM
-            </Button>
-
-            <Button
-              color="inherit"
-              onClick={handleNavigateToPlanner}
-              style={{
-                color: navbarFontColor,
-                fontSize: "18px",
-                fontFamily: "Poppins, sans-serif",
-              }}
-            >
-              PLANNER
-            </Button>
-          </div>
-
-          {/* Right Section (Profile Button) */}
-          <div style={{ display: "flex", gap: "15px", textAlign: "right" }}>
-            <Button
-              color="inherit"
-              onClick={handleNavigateToProfile}
-              style={{
-                color: navbarFontColor,
-                fontFamily: "Poppins, sans-serif",
-                border: "2px solid white",
-                borderRadius: "10%",
-                padding: "5px 10px",
-                minWidth: "40px",
-                height: "40px",
-                fontSize: "14px",
-              }}
-            >
-              PROFILE
-            </Button>
-
-            {/* Logout Button */}
-            <Button
-              onClick={handleLogout}
-              style={{
-                color: "skyblue",
-                fontFamily: "Poppins, sans-serif",
-                padding: "5px 15px",
-                borderRadius: "5px", // Rounded edges
-                fontSize: "14px",
-                fontWeight: "bold",
-              }}
-            >
-              LOGOUT
-            </Button>
-          </div>
-        </Toolbar>
-      </AppBar>
-      )}
-
-      {/* First Section: Background Image */}
-      <div
-        ref = {backgroundRef}
-        style={{
-          backgroundImage: `url(${hkBackground})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          width: "100vw",
-          height: "60vh",
-        }}
-      >
-      </div>
-
-      {/*Picture and Details*/}
-      <Container style={{height: '90vh', width: '100%', margin: '0 auto'}}>      
-        <Row style={{display: 'flex', marginTop: '1rem'}}>
-          <Col style={{width: '60%', marginRight: '1rem'}}>
-            {specificImage && (
-              <div>
-                {specificImage.secure_url && (
-                  <img
-                    src={specificImage.secure_url}
-                    alt='Loading...'
-                    style={{ width: '100%', height: 'auto', borderRadius: '5px'}}
-                  />
-                )}
+              {/* Left Section: TravelTailor Logo in Black */}
+              <div style={{ display: "flex", gap: "20px", textAlign: "left" }}>
+                <Typography
+                  variant="h4"
+                  onClick={() => navigate("/")}
+                  style={{
+                    fontFamily: "cursive",
+                    fontSize: "32px",
+                    color: "black",
+                    cursor: "pointer",
+                  }}
+                >
+                  TravelTailor
+                </Typography>
               </div>
-            )}
-          </Col>
-          <Col style={{width: '40%', height: 'auto', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)', borderRadius: '10px'}}>
-            <div className="tour_info">
-              <h1 style={{marginTop: '0'}}>{location.name}</h1>
-              <hr/>
-              <div className="d-flex align-items-center gap-5">
-                <h5 style={{textDecoration: 'underline', marginTop: '0'}}>Details</h5>
-                  <FaMapMarkerAlt/>{location.address}
-                  <p onClick={handleAddressClick} style={{cursor: 'pointer', color: 'blue', marginTop: '0'}}>View on Google Map</p>
-              </div>
-              <div className="tour_extra-details">
-                <span>
-                  <FaMoneyBillWave/>
-                  ${location.price} /person
-                </span>
-              </div>
-              <div>
-                {location.type && location.type.map((type) => (
-                  <div style={{ marginBottom: '0'}}>
-                      <FaTag/>{type}
-                      <br/>
-                  </div>
-                 ))}
-              </div>
-              <hr/>
-              <h5 style={{textDecoration: 'underline', margin: '0'}}>Description</h5>
-              {location.description ? (
-                <p style={{marginTop: '0'}}>{location.description}</p>
-              ) : (
-                <p style={{marginTop: '0', color: 'grey'}}>No description available</p>
-              )}
-              <Button
-                className='addToCartBtn'
-                onClick={handleAddToCart}
-              >
-                Add to Cart
-              </Button>
-              <Button 
-                className="close-button" 
+
+              {/* Center Section (Navbar Items) */}
+              <div
                 style={{
-                  position: 'absolute', 
-                  top: '10px', 
-                  right: '10px', 
-                  width: '50px', 
-                  height: '50px', 
-                  mb: 1 
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  display: "flex",
+                  gap: "30px",
+                  textAlign: "center",
                 }}
-                onClick={() => navigate(-1)}> 
-                X
-              </Button>
-            </div>
-          </Col>
-        </Row>
-        <br />
+              >
+                <Button
+                  color="inherit"
+                  onClick={() => navigate("/main")}
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  HOME
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate("/tour")}
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  TOUR
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={() => navigate("/forum")}
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  FORUM
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={handleNavigateToPlanner}
+                  style={{
+                    color: navbarFontColor,
+                    fontSize: "18px",
+                    fontFamily: "Poppins, sans-serif",
+                  }}
+                >
+                  PLANNER
+                </Button>
+              </div>
 
-        {/*Google Map*/}
-        {showSidebar && (
-          <div className={`sidebar ${showSidebar ? 'active' : ''}`}>
-            <div className="sidebar-content">
-              <h1 style={{margin: '0'}}>{location.name}</h1>
-              <h3 style={{margin: '0'}}>Google Map</h3>
-              <p onClick={handleSidebarClose} style={{ cursor: 'pointer', color: 'blue', marginTop: '0'}}>Close</p>
-              <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
-                {isMapLoaded && (
-                  <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-                    <MarkerF position={mapCenter} />
-                  </GoogleMap>
-                )}
-              </LoadScriptOnlyIfNeeded>
-            </div>
-          </div>
+              {/* Right Section (Profile & Logout Buttons) */}
+              <div style={{ display: "flex", gap: "15px", textAlign: "right" }}>
+                <Button
+                  color="inherit"
+                  onClick={handleNavigateToProfile}
+                  style={{
+                    color: navbarFontColor,
+                    fontFamily: "Poppins, sans-serif",
+                    border: "2px solid white",
+                    borderRadius: "10%",
+                    padding: "5px 10px",
+                    minWidth: "40px",
+                    height: "40px",
+                    fontSize: "14px",
+                  }}
+                >
+                  PROFILE
+                </Button>
+                <Button
+                  onClick={handleLogout}
+                  style={{
+                    color: "skyblue",
+                    fontFamily: "Poppins, sans-serif",
+                    padding: "5px 15px",
+                    borderRadius: "5px",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  LOGOUT
+                </Button>
+              </div>
+            </Toolbar>
+          </AppBar>
         )}
 
-        {/* Insert the CommentsSection component and pass the location ID */}
-        <Container style={{marginTop: '0.5rem'}}>
-          {location._id && <CommentsSection locationId={location._id} />}
-        </Container>
+        {/* First Section: Background Image */}
+        <div
+          ref={backgroundRef}
+          style={{
+            backgroundImage: `url(${hkBackground})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            width: "100vw",
+            height: "60vh",
+          }}
+        ></div>
 
-      </Container>
-      <ChatbotFAB/>
-    </section>
+        {/* Picture and Details */}
+        <Container style={{ height: '90vh', width: '100%', margin: '0 auto' }}>
+          <Row style={{ display: 'flex', marginTop: '1rem', alignItems: 'center' }}>
+            <Col style={{ width: '60%', marginRight: '1rem' }}>
+              {specificImage && (
+                <div>
+                  {specificImage.secure_url && (
+                    <img
+                      src={specificImage.secure_url}
+                      alt='Loading...'
+                      style={{ width: '100%', height: 'auto', borderRadius: '5px' }}
+                    />
+                  )}
+                </div>
+              )}
+            </Col>
+            <Col
+              style={{
+                width: '40%',
+                height: 'auto',
+                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
+                borderRadius: '10px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                position: 'relative'
+              }}
+            >
+              <div className="tour_info">
+                <h1 style={{ marginTop: '0' }}>{location.name}</h1>
+                <hr />
+                <div className="d-flex align-items-center gap-5">
+                  <h5 style={{ textDecoration: 'underline', marginTop: '0' }}>Details</h5>
+                  <FaMapMarkerAlt /> {location.address}
+                  <p onClick={handleAddressClick} style={{ cursor: 'pointer', color: 'blue', marginTop: '0' }}>View on Google Map</p>
+                </div>
+                <div>
+                  {location.type && location.type.map((type) => (
+                    <div style={{ marginBottom: '0' }} key={type}>
+                      <FaTag /> {type}<br />
+                    </div>
+                  ))}
+                </div>
+                <hr />
+                <h5 style={{ textDecoration: 'underline', margin: '0' }}>Description</h5>
+                {location.description ? (
+                  <p style={{ marginTop: '0' }}>{location.description}</p>
+                ) : (
+                  <p style={{ marginTop: '0', color: 'grey' }}>No description available</p>
+                )}
+                <Button className='addToCartBtn' onClick={handleAddToCart}>
+                  Add to Cart
+                </Button>
+                <Button
+                  className="close-button"
+                  style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    width: '50px',
+                    height: '50px',
+                  }}
+                  onClick={() => navigate(-1)}
+                >
+                  X
+                </Button>
+              </div>
+            </Col>
+          </Row>
+          <br />
+
+          {/* Google Map Sidebar with a Darker Grayish Overlay */}
+          {showSidebar && (
+            <div
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                backgroundColor: 'rgba(128, 128, 128, 0.8)',
+                zIndex: 1100,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <div
+                className={`sidebar ${showSidebar ? 'active' : ''}`}
+                style={{
+                  position: 'relative',
+                  width: '80%',
+                  maxWidth: '600px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  borderRadius: '8px',
+                  padding: '1rem',
+                  zIndex: 1200,
+                  overflow: 'hidden',
+                  height: '80%',
+                }}
+              >
+                <button
+                  onClick={handleSidebarClose}
+                  style={{
+                    position: 'absolute',
+                    top: '5px',
+                    right: '5px',
+                    background: 'transparent',
+                    border: 'none',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    cursor: 'pointer',
+                    width: '30px',
+                    height: '30px',
+                    lineHeight: '30px',
+                    textAlign: 'center',
+                    zIndex: 1300,
+                  }}
+                >
+                  X
+                </button>
+                <div className="sidebar-content">
+                  <h1 style={{ margin: '0' }}>{location.name}</h1>
+                  <h3 style={{ margin: '0' }}>Google Map</h3>
+                  <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
+                    {isMapLoaded && (
+                      <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
+                        <MarkerF position={mapCenter} />
+                      </GoogleMap>
+                    )}
+                  </LoadScriptOnlyIfNeeded>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Comments Section */}
+          <Container style={{ marginTop: '0.5rem' }}>
+            {location._id && <CommentsSection locationId={location._id} />}
+          </Container>
+        </Container>
+        <ChatbotFAB />
+      </section>
     </div>
   );
 };
