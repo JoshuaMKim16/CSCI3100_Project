@@ -411,7 +411,7 @@ const TourDetails = () => {
               ) : (
                 <p style={{marginTop: '0', color: 'grey'}}>No description available</p>
               )}
-              <button
+              <Button
                 className='addToCartBtn'
                 onClick={handleAddToCart}
               >
