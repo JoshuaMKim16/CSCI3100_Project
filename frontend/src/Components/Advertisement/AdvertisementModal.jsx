@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import './AdvertisementModal.css';
 
 const AdvertisementModal = ({ onDismiss }) => {
+  // State for timecount.
   const [countdown, setCountdown] = useState(5);
+
+  // Function for navigation.
   const navigate = useNavigate();
 
+  // Page and time count.
   useEffect(() => {
     if (countdown > 0) {
       const timerId = setInterval(() => {

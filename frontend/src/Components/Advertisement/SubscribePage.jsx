@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
 import './SubscribePage.css';
 
+// Generate license key.
 function generateLicenseKey() {
   const segment = () => {
     let result = '';
@@ -19,17 +20,21 @@ function generateLicenseKey() {
 }
 
 const SubscribePage = () => {
+  // State to store user.
   const { user, setUser } = useContext(AuthContext);
+
+  // Function for navigation.
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
 
+  // Handle subscription.
   const handleSubscribe = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     
     try {
       const licenseKey = generateLicenseKey();
-      // Retrieve token from localStorage (ensure user.token exists)
+      // Retrieve token from localStorage (ensure user.token exists).
       const token = user.token || JSON.parse(localStorage.getItem('user')).token;
       
       const response = await fetch(`http://localhost:3000/api/license/${user._id}`, {
