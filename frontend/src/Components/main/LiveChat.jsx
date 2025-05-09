@@ -12,37 +12,42 @@ import ChatbotFAB from "../utils/AIChatbot";
 const ENDPOINT = "http://localhost:3000";
 let socket;
 
-// Function to generate a random username (e.g., User_abc123)
+// Function to generate a random username.
 const generateRandomUsername = () => {
   const randomStr = Math.random().toString(36).substring(2, 8);
   return `User_${randomStr}`;
 };
 
 const LiveChat = () => {
+  // Function for navigation bar: navigate to different pages. 
   const navigate = useNavigate();
+
+  // States for live chat forum: hold sender username, input message, chat record, and guidlines.
   const [sender, setSender] = useState(generateRandomUsername());
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
   const [showGuidelines, setShowGuidelines] = useState(true);
+
+  // Tracking latest message.
   const chatEndRef = useRef(null);
 
-  // Scroll to the bottom of the chat container
+  // Scroll to the bottom of the chat container.
   const scrollToBottom = () => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  // Connect to Socket.IO server and setup join/exit events
+  // Connect to Socket.IO server and setup users join/exit events.
   useEffect(() => {
     socket = io(ENDPOINT);
 
-    // Listen for incoming messages and system notifications
+    // Listen for incoming messages and system notifications.
     socket.on('chat message', (msg) => {
       setChat((prevChat) => [...prevChat, msg]);
     });
 
-    // Notify others that this user has joined
+    // Notify others that this user has joined.
     socket.emit('chat message', {
       sender: 'System',
       text: `${sender} has entered the chat.`,
@@ -50,7 +55,7 @@ const LiveChat = () => {
       system: true
     });
 
-    // Listen for the browser unload to notify exit
+    // Listen for the browser unload to notify exit.
     const handleBeforeUnload = () => {
       socket.emit('chat message', {
         sender: 'System',
@@ -63,17 +68,18 @@ const LiveChat = () => {
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      handleBeforeUnload(); // Notify before unmount
+      handleBeforeUnload();
       window.removeEventListener('beforeunload', handleBeforeUnload);
       socket.disconnect();
     };
   }, [sender]);
 
-  // Auto-scroll when new messages arrive within the chat container
+  // Auto-scroll when new messages arrive within the chat container.
   useEffect(() => {
     scrollToBottom();
   }, [chat]);
 
+  // Send message.
   const sendMessage = (e) => {
     e.preventDefault();
     if (message.trim() !== '') {
@@ -88,18 +94,18 @@ const LiveChat = () => {
     }
   };
 
-  // Overall outer container style (no scroll for the whole page)
+  // Overall outer container style (no scroll for the whole page).
   const outerContainerStyles = {
     backgroundColor: "#fdfcfc",
-    height: "100vh", // Fixed height prevents page scrolling
-    overflow: "hidden", // Hides any overflow from the page
+    height: "100vh",
+    overflow: "hidden",
     fontFamily: "Poppins, sans-serif",
   };
 
-  // Wrapper for the chat box
+  // Wrapper for the chat box.
   const wrapperStyles = {
-    maxWidth: "1200px",       // Increase the overall width
-    height: "700px",          // Increase the overall height of chat box
+    maxWidth: "1200px",
+    height: "700px",
     margin: "0 auto",
     border: "1px solid #ccc",
     borderRadius: "10px",
@@ -110,14 +116,15 @@ const LiveChat = () => {
     position: "relative"
   };
 
-  // Chat container that supports internal scrolling for messages only
+  // Chat container that supports internal scrolling for messages only.
   const chatContainerStyles = {
     flex: 1,
-    padding: "20px",        // Increased padding for larger area
-    overflowY: "auto",      // Auto-scroll within the chatbox
+    padding: "20px", 
+    overflowY: "auto",  
     backgroundColor: "#fdfcfc"
   };
 
+  // Input container.
   const inputContainerStyles = {
     display: "flex",
     alignItems: "center",
@@ -349,7 +356,7 @@ const LiveChat = () => {
             placeholder="Type your message..."
             style={{
               flex: 1,
-              padding: "15px", // Increased padding for a larger input area
+              padding: "15px",
               borderRadius: "25px",
               border: "1px solid #ccc",
               outline: "none",
@@ -361,7 +368,7 @@ const LiveChat = () => {
             type="submit"
             style={{
               marginLeft: "10px",
-              transform: "translateY(-5px)", // Moves the icon button upward slightly
+              transform: "translateY(-5px)",
               padding: "10px",
               border: "none",
               backgroundColor: "#358aff",
@@ -379,6 +386,8 @@ const LiveChat = () => {
           </button>
         </form>
       </div>
+
+      {/* AI chatbot */}
       <ChatbotFAB/>
     </div>
   );

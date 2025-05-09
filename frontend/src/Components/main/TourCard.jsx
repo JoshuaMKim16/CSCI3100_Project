@@ -10,11 +10,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaMapMarkerAlt, FaTag } from 'react-icons/fa';
 
 const TourCard = ({ location }) => {
+
+  // States for image: hold fetched image, fetching error, fetching status.
   const [specificImage, setSpecificImage] = useState(null);
   const [fetchError, setFetchError] = useState('');
   const [isImageLoading, setIsImageLoading] = useState(true);
+
+  // Function for navigation bar: navigate to different pages.
   const navigate = useNavigate();
 
+  // Fetch image.
   const fetchSpecificImage = async () => {
     try {
       const filename = location.picture[0].split('/').pop().split('.')[0];
@@ -39,6 +44,7 @@ const TourCard = ({ location }) => {
     }
   }, [location]);
 
+  // Navigate to location details page.
   const handleClick = (e) => {
     e.preventDefault();
     navigate(`/tours/${location._id}`);
@@ -55,6 +61,7 @@ const TourCard = ({ location }) => {
         boxShadow: 3,
       }}
     >
+      {/* Location image */}
       {isImageLoading ? (
         <Box
           sx={{
@@ -81,6 +88,8 @@ const TourCard = ({ location }) => {
           onClick={() => navigate(`/tours/${location._id}`)}
         />
       )}
+
+      {/* Location content */}
       <CardContent
         sx={{
           flexGrow: 1,
@@ -106,7 +115,6 @@ const TourCard = ({ location }) => {
             display: 'flex',
             alignItems: 'center',
             mb: 0.5,
-            // Allow wrapping instead of cutting off text
             whiteSpace: 'normal',
           }}
         >
@@ -119,7 +127,6 @@ const TourCard = ({ location }) => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            // Allow wrapping instead of cutting off text
             whiteSpace: 'normal',
           }}
         >

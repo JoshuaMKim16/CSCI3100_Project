@@ -8,15 +8,13 @@ import { jwtDecode } from 'jwt-decode';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { Button as MuiButton } from '@mui/material';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import './shoppingcart.css';
 import ChatbotFAB from "../utils/AIChatbot";
 import fallbackImage from "./hk_background2.jpg";
-import fallbackImage1 from "./hk_background1.jpg";
 
 
-// Simple throttle function to limit scroll event frequency
+// Simple throttle function to limit scroll event frequency.
 const throttle = (func, limit) => {
   let lastFunc;
   let lastRan;
@@ -38,12 +36,17 @@ const throttle = (func, limit) => {
 };
 
 const ShoppingCart = () => {
+  // Function for navigation bar: navigate to different pages.
   const navigate = useNavigate();
+
+  // States for navigation bar display.
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
+
+  // State for Google Map loading status.
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
-  // Decode JWT from the user object stored in localStorage (if it exists)
+  // Decode JWT from the user object stored in localStorage (if it exists).
   const getCurrentUserIdFromJWT = () => {
     try {
       const userData = localStorage.getItem('user');
@@ -60,7 +63,7 @@ const ShoppingCart = () => {
     return 'guest';
   };
 
-  // Navigation handlers
+  // Navigation handlers.
   const handleNavigateToPlanner = () => {
     navigate('/planner');
   };
@@ -74,10 +77,16 @@ const ShoppingCart = () => {
     navigate('/login');
   };
 
+  // Declare variable to store userID.
   const userId = getCurrentUserIdFromJWT();
+
+  // Declare variable to store cart key of user.
   const cartKey = `shoppingCart_${userId}`;
+
+  // Function to get siteID
   const getSiteId = (item) => item.site_id || item.id;
 
+  // State for cart: holds locations added to cart.
   const [cartItems, setCartItems] = useState(() => {
     try {
       const savedCart = localStorage.getItem(cartKey);
@@ -88,24 +97,29 @@ const ShoppingCart = () => {
     }
   });
 
+  // States for locations: hold locations data, images.
   const [locations, setLocations] = useState({});
   const [specificImages, setSpecificImages] = useState({});
   const fetchedSiteIds = useRef(new Set());
   const fetchedImageIds = useRef(new Set());
 
+  // States for Google Map: hold center latitude and longitude, and map loading status.
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const mapRef = useRef(null);
 
+  // Google Map container.
   const containerStyle = {
     width: '100%',
     height: '400px',
   };
 
+  // Fetch locations added into cart.
   useEffect(() => {
     localStorage.setItem(cartKey, JSON.stringify(cartItems));
   }, [cartItems, cartKey]);
 
+  // Fetch locations details, and latitude and longitude of locations.
   useEffect(() => {
     const fetchLocationDetails = async () => {
       const locationData = {};
@@ -163,8 +177,9 @@ const ShoppingCart = () => {
     if (cartItems.length > 0) {
       fetchLocationDetails();
     }
-  }, []); // Empty dependency array to run only on page load
+  }, []); // Empty dependency array to run only on page load.
 
+  // Fetch location images.
   useEffect(() => {
     const fetchSpecificImage = async (id, pictureUrl) => {
       if (!pictureUrl || fetchedImageIds.current.has(id)) return;
@@ -194,6 +209,7 @@ const ShoppingCart = () => {
     });
   }, [locations]);
 
+  // Remove location from cart.
   const removeFromCart = (id) => {
     const updatedCart = cartItems.filter((item) => getSiteId(item) !== id);
     setCartItems(updatedCart);
@@ -207,6 +223,7 @@ const ShoppingCart = () => {
     fetchedImageIds.current.delete(id);
   };
 
+  // Set tour start time.
   const setStartingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, startTime: time } : item
@@ -214,6 +231,7 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
+  // Set tour end time.
   const setEndingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, endTime: time } : item
@@ -221,6 +239,7 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
+  // Update timetable.
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const renderTimetable = () => {
@@ -263,6 +282,7 @@ const ShoppingCart = () => {
   const timetableData = renderTimetable();
   const hasEvents = timetableData.some((dayEntry) => dayEntry.events.length > 0);
 
+  // Export timetable as Excel.
   const handleExportExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Timetable');
@@ -301,6 +321,7 @@ const ShoppingCart = () => {
     saveAs(blob, 'timetable.xlsx');
   };
 
+  // Handle scrolling screen.
   useEffect(() => {
     const handleScroll = throttle(() => {
       try {
@@ -327,6 +348,8 @@ const ShoppingCart = () => {
       }}
     >
       <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
+
+      {/* Navbar */}
       <AppBar
         position="fixed"
         style={{
@@ -498,6 +521,8 @@ const ShoppingCart = () => {
           <div className="cart-flex-container" style={{ gap: '0.5rem' }}>
             <div className="timetable-col">
               <h3 className="sub-header"></h3>
+
+              {/* Export timetable as Excel button */}
               <Button
                 color="success"
                 onClick={handleExportExcel}
@@ -520,6 +545,8 @@ const ShoppingCart = () => {
               >
                 Export Timetable to Excel
               </Button>
+
+              {/* Timetable */}
               <div className="timetable">
                 {hasEvents ? (
                   timetableData.map((dayEntry, index) => (
@@ -582,6 +609,8 @@ const ShoppingCart = () => {
                 )}
               </div>
             </div>
+
+            {/* Cart */}
             <div className="timetable-col">
               <h3 className="sub-header"></h3>
               <Button
@@ -658,6 +687,8 @@ const ShoppingCart = () => {
           </div>
         </Container>
       </section>
+
+      {/* Google Map */}
       <section className="map-section">
         <LoadScript
           googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY}
@@ -685,6 +716,8 @@ const ShoppingCart = () => {
           )}
         </LoadScript>
       </section>
+
+      {/* AI chatbot */}
       <ChatbotFAB />
     </div>
   );

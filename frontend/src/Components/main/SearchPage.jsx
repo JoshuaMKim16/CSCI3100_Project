@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -15,23 +15,37 @@ import ChatbotFAB from "../utils/AIChatbot";
 
 const SearchPage = () => {
   const { state } = useLocation();
+
+  // Declare variable for initial query.
   const initialQuery = state?.query || '';
+
+  // State for search: holds search input
   const [searchInput, setSearchInput] = useState(initialQuery);
+
+  // States for locations: hold all locations, filtered locations.
   const [locations, setLocations] = useState([]);
   const [filteredLocations, setFilteredLocations] = useState([]);
+
+  // State for page: holds results page number.
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Declare variable for results displaying per page.
   const resultsPerPage = 4;
 
+  // States for category filters: hold filtered categories, and selected categories.
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   // Select 7 random locations for the carousel.
   const [carouselLocations, setCarouselLocations] = useState([]);
-  // Object to store pre-fetched image URLs for carousel locations.
+
+  // State of image: holds pre-fetched image URLs for carousel locations.
   const [carouselImages, setCarouselImages] = useState({});
 
+  // State of searched locations: hold locations which have been searched.
   const [hasSearched, setHasSearched] = useState(false);
 
+  // Function for navigation bar: navigate to different pages.
   const navigate = useNavigate();
 
   // Fetch all locations from the backend.
@@ -135,7 +149,7 @@ const SearchPage = () => {
     );
   };
 
-  // Pagination logic
+  // Pagination logic.
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = filteredLocations.slice(indexOfFirstResult, indexOfLastResult);
@@ -144,7 +158,7 @@ const SearchPage = () => {
     setCurrentPage(value);
   };
 
-  // Helper to format category names
+  // Helper to format category names.
   const formatCategory = (categoryArray) => {
     if (!Array.isArray(categoryArray)) return '';
     return categoryArray
@@ -466,6 +480,8 @@ const SearchPage = () => {
           </Box>
         )}
       </Box>
+
+      {/* AI chatbot */}
       <ChatbotFAB />
     </div>
   );

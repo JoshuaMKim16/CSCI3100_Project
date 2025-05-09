@@ -39,6 +39,7 @@ const FakeCommentsCarousel = () => {
   const cardMargin = 10;       // Increased margin
   const cardTotalWidth = cardWidth + cardMargin * 4.5; // Total width per card
 
+  // Display comments
   useEffect(() => {
     const totalGroups = comments.length - visibleCount + 1;
     const interval = setInterval(() => {
@@ -632,6 +633,8 @@ const TourList = () => {
           </Box>
         </Box>
       </Modal>
+
+      {/* AI chatbot */}
       <ChatbotFAB />
     </Box>
   );

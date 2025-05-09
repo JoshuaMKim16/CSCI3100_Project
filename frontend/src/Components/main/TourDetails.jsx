@@ -85,6 +85,7 @@ const TourDetails = () => {
     }
   }, [location]);
 
+  // Fetch latitude and longitude of location
   useEffect(() => {
     if (!location?.address) return;
     const geocodeAddress = async () => {
@@ -490,6 +491,8 @@ const TourDetails = () => {
             {location._id && <CommentsSection locationId={location._id} />}
           </Container>
         </Container>
+
+        {/* AI chatbot */}
         <ChatbotFAB />
       </section>
     </div>

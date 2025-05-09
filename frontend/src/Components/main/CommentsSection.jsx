@@ -5,29 +5,31 @@ import { faThumbsUp, faThumbsDown, faEllipsisV } from '@fortawesome/free-solid-s
 import './commentsSection.css'; 
 
 const CommentsSection = ({ locationId }) => {
-  // Retrieve logged-in user info (adjust this logic to match your auth implementation)
+  // Retrieve logged-in user info.
   const loggedInUser = JSON.parse(localStorage.getItem('user')) || {};
   const userId = loggedInUser._id;
 
+  // States for comments: holds the content of comments, userID of user who write the comment, and locationID of location where the comment is written for.
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState({
     content: '',
-    // use logged in user's _id for the author field
     author: userId,
     location: locationId,
   });
+
+  // State for errors: holds errors in fetching comments data, posting, editing, deleting, liking and disliking comment.
   const [error, setError] = useState('');
 
-  // State for editing: holds the id of the comment being edited and its new content
+  // State for editing: holds the id of the comment being edited and its new content.
   const [editingComment, setEditingComment] = useState({
     id: null,
     content: ''
   });
 
-  // Instead of a boolean for showing actions, store the active comment id for which actions are open.
+  // State for active action menu: holds commentID which the user wants to edit or delete.
   const [activeActionCommentId, setActiveActionCommentId] = useState(null);
 
-  // Fetch comments for the given location ID
+  // Fetch comments for the given location ID.
   const fetchComments = async () => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/location/${locationId}`);
@@ -41,19 +43,18 @@ const CommentsSection = ({ locationId }) => {
       setError('Could not load comments.');
     }
   };
-
   useEffect(() => {
     if (locationId) {
       fetchComments();
     }
   }, [locationId]);
 
-  // Handle change in the new comment form
+  // Handle "add a comment" text area change.
   const handleNewCommentChange = (e) => {
     setNewComment({ ...newComment, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission to add a new comment
+  // Handle submission to add a new comment.
   const handleNewCommentSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -67,7 +68,7 @@ const CommentsSection = ({ locationId }) => {
       }
       const savedComment = await response.json();
       setComments([...comments, savedComment]);
-      // Reset only the content field after submission
+      // Reset only the content field after submission.
       setNewComment((prev) => ({ ...prev, content: '' }));
       setError('');
     } catch (err) {
@@ -76,7 +77,7 @@ const CommentsSection = ({ locationId }) => {
     }
   };
 
-  // Delete a comment
+  // Delete a comment.
   const handleDelete = async (commentId) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}`, {
@@ -85,7 +86,7 @@ const CommentsSection = ({ locationId }) => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-      // Remove the deleted comment from local state
+      // Remove the deleted comment from local state.
       setComments(comments.filter(comment => comment._id !== commentId));
     } catch (err) {
       console.error('Error deleting comment:', err);
@@ -93,24 +94,24 @@ const CommentsSection = ({ locationId }) => {
     }
   };
 
-  // Start editing: set the comment id and prefill content
+  // Edit a comment.
   const startEditing = (comment) => {
-    // Allow editing only if the logged in user is the author
+    // Allow editing only if the logged in user is the author.
     if (!isCommentOwner(comment)) {
       alert("You can only edit your own comments.");
       return;
     }
     setEditingComment({ id: comment._id, content: comment.content });
-    // Also hide the action menu for that comment
+    // Hide the action menu for that comment.
     setActiveActionCommentId(null);
   };
 
-  // Handle editing content change
+  // Handle editing content change.
   const handleEditingChange = (e) => {
     setEditingComment({ ...editingComment, content: e.target.value });
   };
 
-  // Submit the edit
+  // Submit the edited comment.
   const submitEdit = async (e) => {
     e.preventDefault();
     const { id, content } = editingComment;
@@ -124,11 +125,11 @@ const CommentsSection = ({ locationId }) => {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
       const updatedComment = await response.json();
-      // Update the comment in local state but preserve original author
+      // Update the comment and preserve original author.
       const originalComment = comments.find(comment => comment._id === id);
       const preservedComment = { ...updatedComment, author: originalComment.author };
       setComments(comments.map(comment => comment._id === id ? preservedComment : comment));
-      // Reset editing state
+      // Reset editing state.
       setEditingComment({ id: null, content: '' });
     } catch (err) {
       console.error('Error editing comment:', err);
@@ -136,7 +137,7 @@ const CommentsSection = ({ locationId }) => {
     }
   };
 
-  // Like a comment
+  // Like a comment.
   const handleLike = async (commentId) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}/like`, {
@@ -155,7 +156,7 @@ const CommentsSection = ({ locationId }) => {
     }
   };
 
-  // Dislike a comment
+  // Dislike a comment.
   const handleDislike = async (commentId) => {
     try {
       const response = await fetch(`http://localhost:3000/api/comments/${commentId}/dislike`, {
@@ -174,7 +175,7 @@ const CommentsSection = ({ locationId }) => {
     }
   };
 
-  // Utility function to check if the logged-in user is the author of a comment
+  // Check if the logged-in user is the author of a comment.
   const isCommentOwner = (comment) => {
     if (typeof comment.author === 'object' && comment.author !== null) {
       return comment.author._id === userId;
@@ -187,6 +188,8 @@ const CommentsSection = ({ locationId }) => {
       <div className="comments-section">
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <h3 style={{ textDecoration: 'underline' }}>Comments</h3>
+
+        {/* Add a comment session */}
         <form onSubmit={handleNewCommentSubmit} style={{ marginTop: '1rem' }}>
           <textarea
             name="content"
@@ -196,11 +199,12 @@ const CommentsSection = ({ locationId }) => {
             required
             style={{ width: '100%', height: '100px', padding: '0.5rem', boxSizing: 'border-box' }}
           />
-          {/* The author input is hidden since logged in user info is used */}
           <button className="button" type="submit">
             Add Comment
           </button>
         </form>
+
+        {/* Comments session */}
         <div className="comments-list">
           {comments.length > 0 ? (
             comments.map((comment) => (
@@ -216,6 +220,8 @@ const CommentsSection = ({ locationId }) => {
                       : (comment.author === userId ? loggedInUser.name : 'User')}
                   </strong>
                 </p>
+
+                {/* Save or cancel edited comment */}
                 {editingComment.id === comment._id ? (
                   <form onSubmit={submitEdit}>
                     <textarea
@@ -225,13 +231,13 @@ const CommentsSection = ({ locationId }) => {
                       style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', boxSizing: 'border-box' }}
                     />
                     <button className="button" type="submit" style={{ marginBottom: '0.5rem' }}>Save</button>
-                    <button className="button" type="button" onClick={() => setEditingComment({ id: null, content: '' })}>
-                      Cancel
-                    </button>
+                    <button className="button" type="button" onClick={() => setEditingComment({ id: null, content: '' })}>Cancel</button>
                   </form>
                 ) : (
                   <p>{comment.content}</p>
                 )}
+
+                {/* Like and dislike comment */}
                 <div style={{ marginTop: '0.5rem' }}>
                   <FontAwesomeIcon icon={faThumbsUp} onClick={() => handleLike(comment._id)} style={{ color: 'green', cursor: 'pointer' }} /> {comment.likes || 0}
                   <FontAwesomeIcon icon={faThumbsDown} onClick={() => handleDislike(comment._id)} style={{ color: 'red', cursor: 'pointer', marginLeft: '30px' }} /> {comment.dislikes || 0}
@@ -246,6 +252,8 @@ const CommentsSection = ({ locationId }) => {
                         }}
                         style={{ cursor: 'pointer' }}
                       />
+
+                      {/* Edit and delete comment */}
                       {activeActionCommentId === comment._id && (
                         <div
                           style={{
