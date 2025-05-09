@@ -1,9 +1,0 @@
-.shopping-cart-page {
-  background-image: url('../main/hk_background1.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  position: relative;

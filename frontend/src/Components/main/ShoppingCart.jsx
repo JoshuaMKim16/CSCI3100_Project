@@ -12,7 +12,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import './shoppingcart.css';
 import ChatbotFAB from "../utils/AIChatbot";
-import fallbackImage from "./hk_background1.jpg";
+import fallbackImage from "./hk_background2.jpg";
+import fallbackImage1 from "./hk_background1.jpg";
+
 
 // Simple throttle function to limit scroll event frequency
 const throttle = (func, limit) => {
@@ -39,6 +41,7 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   // Decode JWT from the user object stored in localStorage (if it exists)
   const getCurrentUserIdFromJWT = () => {
@@ -67,8 +70,8 @@ const ShoppingCart = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user'); // Clear user data
-    navigate('/login'); // Redirect to login page
+    localStorage.removeItem('user');
+    navigate('/login');
   };
 
   const userId = getCurrentUserIdFromJWT();
@@ -160,7 +163,7 @@ const ShoppingCart = () => {
     if (cartItems.length > 0) {
       fetchLocationDetails();
     }
-  }, [cartItems]);
+  }, []); // Empty dependency array to run only on page load
 
   useEffect(() => {
     const fetchSpecificImage = async (id, pictureUrl) => {
@@ -298,26 +301,6 @@ const ShoppingCart = () => {
     saveAs(blob, 'timetable.xlsx');
   };
 
-  class LoadScriptOnlyIfNeeded extends LoadScript {
-    componentDidMount() {
-      const cleaningUp = true;
-      const isBrowser = typeof document !== 'undefined';
-      const isAlreadyLoaded =
-        window.google && window.google.maps && document.querySelector('body.first-hit-completed');
-      if (!isAlreadyLoaded && isBrowser) {
-        if (window.google && !cleaningUp) {
-          console.error('Google API is already loaded');
-          return;
-        }
-        this.isCleaningUp().then(this.injectScript);
-      }
-      if (isAlreadyLoaded) {
-        this.setState({ loaded: true });
-      }
-    }
-  }
-
-  // Handle navbar visibility on scroll with throttling
   useEffect(() => {
     const handleScroll = throttle(() => {
       try {
@@ -327,11 +310,11 @@ const ShoppingCart = () => {
       } catch (error) {
         console.error('Error in scroll handler:', error);
       }
-    }, 100); // Throttle to run every 100ms
+    }, 100);
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []); // Empty dependency array to prevent re-adding the listener unnecessarily
+  }, []);
 
   return (
     <div
@@ -339,12 +322,11 @@ const ShoppingCart = () => {
         width: '100vw',
         margin: 0,
         padding: 0,
-        fontFamily: 'Poppins, sans-serif',
         position: 'relative',
         minHeight: '100vh',
       }}
     >
-      {/* Navbar */}
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
       <AppBar
         position="fixed"
         style={{
@@ -362,17 +344,22 @@ const ShoppingCart = () => {
             position: 'relative',
           }}
         >
-          {/* Left Section (Logo) */}
           <div style={{ display: 'flex', gap: '20px', textAlign: 'left' }}>
-            <MuiButton
-              color="inherit"
-              sx={{ color: 'black', fontSize: '18px', fontFamily: 'Poppins, sans-serif' }}
+            {/* Cursive TravelTailor Title in Top Left */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '20px',
+                left: '20px',
+                fontFamily: '"Dancing Script", cursive',
+                fontSize: '32px',
+                color: 'black',
+                zIndex: 2,
+              }}
             >
-              LOGO
-            </MuiButton>
+              TravelTailor
+            </div>
           </div>
-
-          {/* Center Section (Navbar Items) */}
           <div
             style={{
               position: 'absolute',
@@ -391,7 +378,6 @@ const ShoppingCart = () => {
             >
               HOME
             </MuiButton>
-
             <MuiButton
               color="inherit"
               onClick={() => navigate('/tour')}
@@ -399,7 +385,6 @@ const ShoppingCart = () => {
             >
               TOUR
             </MuiButton>
-
             <MuiButton
               color="inherit"
               onClick={() => navigate('/forum')}
@@ -407,7 +392,6 @@ const ShoppingCart = () => {
             >
               FORUM
             </MuiButton>
-
             <MuiButton
               color="inherit"
               onClick={handleNavigateToPlanner}
@@ -416,8 +400,6 @@ const ShoppingCart = () => {
               PLANNER
             </MuiButton>
           </div>
-
-          {/* Right Section (Profile Button) */}
           <div style={{ display: 'flex', gap: '15px', textAlign: 'right' }}>
             <MuiButton
               color="inherit"
@@ -435,8 +417,6 @@ const ShoppingCart = () => {
             >
               PROFILE
             </MuiButton>
-
-            {/* Logout Button */}
             <MuiButton
               onClick={handleLogout}
               sx={{
@@ -453,16 +433,14 @@ const ShoppingCart = () => {
           </div>
         </Toolbar>
       </AppBar>
-
-      {/* Hero Section with Fallback Image */}
       <div
         style={{
           backgroundImage: `url(${fallbackImage})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'top',
+          backgroundPosition: 'center',
           width: '100vw',
-          height: '100vh',
+          height: '45vh',
           position: 'relative',
         }}
       >
@@ -485,46 +463,63 @@ const ShoppingCart = () => {
               color: 'white',
               textAlign: 'right',
               fontFamily: 'Poppins, sans-serif',
-              fontWeight: "bold",
-              textShadow: "2px 2px 5px rgba(0, 0, 0, 0.5)",
+              fontWeight: 'bold',
+              textShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
             }}
           >
-            <b>Explore Your Shopping Cart</b>
+            Explore Your Shopping Cart
           </Typography>
         </Container>
       </div>
-
-      {/* Background Layer with Low Opacity */}
       <div
         style={{
           position: 'absolute',
-          top: '100vh', // Start right after the hero section
+          top: '45vh',
           left: 0,
           width: '100vw',
-          height: 'calc(100% - 100vh)', // Cover the remaining height
-          backgroundImage: `url(${fallbackImage})`,
+          height: 'calc(100% - 45vh)',
+          backgroundImage: `url(${require("./hk_background1.jpg")})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'top',
-          opacity: 0.2, // Very low transparency
-          zIndex: 1, // Below the content but above any default background
+          backgroundPosition: 'center',
+          opacity: 0.2,
+          zIndex: 1,
         }}
       />
-
-      {/* Original Page Content */}
       <section
         className="shopping-cart-page"
         style={{
           marginTop: '0px',
           position: 'relative',
-          zIndex: 2, // Ensure content is above the background layer
+          zIndex: 2,
         }}
       >
         <Container>
-          <div className="cart-flex-container">
-            {/* Timetable Column */}
+          <div className="cart-flex-container" style={{ gap: '0.5rem' }}>
             <div className="timetable-col">
               <h3 className="sub-header"></h3>
+              <Button
+                color="success"
+                onClick={handleExportExcel}
+                className="mb-3"
+                style={{
+                  display: 'inline-block',
+                  width: 'fit-content',
+                  padding: '4px 8px',
+                  fontSize: '14px',
+                  fontFamily: 'Poppins, sans-serif',
+                  color: '#000000',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #000000',
+                  borderRadius: '5px',
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                }}
+                onMouseOver={(e) => (e.target.style.color = '#61dafb')}
+                onMouseOut={(e) => (e.target.style.color = '#000000')}
+              >
+                Export Timetable to Excel
+              </Button>
               <div className="timetable">
                 {hasEvents ? (
                   timetableData.map((dayEntry, index) => (
@@ -533,7 +528,7 @@ const ShoppingCart = () => {
                       {dayEntry.events.length > 0 ? (
                         dayEntry.events.map((event, idx) => (
                           <div key={idx} className="event">
-                            <div className={`event-entry ${event.bgClass}`} style={{ background: 'transparent', display: 'flex', alignItems: 'flex-start' }}>
+                            <div className={`event-entry ${event.bgClass}`} style={{ display: 'flex', alignItems: 'flex-start' }}>
                               {event.image && (
                                 <img
                                   src={event.image}
@@ -586,9 +581,12 @@ const ShoppingCart = () => {
                   </div>
                 )}
               </div>
+            </div>
+            <div className="timetable-col">
+              <h3 className="sub-header"></h3>
               <Button
-                color="success"
-                onClick={handleExportExcel}
+                tag={Link}
+                to="/searchpage"
                 className="mb-3"
                 style={{
                   display: 'inline-block',
@@ -602,16 +600,13 @@ const ShoppingCart = () => {
                   borderRadius: '5px',
                   textTransform: 'none',
                   fontWeight: 'bold',
+                  textDecoration: 'none',
                 }}
                 onMouseOver={(e) => (e.target.style.color = '#61dafb')}
                 onMouseOut={(e) => (e.target.style.color = '#000000')}
               >
-                Export Timetable to Excel
+                Add More Items
               </Button>
-            </div>
-            {/* Cart Items Column (Right) */}
-            <div className="timetable-col">
-              <h3 className="sub-header"></h3>
               {cartItems.length === 0 ? (
                 <div className="empty-cart-container">
                   <p className="empty-cart">Your cart is empty.</p>
@@ -662,8 +657,18 @@ const ShoppingCart = () => {
             </div>
           </div>
         </Container>
-        <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
-          {isMapLoaded && (
+      </section>
+      <section className="map-section">
+        <LoadScript
+          googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY}
+          libraries={['marker']}
+          onLoad={() => {
+            console.log('Google Maps API loaded');
+            setIsScriptLoaded(true);
+          }}
+          onError={(error) => console.error('Error loading Google Maps API:', error)}
+        >
+          {isScriptLoaded && isMapLoaded && (
             <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
               {Object.values(locations).map((locationItem) => {
                 if (locationItem.lat && locationItem.lng) {
@@ -678,9 +683,9 @@ const ShoppingCart = () => {
               })}
             </GoogleMap>
           )}
-        </LoadScriptOnlyIfNeeded>
+        </LoadScript>
       </section>
-      <ChatbotFAB/>
+      <ChatbotFAB />
     </div>
   );
 };
