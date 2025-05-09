@@ -5,11 +5,14 @@ import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { jwtDecode } from 'jwt-decode';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import MuiButton from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import './shoppingcart.css';
 import ChatbotFAB from "../utils/AIChatbot";
 import fallbackImage from "./hk_background2.jpg";
 import fallbackImage1 from "./hk_background1.jpg";
-
 
 // Simple throttle function to limit scroll event frequency
 const throttle = (func, limit) => {
@@ -663,15 +666,9 @@ const ShoppingCart = () => {
                             </Button>
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <p>No events scheduled.</p>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div className="empty-timetable">
-                  <p>No events scheduled for this week.</p>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -693,7 +690,7 @@ const ShoppingCart = () => {
         >
           {isScriptLoaded && isMapLoaded && (
             <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-              {Object.values(locations).map((locationItem) => {
+              {Object.values(locations).map((locationItem, id) => {
                 if (locationItem.lat && locationItem.lng) {
                   return (
                     <div key={id} className="cart-item">
@@ -705,7 +702,7 @@ const ShoppingCart = () => {
                             Start Time:
                             <input
                               type="datetime-local"
-                              value={item.startTime || ''}
+                              value={locationItem.startTime || ''}
                               onChange={(e) => setStartingTime(id, e.target.value)}
                             />
                           </label>
@@ -713,7 +710,7 @@ const ShoppingCart = () => {
                             End Time:
                             <input
                               type="datetime-local"
-                              value={item.endTime || ''}
+                              value={locationItem.endTime || ''}
                               onChange={(e) => setEndingTime(id, e.target.value)}
                             />
                           </label>
