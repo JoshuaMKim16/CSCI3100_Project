@@ -17,8 +17,17 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // Controller function for user signup
 const signupUser = async (req, res) => {
     try {
+        // Normalize the email to avoid case-sensitivity issues
+        req.body.email = req.body.email.toLowerCase();
+
+        // Check if a user with the provided email already exists
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+            return res.status(400).json({ status: false, message: "Email already exists." });
+        }
+
         // Check if an admin code is provided and valid (ADMIN CODE = "admin")
-        if(req.body.adminCode && req.body.adminCode === "admin"){
+        if (req.body.adminCode && req.body.adminCode === "admin") {
             req.body.is_admin = true;
         } else {
             req.body.is_admin = false;
@@ -27,13 +36,19 @@ const signupUser = async (req, res) => {
         // Hash the password
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
         req.body.password = hashedPassword;
+        
+        // Create the user
         const user = await User.create(req.body);
         
-        // Generate JWT after signup if auto-login is desired.
+        // Generate JWT after signup 
         const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '720h' });
       
         res.status(200).json({ status: true, message: "User created successfully", user, token });
     } catch (error) {
+        // Check for duplicate key error thrown by MongoDB due to unique index violations
+        if (error.code === 11000) {
+            return res.status(400).json({ status: false, message: "Email already exists." });
+        }
         res.status(500).json({ status: false, message: error.message });
     }
 };
@@ -65,7 +80,7 @@ const transporter = nodemailer.createTransport({
       user: "csci3100e1@gmail.com",
       pass: `${process.env.APP_PASSWORD}`,
     },
-  });
+});
 
 // Controller function for sending a password reset code to the user's email
 const forgotPassword = async (req, res) => {

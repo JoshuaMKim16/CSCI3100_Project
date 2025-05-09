@@ -42,13 +42,13 @@ const Signup = () => {
           setTimeout(() => navigate('/login'), 1500);
         } else {
           setMessage('');
-          setError("Sign up failed. Please try again.");
+          setError("Sign up failed. Already a user?");
         }
       })
       .catch(err => {
         setLoading(false);
         setMessage('');
-        setError("An error occurred. Please try again.");
+        setError("Sign up failed. Already a user?");
         console.error(err);
       });
   };
