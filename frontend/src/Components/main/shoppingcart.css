@@ -134,11 +134,11 @@
 }
 
 /* Sub-header styling inside columns */
-section.shopping-cart-page .sub-header {
+.shopping-cart-page .sub-header {
   text-align: center;
-  margin-bottom: 0.9375rem; /* 15px → 0.9375rem */
+  margin-bottom: 0.9375rem;
   color: #333;
-  font-size: 1.25rem; /* 20px → 1.25rem */
+  font-size: 1.25rem;
   font-weight: 500;
 }
 
@@ -239,7 +239,7 @@ section.shopping-cart-page .sub-header {
   padding: 1.5%;
   margin-bottom: 0.9375rem;
   border-radius: 0.5rem;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -296,7 +296,7 @@ section.shopping-cart-page .sub-header {
   font-size: 0.875rem;
   border: 1px solid #ccc;
   border-radius: 0.3125rem;
-  width: 100%;
+  width: 75%;
   max-width: 12.5rem;
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -332,33 +332,13 @@ section.shopping-cart-page .sub-header {
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 1rem;
   box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
   border-radius: 0.5rem;
-  overflow-x: auto;
   min-height: 80vh;
-  scrollbar-width: thin;
-  scrollbar-color: #61dafb #f0f8ff;
-}
-
-/* Webkit scrollbar styling for timetable */
-.timetable::-webkit-scrollbar {
-  height: 0.5rem;
-}
-
-.timetable::-webkit-scrollbar-track {
-  background: #f0f8ff;
-  border-radius: 0.25rem;
-}
-
-.timetable::-webkit-scrollbar-thumb {
-  background: #61dafb;
-  border-radius: 0.25rem;
-}
-
-.timetable::-webkit-scrollbar-thumb:hover {
-  background: #21a1f1;
+  gap: 0.5rem;
+  box-sizing: border-box;
 }
 
 /* Day entry styles */
@@ -366,13 +346,14 @@ section.shopping-cart-page .sub-header {
   background-color: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 0.5rem;
-  padding: 0rem;
+  padding: 1rem;
   box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   position: relative;
   overflow: hidden;
+  flex: 1;
   min-width: 150px;
-  margin-right: 1rem;
+  box-sizing: border-box;
 }
 
 .shopping-cart-page .day-entry:last-child {
@@ -403,8 +384,7 @@ section.shopping-cart-page .sub-header {
   display: flex;
   flex-direction: column;
   border-radius: 0.5rem;
-  padding: 0.25rem;
-  background-color: #f9f9f9;
+  padding: 0.75rem;
   box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
@@ -433,7 +413,6 @@ section.shopping-cart-page .sub-header {
 
 .shopping-cart-page .event-entry img {
   width: 100%;
-  max-width: 200px;
   height: 80px;
   object-fit: cover;
   border-radius: 0.5rem 0.5rem 0 0;
@@ -460,21 +439,13 @@ section.shopping-cart-page .sub-header {
 
 .shopping-cart-page .event-content .time {
   font-size: 0.75rem;
-  color: #555;
 }
-
-/* Color classes based on type */
-.event-entry.bg-activity { background-color: #e6f3ff; }
-.event-entry.bg-food { background-color: #e6ffe6; }
-.event-entry.bg-accommodation { background-color: #fff3e6; }
-.event-entry.bg-travel { background-color: #f0e6ff; }
-.event-entry.bg-other { background-color: #e6e6e6; }
 
 /* Empty cart message */
 .shopping-cart-page .empty-cart-container {
   text-align: center;
   padding: 2%;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
   border: 0.125rem dashed #61dafb;
   border-radius: 0.5rem;
   box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
@@ -488,30 +459,11 @@ section.shopping-cart-page .sub-header {
   font-weight: 500;
 }
 
-/* Add items button */
-.add-items-button {
-  padding: 1% 2%;
-  font-size: 0.875rem;
-  border: none;
-  border-radius: 0.3125rem;
-  cursor: pointer;
-  background-color: #007bff;
-  color: #fff;
-  text-decoration: none;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-
-.add-items-button:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-  box-shadow: 0 0 0.3125rem rgba(0, 123, 255, 0.3);
-}
-
 /* Empty timetable message */
 .shopping-cart-page .empty-timetable {
   text-align: center;
   padding: 2%;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
   border: 0.125rem dashed #61dafb;
   border-radius: 0.5rem;
   box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.15);
@@ -583,16 +535,18 @@ section.shopping-cart-page .sub-header {
   .shopping-cart-page .cart-expanded .cart-items-list {
     max-height: 70vh;
     width: 100%;
-    max-height: 32vh;
   }
 
   .shopping-cart-page .timetable {
     min-height: 32vh;
+    gap: 0.25rem;
+    padding: 0.5rem;
   }
 
   .shopping-cart-page .day-entry {
     min-width: 100px;
     padding: 0.75rem;
+    flex: 1;
   }
 
   .shopping-cart-page .day-entry h4 {
@@ -749,16 +703,6 @@ section.shopping-cart-page .sub-header {
 
   .shopping-cart-page .event-content .time {
     font-size: 0.625rem;
-    padding: 0.1rem 0.2rem;
-  }
-
-  .event-content .time {
-    font-size: 0.625rem;
-  }
-
-  .cart-items-list {
-    width: 100%;
-    max-height: 24vh;
   }
 
   .shopping-cart-page .cart-item {

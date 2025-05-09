@@ -7,12 +7,14 @@ import { saveAs } from 'file-saver';
 import { jwtDecode } from 'jwt-decode';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import MuiButton from '@mui/material/Button';
+import { Button as MuiButton } from '@mui/material';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import './shoppingcart.css';
 import ChatbotFAB from "../utils/AIChatbot";
 import fallbackImage from "./hk_background2.jpg";
 import fallbackImage1 from "./hk_background1.jpg";
+
 
 // Simple throttle function to limit scroll event frequency
 const throttle = (func, limit) => {
@@ -49,7 +51,6 @@ const ShoppingCart = () => {
         const parsedData = JSON.parse(userData);
         if (parsedData.token) {
           const decodedToken = jwtDecode(parsedData.token);
-          // Adjust based on your JWT payload structure (e.g., id or userId)
           return decodedToken.id || decodedToken.userId;
         }
       }
@@ -87,42 +88,24 @@ const ShoppingCart = () => {
     }
   });
 
-  useEffect(() => {
-    const handleCartUpdate = () => {
-      try {
-        const savedCart = localStorage.getItem(cartKey);
-        setCartItems(savedCart ? JSON.parse(savedCart) : []);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-  }, [cartKey]);
-
   const [locations, setLocations] = useState({});
-  // State for fetched images
   const [specificImages, setSpecificImages] = useState({});
-
-  // A ref to track fetched site IDs to avoid duplicate API calls
   const fetchedSiteIds = useRef(new Set());
   const fetchedImageIds = useRef(new Set());
 
-  // States for Google Map.
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const mapRef = useRef(null);
 
-  // Define Google Map container style.
   const containerStyle = {
     width: '100%',
     height: '400px',
   };
 
-  // Save the cart to localStorage whenever it changes.
   useEffect(() => {
     localStorage.setItem(cartKey, JSON.stringify(cartItems));
   }, [cartItems, cartKey]);
 
-  // Fetch location details for each site in the cart
   useEffect(() => {
     const fetchLocationDetails = async () => {
       const locationData = {};
@@ -182,7 +165,6 @@ const ShoppingCart = () => {
     }
   }, []); // Empty dependency array to run only on page load
 
-  // Fetch specific images for locations with pictures
   useEffect(() => {
     const fetchSpecificImage = async (id, pictureUrl) => {
       if (!pictureUrl || fetchedImageIds.current.has(id)) return;
@@ -191,16 +173,16 @@ const ShoppingCart = () => {
         const filename = pictureUrl.split('/').pop().split('.')[0];
         const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
         if (!response.ok) {
-          throw new Error(`Fetching image for ${filename} failed`);
+          throw new Error('Fetching specific image failed');
         }
         const data = await response.json();
         setSpecificImages((prev) => ({
           ...prev,
-          [id]: data, // Assume data contains { url: "image_url" }
+          [id]: data.secure_url,
         }));
         fetchedImageIds.current.add(id);
       } catch (err) {
-        console.error(`Error fetching image for ${id}:`, err);
+        console.error('Error fetching specific image:', err);
       }
     };
 
@@ -212,7 +194,6 @@ const ShoppingCart = () => {
     });
   }, [locations]);
 
-  // Function to remove an item from the cart.
   const removeFromCart = (id) => {
     const updatedCart = cartItems.filter((item) => getSiteId(item) !== id);
     setCartItems(updatedCart);
@@ -226,7 +207,6 @@ const ShoppingCart = () => {
     fetchedImageIds.current.delete(id);
   };
 
-  // Function to set the starting time for a cart item.
   const setStartingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, startTime: time } : item
@@ -234,7 +214,6 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
-  // Function to set the ending time for a cart item.
   const setEndingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, endTime: time } : item
@@ -242,7 +221,6 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
-  // Generate a weekly timetable with events sorted chronologically within each day
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const renderTimetable = () => {
@@ -257,7 +235,7 @@ const ShoppingCart = () => {
         const dayIndex = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
         const id = getSiteId(item);
         const locationName = (locations[id] && locations[id].name) || `Site ${id}`;
-        const locationImage = specificImages[id]?.url || '';
+        const locationImage = specificImages[id] || '';
         const locationTypes = (locations[id] && locations[id].type) || [];
         const isRestaurantOrCafe = locationTypes.some((type) =>
           ['restaurant', 'cafe'].includes(type.toLowerCase())
@@ -267,15 +245,14 @@ const ShoppingCart = () => {
         timetable[dayIndex].events.push({
           startDate,
           location: locationName,
-          start: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          end: new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          start: startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+          end: new Date(item.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
           bgClass,
           image: locationImage,
         });
       }
     });
 
-    // Sort events within each day by startDate
     timetable.forEach((dayEntry) => {
       dayEntry.events.sort((a, b) => a.startDate - b.startDate);
     });
@@ -286,7 +263,6 @@ const ShoppingCart = () => {
   const timetableData = renderTimetable();
   const hasEvents = timetableData.some((dayEntry) => dayEntry.events.length > 0);
 
-  // Function to export the timetable to Excel
   const handleExportExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Timetable');
@@ -301,7 +277,12 @@ const ShoppingCart = () => {
     headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
     headerRow.eachCell((cell) => {
       cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFCC00' } };
-      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
     });
     timetableData.forEach((dayEntry) => {
       dayEntry.events.forEach((event) => {
@@ -314,7 +295,9 @@ const ShoppingCart = () => {
       });
     });
     const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
     saveAs(blob, 'timetable.xlsx');
   };
 
@@ -672,9 +655,6 @@ const ShoppingCart = () => {
                 </div>
               )}
             </div>
-            <Button color="success" onClick={handleExportExcel} className="mb-3">
-              Export Timetable to Excel
-            </Button>
           </div>
         </Container>
       </section>
@@ -690,38 +670,13 @@ const ShoppingCart = () => {
         >
           {isScriptLoaded && isMapLoaded && (
             <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-              {Object.values(locations).map((locationItem, id) => {
+              {Object.values(locations).map((locationItem) => {
                 if (locationItem.lat && locationItem.lng) {
                   return (
-                    <div key={id} className="cart-item">
-                      <div className="cart-details">
-                        <h3>{(locations[id] && locations[id].name) || `Site ${id}`}</h3>
-                        <p className="cart-description">{locations[id]?.description || 'No description available'}</p>
-                        <div className="time-inputs">
-                          <label>
-                            Start Time:
-                            <input
-                              type="datetime-local"
-                              value={locationItem.startTime || ''}
-                              onChange={(e) => setStartingTime(id, e.target.value)}
-                            />
-                          </label>
-                          <label>
-                            End Time:
-                            <input
-                              type="datetime-local"
-                              value={locationItem.endTime || ''}
-                              onChange={(e) => setEndingTime(id, e.target.value)}
-                            />
-                          </label>
-                        </div>
-                        <div className="cart-buttons">
-                          <Button color="danger" onClick={() => removeFromCart(id)}>
-                            Remove
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
+                    <MarkerF
+                      key={locationItem.id || locationItem._id}
+                      position={{ lat: locationItem.lat, lng: locationItem.lng }}
+                    />
                   );
                 }
                 return null;
