@@ -45,7 +45,6 @@ const signupUser = async (req, res) => {
       
         res.status(200).json({ status: true, message: "User created successfully", user, token });
     } catch (error) {
-        // Check for duplicate key error thrown by MongoDB due to unique index violations
         if (error.code === 11000) {
             return res.status(400).json({ status: false, message: "Email already exists." });
         }
