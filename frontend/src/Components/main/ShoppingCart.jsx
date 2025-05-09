@@ -6,9 +6,37 @@ import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { jwtDecode } from 'jwt-decode';
 import './shoppingcart.css';
+import ChatbotFAB from "../utils/AIChatbot";
+import fallbackImage from "./hk_background2.jpg";
+import fallbackImage1 from "./hk_background1.jpg";
+
+
+// Simple throttle function to limit scroll event frequency
+const throttle = (func, limit) => {
+  let lastFunc;
+  let lastRan;
+  return function (...args) {
+    const context = this;
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function () {
+        if (Date.now() - lastRan >= limit) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  };
+};
 
 const ShoppingCart = () => {
   const navigate = useNavigate();
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   // Decode JWT from the user object stored in localStorage (if it exists)
   const getCurrentUserIdFromJWT = () => {
@@ -26,6 +54,20 @@ const ShoppingCart = () => {
       console.error('Error decoding JWT:', error);
     }
     return 'guest';
+  };
+
+  // Navigation handlers
+  const handleNavigateToPlanner = () => {
+    navigate('/planner');
+  };
+
+  const handleNavigateToProfile = () => {
+    navigate('/profile');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
   };
 
   const userId = getCurrentUserIdFromJWT();
@@ -135,7 +177,7 @@ const ShoppingCart = () => {
     if (cartItems.length > 0) {
       fetchLocationDetails();
     }
-  }, [cartItems]);
+  }, []); // Empty dependency array to run only on page load
 
   // Fetch specific images for locations with pictures
   useEffect(() => {
@@ -273,45 +315,352 @@ const ShoppingCart = () => {
     saveAs(blob, 'timetable.xlsx');
   };
 
-  class LoadScriptOnlyIfNeeded extends LoadScript {
-    componentDidMount() {
-      const cleaningUp = true;
-      const isBrowser = typeof document !== 'undefined';
-      const isAlreadyLoaded = window.google && window.google.maps && document.querySelector('body.first-hit-completed');
-      if (!isAlreadyLoaded && isBrowser) {
-        if (window.google && !cleaningUp) {
-          console.error('Google API is already loaded');
-          return;
-        }
-        this.isCleaningUp().then(this.injectScript);
+  useEffect(() => {
+    const handleScroll = throttle(() => {
+      try {
+        const currentScrollPos = window.pageYOffset;
+        setIsNavbarVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+        setPrevScrollPos(currentScrollPos);
+      } catch (error) {
+        console.error('Error in scroll handler:', error);
       }
-      if (isAlreadyLoaded) {
-        this.setState({ loaded: true });
-      }
-    }
-  }
+    }, 100);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <section className="shopping-cart-page">
-      <Container>
-        <div className="cart-flex-container">
-          {/* Timetable Column */}
-          <div className="timetable-col">
-            <h3 className="sub-header"></h3>
-            <div className="timetable">
-              {hasEvents ? (
-                timetableData.map((dayEntry, index) => (
-                  <div key={index} className="day-entry">
-                    <h4>{dayEntry.day}</h4>
-                    {dayEntry.events.length > 0 ? (
-                      dayEntry.events.map((event, idx) => (
-                        <div key={idx} className="event">
-                          <div className="event-entry">
-                            {event.image && <img src={event.image} alt={event.location} />}
-                            <div className="event-content">
-                              <span className={`location ${event.bgClass}`}>{event.location}</span>
-                              <span className="time">{event.start} - {event.end}</span>
+    <div
+      style={{
+        width: '100vw',
+        margin: 0,
+        padding: 0,
+        position: 'relative',
+        minHeight: '100vh',
+      }}
+    >
+      <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
+      <AppBar
+        position="fixed"
+        style={{
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          transform: isNavbarVisible ? 'translateY(0)' : 'translateY(-100%)',
+          transition: 'transform 0.3s ease-in-out',
+        }}
+      >
+        <Toolbar
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            position: 'relative',
+          }}
+        >
+          <div style={{ display: 'flex', gap: '20px', textAlign: 'left' }}>
+            {/* Cursive TravelTailor Title in Top Left */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '20px',
+                left: '20px',
+                fontFamily: '"Dancing Script", cursive',
+                fontSize: '32px',
+                color: 'black',
+                zIndex: 2,
+              }}
+            >
+              TravelTailor
+            </div>
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              display: 'flex',
+              gap: '30px',
+              textAlign: 'center',
+            }}
+          >
+            <MuiButton
+              color="inherit"
+              onClick={() => navigate('/main')}
+              sx={{ color: 'black', fontSize: '18px', fontFamily: 'Poppins, sans-serif' }}
+            >
+              HOME
+            </MuiButton>
+            <MuiButton
+              color="inherit"
+              onClick={() => navigate('/tour')}
+              sx={{ color: 'black', fontSize: '18px', fontFamily: 'Poppins, sans-serif' }}
+            >
+              TOUR
+            </MuiButton>
+            <MuiButton
+              color="inherit"
+              onClick={() => navigate('/forum')}
+              sx={{ color: 'black', fontSize: '18px', fontFamily: 'Poppins, sans-serif' }}
+            >
+              FORUM
+            </MuiButton>
+            <MuiButton
+              color="inherit"
+              onClick={handleNavigateToPlanner}
+              sx={{ color: 'black', fontSize: '18px', fontFamily: 'Poppins, sans-serif' }}
+            >
+              PLANNER
+            </MuiButton>
+          </div>
+          <div style={{ display: 'flex', gap: '15px', textAlign: 'right' }}>
+            <MuiButton
+              color="inherit"
+              onClick={handleNavigateToProfile}
+              sx={{
+                color: 'black',
+                fontFamily: 'Poppins, sans-serif',
+                border: '2px solid white',
+                borderRadius: '10%',
+                padding: '5px 10px',
+                minWidth: '40px',
+                height: '40px',
+                fontSize: '14px',
+              }}
+            >
+              PROFILE
+            </MuiButton>
+            <MuiButton
+              onClick={handleLogout}
+              sx={{
+                color: 'skyblue',
+                fontFamily: 'Poppins, sans-serif',
+                padding: '5px 15px',
+                borderRadius: '5px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+              }}
+            >
+              LOGOUT
+            </MuiButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+      <div
+        style={{
+          backgroundImage: `url(${fallbackImage})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          width: '100vw',
+          height: '45vh',
+          position: 'relative',
+        }}
+      >
+        <Container
+          style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            color: 'white',
+            textAlign: 'right',
+            paddingBottom: '20px',
+            paddingRight: '20px',
+          }}
+        >
+          <Typography
+            variant="h4"
+            style={{
+              color: 'white',
+              textAlign: 'right',
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 'bold',
+              textShadow: '2px 2px 5px rgba(0, 0, 0, 0.5)',
+            }}
+          >
+            Explore Your Shopping Cart
+          </Typography>
+        </Container>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: '45vh',
+          left: 0,
+          width: '100vw',
+          height: 'calc(100% - 45vh)',
+          backgroundImage: `url(${require("./hk_background1.jpg")})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.2,
+          zIndex: 1,
+        }}
+      />
+      <section
+        className="shopping-cart-page"
+        style={{
+          marginTop: '0px',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        <Container>
+          <div className="cart-flex-container" style={{ gap: '0.5rem' }}>
+            <div className="timetable-col">
+              <h3 className="sub-header"></h3>
+              <Button
+                color="success"
+                onClick={handleExportExcel}
+                className="mb-3"
+                style={{
+                  display: 'inline-block',
+                  width: 'fit-content',
+                  padding: '4px 8px',
+                  fontSize: '14px',
+                  fontFamily: 'Poppins, sans-serif',
+                  color: '#000000',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #000000',
+                  borderRadius: '5px',
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                }}
+                onMouseOver={(e) => (e.target.style.color = '#61dafb')}
+                onMouseOut={(e) => (e.target.style.color = '#000000')}
+              >
+                Export Timetable to Excel
+              </Button>
+              <div className="timetable">
+                {hasEvents ? (
+                  timetableData.map((dayEntry, index) => (
+                    <div key={index} className="day-entry">
+                      <h4>{dayEntry.day}</h4>
+                      {dayEntry.events.length > 0 ? (
+                        dayEntry.events.map((event, idx) => (
+                          <div key={idx} className="event">
+                            <div className={`event-entry ${event.bgClass}`} style={{ display: 'flex', alignItems: 'flex-start' }}>
+                              {event.image && (
+                                <img
+                                  src={event.image}
+                                  alt={event.location}
+                                  style={{ marginRight: '10px', width: '50px', height: '50px', objectFit: 'cover' }}
+                                  onError={(e) => { e.target.style.display = 'none'; }}
+                                />
+                              )}
+                              <div
+                                className="event-content"
+                                style={{
+                                  display: 'block',
+                                  justifyContent: 'flex-start',
+                                }}
+                              >
+                                <span
+                                  className="location location-banner"
+                                  style={{
+                                    background: 'transparent',
+                                    margin: 0,
+                                    padding: 0,
+                                    display: 'block',
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  {event.location}
+                                </span>
+                                <span
+                                  className="time"
+                                  style={{
+                                    margin: 0,
+                                    padding: 0,
+                                    display: 'block',
+                                  }}
+                                >
+                                  {event.start} - {event.end}
+                                </span>
+                              </div>
                             </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p>No events scheduled for this day.</p>
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <div className="empty-timetable">
+                    <p>No events scheduled for this week.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="timetable-col">
+              <h3 className="sub-header"></h3>
+              <Button
+                tag={Link}
+                to="/searchpage"
+                className="mb-3"
+                style={{
+                  display: 'inline-block',
+                  width: 'fit-content',
+                  padding: '4px 8px',
+                  fontSize: '14px',
+                  fontFamily: 'Poppins, sans-serif',
+                  color: '#000000',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #000000',
+                  borderRadius: '5px',
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                  textDecoration: 'none',
+                }}
+                onMouseOver={(e) => (e.target.style.color = '#61dafb')}
+                onMouseOut={(e) => (e.target.style.color = '#000000')}
+              >
+                Add More Items
+              </Button>
+              {cartItems.length === 0 ? (
+                <div className="empty-cart-container">
+                  <p className="empty-cart">Your cart is empty.</p>
+                  <Link to="/searchpage">
+                    <button className="add-items-button">Add Items from Search</button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="cart-items-list">
+                  {cartItems.map((item) => {
+                    const id = getSiteId(item);
+                    return (
+                      <div key={id} className="cart-item">
+                        <div className="cart-details">
+                          <h3>{(locations[id] && locations[id].name) || `Site ${id}`}</h3>
+                          <p className="cart-description">
+                            {locations[id]?.description || 'No description available'}
+                          </p>
+                          <div className="time-inputs">
+                            <label>
+                              Start Time:
+                              <input
+                                type="datetime-local"
+                                value={item.startTime || ''}
+                                onChange={(e) => setStartingTime(id, e.target.value)}
+                              />
+                            </label>
+                            <label>
+                              End Time:
+                              <input
+                                type="datetime-local"
+                                value={item.endTime || ''}
+                                onChange={(e) => setEndingTime(id, e.target.value)}
+                              />
+                            </label>
+                          </div>
+                          <div className="cart-buttons">
+                            <Button color="danger" onClick={() => removeFromCart(id)}>
+                              Remove
+                            </Button>
                           </div>
                         </div>
                       ))
@@ -330,20 +679,22 @@ const ShoppingCart = () => {
               Export Timetable to Excel
             </Button>
           </div>
-          {/* Cart Items Column (Right) */}
-          <div className="cart-col">
-            <h3 className="sub-header"></h3>
-            {cartItems.length === 0 ? (
-              <div className="empty-cart-container">
-                <p className="empty-cart">Your cart is empty.</p>
-                <Link to="/searchpage">
-                  <button className="add-items-button">Add Items from Search</button>
-                </Link>
-              </div>
-            ) : (
-              <div className="cart-items-list">
-                {cartItems.map((item) => {
-                  const id = getSiteId(item);
+        </Container>
+      </section>
+      <section className="map-section">
+        <LoadScript
+          googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY}
+          libraries={['marker']}
+          onLoad={() => {
+            console.log('Google Maps API loaded');
+            setIsScriptLoaded(true);
+          }}
+          onError={(error) => console.error('Error loading Google Maps API:', error)}
+        >
+          {isScriptLoaded && isMapLoaded && (
+            <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
+              {Object.values(locations).map((locationItem) => {
+                if (locationItem.lat && locationItem.lng) {
                   return (
                     <div key={id} className="cart-item">
                       <div className="cart-details">
@@ -375,27 +726,15 @@ const ShoppingCart = () => {
                       </div>
                     </div>
                   );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      </Container>
-      <LoadScriptOnlyIfNeeded googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY} libraries={['marker']}>
-        {isMapLoaded && (
-          <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-            {Object.values(locations).map((locationItem) => {
-              if (locationItem.lat && locationItem.lng) {
-                return (
-                  <MarkerF key={locationItem.id || locationItem._id} position={{ lat: locationItem.lat, lng: locationItem.lng }} />
-                );
-              }
-              return null;
-            })}
-          </GoogleMap>
-        )}
-      </LoadScriptOnlyIfNeeded>
-    </section>
+                }
+                return null;
+              })}
+            </GoogleMap>
+          )}
+        </LoadScript>
+      </section>
+      <ChatbotFAB />
+    </div>
   );
 };
 
