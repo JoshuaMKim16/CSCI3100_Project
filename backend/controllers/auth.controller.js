@@ -9,7 +9,7 @@ if (result.error) {
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken'); // Import JSON Web Token
+const jwt = require('jsonwebtoken'); 
 
 const saltRounds = 10;
 const JWT_SECRET = process.env.JWT_SECRET; 
@@ -24,14 +24,12 @@ const signupUser = async (req, res) => {
             req.body.is_admin = false;
         }
 
-        // Hash the password before saving to the database
+        // Hash the password
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
         req.body.password = hashedPassword;
-        
-        // Create user using the modified req.body which now includes is_admin
         const user = await User.create(req.body);
         
-        // Optionally, generate JWT after signup if auto-login is desired.
+        // Generate JWT after signup if auto-login is desired.
         const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '720h' });
       
         res.status(200).json({ status: true, message: "User created successfully", user, token });
@@ -61,7 +59,6 @@ const loginUser = async (req, res) => {
 };
 
 // Configure Nodemailer transporter
-// Replace these values with your SMTP settings or use environment variables.
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -74,7 +71,6 @@ const transporter = nodemailer.createTransport({
 const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-        // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ status: false, message: "User not found" });
@@ -85,7 +81,7 @@ const forgotPassword = async (req, res) => {
         user.resetCode = code;
         await user.save();
 
-        // Email options
+        // Email formatting
         const mailOptions = {
             from: '"No Reply" <noreply@example.com>',
             to: user.email,
@@ -107,20 +103,19 @@ const forgotPassword = async (req, res) => {
     }
 };
 
-// Controller function for resetting the user's password after verifying the code
+// Controller function for resetting the user's password after code verification
 const resetPassword = async (req, res) => {
     try {
         const { email, code, newPassword } = req.body;
-        // Find the user by email
         const user = await User.findOne({ email });
         if (!user || user.resetCode !== code) {
             return res.status(400).json({ status: false, message: "Invalid verification code or email." });
         }
         
-        // Encrypt and update the new password
+        // Encrypt and update new password
         const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
         user.password = hashedPassword;
-        user.resetCode = undefined;  // Clear the reset code
+        user.resetCode = undefined; 
         await user.save();
 
         return res.status(200).json({ status: true, message: "Password updated successfully." });

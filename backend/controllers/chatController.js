@@ -1,5 +1,6 @@
 const Message = require('../models/message.model');
 
+// fetch message for Socket.io live message
 exports.getMessages = async (req, res) => {
   try {
     const messages = await Message.find().sort({ timestamp: 1 });
@@ -9,6 +10,7 @@ exports.getMessages = async (req, res) => {
   }
 };
 
+// post message for Socket.io live message
 exports.postMessage = async (req, res) => {
   try {
     const { sender, text } = req.body;

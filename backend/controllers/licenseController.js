@@ -5,7 +5,7 @@ exports.updateLicense = async (req, res) => {
   const userId = req.params.userId;
   const { licenseKey } = req.body;
 
-  // Validate the license key format (e.g., AAAA-BBBB-CCCC-DDDD)
+  // Validate the license key format (AAAA-BBBB-CCCC-DDDD)
   const LICENSE_REGEX = /^[A-Z0-9]{4}(-[A-Z0-9]{4}){3}$/;
   if (!licenseKey || !LICENSE_REGEX.test(licenseKey)) {
     return res.status(400).json({
@@ -17,7 +17,7 @@ exports.updateLicense = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { user_subscription: licenseKey },
-      { new: true } // return the updated document
+      { new: true } 
     );
 
     if (!updatedUser) {
@@ -31,7 +31,7 @@ exports.updateLicense = async (req, res) => {
   }
 };
 
-// Unsubscribe (delete license): sets the user_subscription field to an empty string
+// Unsubscribe (delete license): set the user_subscription field to an empty string
 exports.unsubscribeLicense = async (req, res) => {
   const userId = req.params.userId;
   try {

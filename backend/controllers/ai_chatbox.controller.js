@@ -26,7 +26,7 @@ const chatController = async (req, res) => {
             ],
             model: MODEL,
             frequency_penalty: 0,
-            max_tokens: 1024,
+            max_tokens: 1024, // Originally tested with 2048, but set to 1024 for faster response
             presence_penalty: 0,
             response_format: {
                 type: "text"
@@ -34,7 +34,7 @@ const chatController = async (req, res) => {
             stop: null,
             stream: false,
             stream_options: null,
-            temperature: 1.3,
+            temperature: 1.3, // general purpose: temperature = 1.3 (from official document)
             top_p: 1,
             tools: null,
             tool_choice: "none",

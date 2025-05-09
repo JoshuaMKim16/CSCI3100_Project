@@ -15,8 +15,8 @@
 <h2 id="layout">🎨 Layout</h2>
 
 <p align="center">
-    <img src="./etc/example_1.png" alt="Image Example" width="400px">
-    <img src="./etc/example_2.png" alt="Image Example" width="400px">
+    <img src="./etc/example_1.png" alt="Image Example" width="400px", height="215px">
+    <img src="./etc/example_2.png" alt="Image Example" width="400px", height="215px">
 </p>
 
 <h2 id="technologies">💻 Technologies</h2>
@@ -63,8 +63,17 @@ If you encounter any problems or you want to get access to our APIs and database
 
 <h3  id='contribute'>Contributions</h3>
 <h4>Frontend</h4>
+
 Joshua Mincheol Kim, 1155131310
 
+Tan Boon Hee Ian, 1155175088
+
+LOW Pui Wai, 1155194427
+
+Ng Chi Ho, 1155194567
 
 <h4>Backend</h4>
+
 Joshua Mincheol Kim, 1155131310
+
+Xulin Chen, 1155186029

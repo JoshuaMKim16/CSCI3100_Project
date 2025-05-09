@@ -1,9 +1,8 @@
-// routes/comment.route.js
 const express = require("express");
 const router = express.Router();
 const { 
   createComment, 
-  getAllComments,       // Import new function
+  getAllComments,       
   getCommentsByLocation, 
   getCommentsByUser, 
   updateComment, 
@@ -12,7 +11,7 @@ const {
   dislikeComment 
 } = require('../controllers/comment.controller');
 
-// Create a comment (or nested comment)
+// Create a comment 
 router.post("/", createComment);
 
 // Retrieve all comments in the database

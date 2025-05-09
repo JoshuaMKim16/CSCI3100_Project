@@ -16,7 +16,7 @@ exports.uploadImage = async (req, res) => {
     const publicId = path.parse(req.file.originalname).name;
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: TARGET_FOLDER, 
-      public_id: publicId,      // sets the uploaded image's public id to the file's name
+      public_id: publicId,     
     });
     fs.unlinkSync(req.file.path);
     res.json(result);
@@ -26,6 +26,7 @@ exports.uploadImage = async (req, res) => {
   }
 };
 
+// Controller to fetch all images
 exports.getAllImages = async (req, res) => {
   try {
     const options = {
@@ -42,7 +43,7 @@ exports.getAllImages = async (req, res) => {
   }
 };
 
-// Controller to fetch a specific image based on its filename (the public_id)
+// Controller to fetch a specific image based on its filename 
 exports.getImageByFilename = async (req, res) => {
   try {
     const filename = req.params.filename;

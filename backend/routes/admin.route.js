@@ -4,7 +4,7 @@ const { authenticateToken } = require('../middlewares/auth.middleware');
 const { adminCheck } = require('../middlewares/admin.middleware');
 const { getUsers, updateUser, deleteUser } = require('../controllers/user.controller');
 
-// Apply authentication and admin check to all routes defined below.
+// Apply authentication and admin check
 router.use(authenticateToken, adminCheck);
 
 // Admin-specific endpoint to get list of all users

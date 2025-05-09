@@ -6,13 +6,13 @@ const cloudinaryController = require('../controllers/cloudinaryController');
 // Configure Multer for temporary file storage in the "uploads" folder
 const upload = multer({ dest: 'uploads/' });
 
-// POST endpoint for uploading images
+// Uploading images
 router.post('/upload', upload.single('file'), cloudinaryController.uploadImage);
 
-// GET endpoint for fetching all images
+// Fetching all images
 router.get('/', cloudinaryController.getAllImages);
 
-// GET endpoint for fetching an image by filename
+// Fetching an image by filename
 router.get('/:filename', cloudinaryController.getImageByFilename);
 
 module.exports = router;

@@ -1,4 +1,3 @@
-// controllers/comment.controller.js
 const Comment = require('../models/comment.model');
 
 // Create a new comment (or nested comment) associated with a location
@@ -84,7 +83,7 @@ const deleteComment = async (req, res) => {
   }
 };
 
-// Like a comment (increments the like counter)
+// Like a comment 
 const likeComment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,7 +101,7 @@ const likeComment = async (req, res) => {
   }
 };
 
-// Dislike a comment (increments the dislike counter)
+// Dislike a comment 
 const dislikeComment = async (req, res) => {
   try {
     const { id } = req.params;
@@ -122,7 +121,7 @@ const dislikeComment = async (req, res) => {
 
 module.exports = {
   createComment,
-  getAllComments,   // Exporting the new function to get every comment
+  getAllComments,   
   getCommentsByLocation,
   getCommentsByUser,
   updateComment,

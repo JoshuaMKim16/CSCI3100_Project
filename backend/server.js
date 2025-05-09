@@ -1,4 +1,3 @@
-// server.js
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -7,16 +6,15 @@ const socketIo = require('socket.io');
 
 const userRoute = require('./routes/user.route.js');
 const commentRoute = require('./routes/comment.route.js');
-const locationRoute = require('./routes/location.route.js'); 
-const authRoute = require('./routes/auth.route.js'); 
+const locationRoute = require('./routes/location.route.js');
+const authRoute = require('./routes/auth.route.js');
 const licenseRoutes = require('./routes/licenseRoutes.js');
 const cloudinaryRoutes = require('./routes/cloudinaryRoutes.js');
 const AIchatRoutes = require('./routes/AIchatRoutes.js');
-const adminRoute = require('./routes/admin.route.js'); // Import admin routes
+const adminRoute = require('./routes/admin.route.js');
 
-// Import Models (for reference)
 const User = require('./models/user.model.js');
-const Location = require('./models/location.model.js'); 
+const Location = require('./models/location.model.js');
 const Message = require('./models/message.model.js');
 
 const app = express();
@@ -35,18 +33,18 @@ const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env
 // Routes configuration
 app.use("/api/users", userRoute);
 app.use("/api/comments", commentRoute);
-app.use("/api/locations", locationRoute); 
-app.use("/auth", authRoute); 
-app.use("/api/admin", adminRoute); // Mount admin routes here
-app.use("/api/license", licenseRoutes); 
-app.use("/api/photos", cloudinaryRoutes); 
-app.use('/', AIchatRoutes); // For AI Chatbot
+app.use("/api/locations", locationRoute);
+app.use("/auth", authRoute);
+app.use("/api/admin", adminRoute); 
+app.use("/api/license", licenseRoutes);
+app.use("/api/photos", cloudinaryRoutes);
+app.use('/', AIchatRoutes); 
 
 // Socket.IO
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "*", // Adjust for production
+    origin: "*", 
     methods: ["GET", "POST"]
   }
 });
