@@ -15,11 +15,13 @@ const AddEditUser = () => {
 
   const userId = locationState?.user?._id;
 
+  // Get authentication headers from localStorage
   const getAuthHeader = () => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,10 +35,12 @@ const AddEditUser = () => {
 
     try {
       if (userId) {
+        // Update an existing user
         await axios.put(`http://localhost:3000/api/users/${userId}`, userData, {
           headers: getAuthHeader(),
         });
       } else {
+        // Add a new user
         await axios.post('http://localhost:3000/api/users', userData, {
           headers: getAuthHeader(),
         });
@@ -58,6 +62,7 @@ const AddEditUser = () => {
         fontFamily: 'Poppins, sans-serif',
       }}
     >
+    {/* Form container */}
       <Container maxWidth="sm">
         <Box
           component="form"
@@ -73,6 +78,7 @@ const AddEditUser = () => {
             {userId ? 'Edit User' : 'Add New User'}
           </Typography>
 
+          {/* main content of the form */}
           <TextField
             label="Name"
             value={name}
@@ -116,6 +122,8 @@ const AddEditUser = () => {
             label="Is Admin?"
             sx={{ mb: 2 }}
           />
+
+          {/* Submit Button */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
             <Button
               variant="contained"

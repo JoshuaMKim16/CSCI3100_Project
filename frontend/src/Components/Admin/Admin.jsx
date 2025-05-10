@@ -10,7 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
 const Admin = () => {
-  const [isOpen, setIsOpen] = useState(false); // Sidebar toggle state
+  const [isOpen, setIsOpen] = useState(false); 
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -31,15 +31,15 @@ const Admin = () => {
       {/* Sidebar */}
       <Box
         sx={{
-          width: isOpen ? '270px' : '0px', // Sidebar width
+          width: isOpen ? '270px' : '0px', 
           height: '100%',
           bgcolor: 'background.paper',
           boxShadow: 2,
-          position: 'fixed', // Keep sidebar fixed
+          position: 'fixed', 
           top: 0,
           left: 0,
-          transition: 'width 0.3s ease-in-out', // Smooth transition for width
-          overflow: 'hidden', // Prevent content overflow when closed
+          transition: 'width 0.3s ease-in-out', 
+          overflow: 'hidden', 
           zIndex: 100,
           display: 'flex',
           flexDirection: 'column',
@@ -73,7 +73,7 @@ const Admin = () => {
               color="error"
               sx={{
                 padding: '4px',
-                width: 'auto', // Prevent full width expansion
+                width: 'auto', 
               }}
             >
               <CloseIcon />
@@ -87,7 +87,7 @@ const Admin = () => {
             mt: 2,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center', // Center navigation items
+            alignItems: 'center', 
           }}
         >
           <Typography
@@ -96,9 +96,9 @@ const Admin = () => {
             sx={{
               mb: 2,
               textDecoration: 'none',
-              width: '90%', // Set a fixed width
+              width: '90%', 
               maxWidth: '240px',
-              fontSize: '16px', // Increased font size
+              fontSize: '16px', 
               fontWeight: 'bold',
               color: '#333',
               '&:hover': {
@@ -116,7 +116,7 @@ const Admin = () => {
               textDecoration: 'none',
               width: '90%',
               maxWidth: '240px',
-              fontSize: '16px', // Increased font size
+              fontSize: '16px', 
               fontWeight: 'bold',
               color: '#333',
               '&:hover': {
@@ -134,7 +134,7 @@ const Admin = () => {
               textDecoration: 'none',
               width: '90%',
               maxWidth: '240px',
-              fontSize: '16px', // Increased font size
+              fontSize: '16px',
               fontWeight: 'bold',
               color: '#333',
               '&:hover': {
@@ -151,7 +151,7 @@ const Admin = () => {
               textDecoration: 'none',
               width: '90%',
               maxWidth: '240px',
-              fontSize: '16px', // Increased font size
+              fontSize: '16px',
               fontWeight: 'bold',
               color: 'error.main',
               '&:hover': {
@@ -169,9 +169,9 @@ const Admin = () => {
         sx={{
           flex: 1,
           bgcolor: '#f5f5f5',
-          ml: isOpen ? '270px' : '0px', // Adjust margin based on sidebar width
-          width: `calc(100% - ${isOpen ? '270px' : '0px'})`, // Dynamically resize content
-          transition: 'margin-left 0.3s ease-in-out, width 0.3s ease-in-out', // Smooth transition
+          ml: isOpen ? '270px' : '0px', 
+          width: `calc(100% - ${isOpen ? '270px' : '0px'})`, 
+          transition: 'margin-left 0.3s ease-in-out, width 0.3s ease-in-out', 
           p: 3,
         }}
       >
@@ -183,15 +183,15 @@ const Admin = () => {
             mb: 3,
           }}
         >
-          {/* Hamburger Icon */}
+          {/* Menu Icon */}
           {!isOpen && (
             <IconButton
               onClick={toggleSidebar}
               color="primary"
               sx={{
                 padding: '4px',
-                mr: 2, // Space between icon and heading
-                width: 'auto', // Prevent IconButton from expanding
+                mr: 2, 
+                width: 'auto', 
               }}
             >
               <MenuIcon />
@@ -208,8 +208,6 @@ const Admin = () => {
             Admin Panel
           </Typography>
         </Box>
-
-        {/* Outlet for Nested Routes */}
         <Outlet />
       </Box>
     </Container>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import './Login.css'; // Reuse styling from the login and forgot password pages
+import './Login.css'; // Reuse styling from the login page
 import Axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import Material-UI Back Arrow Icon
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ResetPassword = () => {
   const location = useLocation();
@@ -56,13 +56,13 @@ const ResetPassword = () => {
         loop
         muted
         style={{
-          position: 'absolute', // Ensures it stays in the background
+          position: 'absolute', 
           top: 0,
           left: 0,
-          width: '100%', // Covers the full width
-          height: '100%', // Covers the full height
-          objectFit: 'cover', // Ensures the video scales properly
-          zIndex: -1, // Places it behind other components
+          width: '100%',
+          height: '100%', 
+          objectFit: 'cover', 
+          zIndex: -1, 
         }}
       >
         <source src={require('./LogInVideo.mp4')} type='video/mp4' />
@@ -78,19 +78,19 @@ const ResetPassword = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '100vh', // Full height of the viewport
-          width: '100%', // Full width of the viewport
+          height: '100vh', 
+          width: '100%', 
         }}
       >
         <form
           className='login-form'
           onSubmit={handleSubmit}
           style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Transparent white box
+            backgroundColor: 'rgba(255, 255, 255, 0.8)', 
             padding: '30px',
             borderRadius: '50px',
             width: '350px',
-            boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)', // Subtle shadow around the form
+            boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)', 
             position: 'relative',
           }}
         >
@@ -98,17 +98,18 @@ const ResetPassword = () => {
           <div
             className="back-arrow"
             style={{
-              position: 'absolute', // Position inside the form
-              top: '20px', // Adjusted top position
-              left: '25px', // Adjusted left position
+              position: 'absolute', 
+              top: '20px', 
+              left: '25px', 
               cursor: 'pointer',
-              zIndex: 3, // Ensure it appears above the form content
+              zIndex: 3, 
             }}
-            onClick={() => navigate('/forgotPassword')} // Navigate to /forgotPassword
+            onClick={() => navigate('/forgotPassword')} 
           >
-            <ArrowBackIcon style={{ color: 'black', fontSize: '28px' }} /> {/* Black arrow */}
+            <ArrowBackIcon style={{ color: 'black', fontSize: '28px' }} /> 
           </div>
-
+            
+          {/* Content of the password reset form */}
           <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Reset Password</h2>
 
           {/* If email is not provided from the previous step, ask for it */}

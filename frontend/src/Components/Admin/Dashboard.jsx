@@ -164,18 +164,18 @@ const Dashboard = () => {
   return (
     <Box
       sx={{
-        height: "100vh", // Ensure full viewport height
+        height: "100vh", 
         width: "100%",
-        overflowY: "auto", // Enable vertical scrolling
+        overflowY: "auto", 
         display: "flex",
         flexDirection: "column",
         p: { xs: 2, md: 3 },
-        pb: { xs: 8, md: 12 }, // Extra bottom padding for more spacing
+        pb: { xs: 8, md: 12 }, 
         pr: { xs: 2, md: 4 },
         boxSizing: "border-box",
       }}
     >
-      {/* Top Row: Admin Profile & Dashboard Metrics */}
+      {/* Admin Profile & Dashboard Metrics */}
       <Box
         sx={{
           display: "flex",
@@ -243,7 +243,7 @@ const Dashboard = () => {
         </Card>
       </Box>
 
-      {/* Bottom Row: Charts */}
+      {/* Charts */}
       <Box
         sx={{
           display: "flex",

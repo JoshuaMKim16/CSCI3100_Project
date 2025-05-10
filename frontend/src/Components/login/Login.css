@@ -16,13 +16,14 @@ body {
   margin: 0;
   padding: 0;
 }
+
   /* login page */
   .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%; /* Ensure it doesn't add a layer */
-    height: 100%; /* Ensure it covers the viewport */
+    width: 100%; 
+    height: 100%; 
     background: none; /* Remove any background */
   }
   
@@ -83,21 +84,19 @@ body {
   
   .error-message {
     color: red;
-    font-weight: bold; /* Optional: Makes it stand out */
+    font-weight: bold; 
     font-size: 15px;
     margin-bottom: 16px;
   }
 
-  /* Remove hover effects for all buttons */
-.MuiButton-root:hover {
-  background-color: unset !important;
-  box-shadow: none !important;
-  text-decoration: none !important;
-}
+  .MuiButton-root:hover {
+    background-color: unset !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+  }
 
-/* Add hover effect for the "LOGIN" button specifically */
-.login-button:hover {
-  background-color: #0288d1 !important; /* Slightly darker blue */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) !important;
-}
+  .login-button:hover {
+    background-color: #0288d1 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2) !important;
+  }
   
