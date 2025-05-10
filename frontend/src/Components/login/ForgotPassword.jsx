@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './Login.css'; // Reuse styling from the login page
 import Axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import CircularProgress from '@mui/material/CircularProgress'; // Material-UI Spinner
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Material-UI Back Arrow Icon
+import CircularProgress from '@mui/material/CircularProgress'; 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -87,21 +87,22 @@ const ForgotPassword = () => {
             position: 'relative',
           }}
         >
-          {/* Back Arrow */}
+         {/* Back Arrow */} 
           <div
             className="back-arrow"
             style={{
-              position: 'absolute', // Position the arrow inside the form
-              top: '23px', // Adjust top position
-              left: '23px', // Adjust left position
+              position: 'absolute', 
+              top: '23px', 
+              left: '23px', 
               cursor: 'pointer',
-              zIndex: 3, // Ensure it appears above the form content
+              zIndex: 3, 
             }}
-            onClick={() => navigate('/login')} // Navigate to the home page or desired route
+            onClick={() => navigate('/login')} 
           >
-            <ArrowBackIcon style={{ color: 'black', fontSize: '28px' }} /> {/* Black arrow */}
+            <ArrowBackIcon style={{ color: 'black', fontSize: '28px' }} /> 
           </div>
 
+          {/* Content of the forgot password form */}
           <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Password Reset</h2>
 
           <label htmlFor='email'>Email:</label>

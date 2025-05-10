@@ -39,11 +39,8 @@ const UserProfile = () => {
       return;
     }
 
-    // Retrieve the token from localStorage.
-    const token =
-      user.token ||
-      (localStorage.getItem('user') &&
-        JSON.parse(localStorage.getItem('user')).token);
+  // Retrieve the token from user or localStorage.
+  const token = user.token || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).token);
 
     try {
       const response = await fetch(`http://localhost:3000/api/license/${user._id}`, {
@@ -117,11 +114,11 @@ const UserProfile = () => {
           }}
         >
           <Toolbar
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              position: 'relative',
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center", 
+              position: "relative",
             }}
           >
             {/* Left Section: Logo */}
@@ -143,19 +140,19 @@ const UserProfile = () => {
             {/* Center Section (Navbar Items) */}
             <div
               style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                display: 'flex',
-                gap: '30px',
-                textAlign: 'center',
+                position: "absolute", 
+                left: "50%", 
+                top: "50%", 
+                transform: "translate(-50%, -50%)", 
+                display: "flex",
+                gap: "30px",
+                textAlign: "center",
               }}
             >
               <Button
                 color="inherit"
-                onClick={() => navigate('/main')}
-                sx={{
+                onClick={() => navigate("/main")} 
+                style={{
                   color: navbarFontColor,
                   fontSize: '18px',
                   fontFamily: 'Poppins, sans-serif',
@@ -165,8 +162,8 @@ const UserProfile = () => {
               </Button>
               <Button
                 color="inherit"
-                onClick={() => navigate('/tour')}
-                sx={{
+                onClick={() => navigate("/tour")} 
+                style={{
                   color: navbarFontColor,
                   fontSize: '18px',
                   fontFamily: 'Poppins, sans-serif',
@@ -176,8 +173,8 @@ const UserProfile = () => {
               </Button>
               <Button
                 color="inherit"
-                onClick={() => navigate('/forum')}
-                sx={{
+                onClick={() => navigate("/forum")} 
+                style={{
                   color: navbarFontColor,
                   fontSize: '18px',
                   fontFamily: 'Poppins, sans-serif',
@@ -218,13 +215,13 @@ const UserProfile = () => {
               </Button>
               <Button
                 onClick={handleLogout}
-                sx={{
-                  color: 'skyblue',
-                  fontFamily: 'Poppins, sans-serif',
-                  padding: '5px 15px',
-                  borderRadius: '5px',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
+                style={{
+                  color: "skyblue",
+                  fontFamily: "Poppins, sans-serif",
+                  padding: "5px 15px",
+                  borderRadius: "5px", 
+                  fontSize: "14px",
+                  fontWeight: "bold",
                 }}
               >
                 LOGOUT
@@ -232,20 +229,17 @@ const UserProfile = () => {
             </div>
           </Toolbar>
         </AppBar>
-
-        {/* Center User Profile page */}
-        <Grid
-          container
-          spacing={3}
-          className="profile-header"
-          sx={{ marginTop: '200px', width: '100%' }}
-        >
+        
+        {/* User profile picture */}
+        <Grid container spacing={3} className="profile-header" sx={{ marginTop: '160px', width: '100%' }}>
           <Grid item md={3} className="profile-image-container">
             <img
-              src={user.picture || '/profile_none.png'}
+              src={user.picture || '/profile_none.png'} 
               className="profile-image"
             />
           </Grid>
+
+          {/* User profile details */}
           <Grid item md={9}>
             <Box sx={{ mb: 2 }}>
               <Typography variant="h5" sx={{ fontWeight: 'bold' }}>

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { Container, Box, TextField, Button, Typography } from '@mui/material';
 import { AuthContext } from '../utils/AuthContext';
 
@@ -87,6 +86,7 @@ const EditUser = () => {
         fontFamily: 'Poppins, sans-serif',
       }}
     >
+    {/* Edit profile form */}
       <Container maxWidth="sm">
         <Box
           component="form"
@@ -129,6 +129,7 @@ const EditUser = () => {
             required={!userId}
           />
 
+          {/* Update button */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
             <Button
               variant="contained"

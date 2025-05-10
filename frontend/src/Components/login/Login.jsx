@@ -142,7 +142,8 @@ const Login = () => {
 
           {message && <div className="success-message" style={{ color: 'green', textAlign: 'center', marginBottom: '10px' }}>{message}</div>}
           {error && <div className="error-message" style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>{error}</div>}
-
+          
+          {/* Content of the log in form */}
           <label htmlFor="email">Email:</label>
           <input
             type="email"

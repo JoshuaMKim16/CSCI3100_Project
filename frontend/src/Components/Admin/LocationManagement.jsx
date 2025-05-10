@@ -15,7 +15,6 @@ const LocationManagement = () => {
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
-  // Fetch locations from API
   const fetchLocations = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/api/locations', {
@@ -90,7 +89,7 @@ const LocationManagement = () => {
         {/* Header and filter container */}
         <Box
           sx={{
-            backgroundColor: 'white',
+            backgroundcolor: 'black',
             p: { xs: 2, sm: 3 },
             borderRadius: 2,
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
@@ -143,7 +142,7 @@ const LocationManagement = () => {
       {/* Table for displaying locations */}
       <Box
           sx={{
-            backgroundColor: 'white',
+            backgroundcolor: 'black',
             borderRadius: 2,
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
             display: 'flex',
@@ -152,18 +151,20 @@ const LocationManagement = () => {
             overflow: 'hidden',
           }}
         >
+        {/* Table Header */}
         <TableContainer component={Paper} sx={{ overflow: 'auto' }}>
           <Table stickyHeader>
             <TableHead sx={{ backgroundColor: '#1976d2' }}>
                 <TableRow>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Address</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Categories</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Name</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Address</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Price</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Categories</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Actions</TableCell>
               </TableRow>
             </TableHead>
 
+          {/* Table content and Action buttons */}
           <TableBody>
             {currentLocations.map((loc) => (
               <TableRow key={loc._id}>
@@ -205,25 +206,26 @@ const LocationManagement = () => {
         </Table>
       </TableContainer>
 
-<Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              p: { xs: 1, sm: 2 },
-              borderTop: '1px solid #e0e0e0',
-              mt: 2,
-              mb: { xs: 12, sm: 10 },
-            }}
-          >
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={(e, page) => setCurrentPage(page)}
-              variant="outlined"
-              shape="rounded"
-              color="primary"
-            />
+      {/* Pagination section */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          p: { xs: 1, sm: 2 },
+          borderTop: '1px solid #e0e0e0',
+          mt: 2,
+          mb: { xs: 12, sm: 10 },
+        }}
+      >
+      <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={(e, page) => setCurrentPage(page)}
+          variant="outlined"
+          shape="rounded"
+          color="primary"
+           />
           </Box>
         </Box>
       </Box>
