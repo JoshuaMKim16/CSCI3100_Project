@@ -5,13 +5,13 @@ const Loading = () => {
   return (
     <Box
       style={{
-        height: "100vh", // Full viewport height
-        width: "100vw", // Full viewport width
+        height: "100vh", 
+        width: "100vw", 
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f5f5f5", // Light background color
+        backgroundColor: "#f5f5f5", 
       }}
     >
       {/* Material UI CircularProgress Loader */}
