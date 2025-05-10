@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './Login.css'; // Reuse styling from the login page
+import './Login.css'; 
 import Axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';

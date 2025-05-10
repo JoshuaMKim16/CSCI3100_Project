@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Login.css'; // Reuse styling from the login page
+import './Login.css'; 
 import Axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -199,7 +199,7 @@ const ResetPassword = () => {
                   borderRadius: '50%',
                   width: '16px',
                   height: '16px',
-                  animation: 'spin 1s linear infinite', // Simple spinning animation
+                  animation: 'spin 1s linear infinite',
                 }}
               ></div>
             ) : (

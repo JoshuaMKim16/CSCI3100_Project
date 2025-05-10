@@ -38,7 +38,8 @@ const EditUser = () => {
         };
       
         let response;
-      
+        
+        // Edit User information
         if (userId) {
           response = await fetch(`http://localhost:3000/api/users/${userId}`, {
             method: 'PUT',
