@@ -50,15 +50,14 @@
 
 .highlight-text {
   color: rgb(224, 103, 79);
-  font-family: 'Arial', sans-serif; /* Change font */
-  font-weight: bold;
+  font-family: 'Arial', sans-serif; 
   font-size: 1.2em;
-  animation: glow 1.5s infinite; /* Apply glowing animation */
-  transition: transform 0.3s; /* Animation effect */
+  animation: glow 1.5s infinite; 
+  transition: transform 0.3s; 
 }
 
 .highlight-text:hover {
-  transform: scale(1.1); /* Scale effect on hover */
+  transform: scale(1.1); 
 }
 
 .banner {
@@ -66,28 +65,28 @@ position: fixed;
 top: 0;
 left: 0;
 right: 0;
-height: 160px; /* Adjust the height as needed */
-background-image: url('../main/hk_background.png'); /* Ensure the path is correct */
+height: 160px; 
+background-image: url('../main/hk_background.png'); 
 background-size: cover;
 background-position: center;
-z-index: 1000; /* Ensure the banner is above other elements */
+z-index: 1000; 
 }
 
 .profile-image-container {
-  background-image: url('./profile_none.png'); /* Adjust path as necessary */
-  background-size: cover; /* Ensure the background covers the grid item */
-  background-position: center; /* Center the image */
+  background-image: url('./profile_none.png'); 
+  background-size: cover; 
+  background-position: center; 
   width: 200px;
   height: 200px;
   border-radius: 50%;
 }
 
 .profile-image {
-  width: 100px; /* Set width as needed */
-  height: 100px; /* Set height to match width for a perfect circle */
+  width: 100px; 
+  height: 100px; 
   width: 200px;
   height: 200px;
-  border-radius: 50%; /* This creates the circular shape */
-  object-fit: cover; /* Ensures the image covers the area */
-  display: block; /* Ensures proper spacing */
+  border-radius: 50%; 
+  object-fit: cover; 
+  display: block; 
 }

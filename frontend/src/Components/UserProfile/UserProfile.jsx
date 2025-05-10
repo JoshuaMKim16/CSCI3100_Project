@@ -108,7 +108,7 @@ const UserProfile = () => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center", // Vertically center all items in the navbar
+              alignItems: "center", 
               position: "relative",
             }}
           >
@@ -131,11 +131,10 @@ const UserProfile = () => {
             {/* Center Section (Navbar Items) */}
             <div
               style={{
-                position: "absolute", // Position absolutely relative to the toolbar
+                position: "absolute", 
                 left: "50%", // Center horizontally
                 top: "50%", // Center vertically
-                transform: "translate(-50%, -50%)", // Adjust for exact center alignment
-                display: "flex",
+                transform: "translate(-50%, -50%)", 
                 gap: "30px",
                 textAlign: "center",
               }}
@@ -218,7 +217,7 @@ const UserProfile = () => {
                   color: "skyblue",
                   fontFamily: "Poppins, sans-serif",
                   padding: "5px 15px",
-                  borderRadius: "5px", // Rounded edges
+                  borderRadius: "5px", 
                   fontSize: "14px",
                   fontWeight: "bold",
                 }}
