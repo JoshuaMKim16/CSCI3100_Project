@@ -15,8 +15,8 @@
 <h2 id="layout">🎨 Layout</h2>
 
 <p align="center">
-    <img src="./etc/example_1.png" alt="Image Example" width="400px", height="215px">
-    <img src="./etc/example_2.png" alt="Image Example" width="400px", height="215px">
+    <img src="./frontend/picture_for_readme/example_1.png" alt="Image Example" width="400px", height="215px">
+    <img src="./frontend/picture_for_readme/example_2.png" alt="Image Example" width="400px", height="215px">
 </p>
 
 <h2 id="technologies">💻 Technologies</h2>
