@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './Login.css'; // Reuse your CSS styles
+import './Login.css'; // Reuse styling from the login page
 import Axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
@@ -108,7 +108,7 @@ const Signup = () => {
         style={{
           zIndex: 1,
           position: 'relative',
-          marginTop: '120px', // adjust to ensure the form doesn't overlap the header
+          marginTop: '120px', 
         }}
       >
         <form
@@ -149,7 +149,8 @@ const Signup = () => {
               <ArrowBackIcon style={{ marginRight: '5px' }} /> Back
             </Button>
           </div>
-
+          
+          {/* Content of the signup form */}
           <h2 style={{ textAlign: 'center', marginBottom: '10px', marginTop: '30px' }}>Sign Up</h2>
 
           {message && (

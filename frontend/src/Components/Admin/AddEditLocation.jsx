@@ -8,7 +8,6 @@ const AddEditLocation = () => {
   const navigate = useNavigate();
   const locationState = useLocation().state;
 
-  // State variables
   const [name, setName] = useState(locationState?.location?.name || '');
   const [address, setAddress] = useState(locationState?.location?.address || '');
   const [price, setPrice] = useState(locationState?.location?.price || '');
@@ -132,11 +131,11 @@ const AddEditLocation = () => {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'flex-start', // Align items at the top
+        alignItems: 'flex-start',
         height: '100vh',
         backgroundColor: '#f0f2f5',
         fontFamily: 'Poppins, sans-serif',
-        paddingTop: '20px', // Push the form up
+        paddingTop: '20px',
       }}
     >
       <Container
@@ -156,17 +155,18 @@ const AddEditLocation = () => {
             padding: 4,
             borderRadius: 4,
             boxShadow: '0 0 15px rgba(0, 0, 0, 0.2)',
-            overflowY: 'auto', // Enable vertical scrolling
-            flexGrow: 1, // Allow the form to grow dynamically
+            overflowY: 'auto', 
+            flexGrow: 1, 
             display: 'flex',
             flexDirection: 'column',
-            paddingBottom: '120px', // Increased bottom padding for more separation
+            paddingBottom: '120px', 
           }}
         >
           <Typography variant="h5" align="center" sx={{ fontWeight: 'bold', mb: 2 }}>
             {locId ? 'Edit Location' : 'Add New Location'}
           </Typography>
-
+          
+          {/* main content of the form */}
           <TextField
             label="Name"
             value={name}
@@ -274,7 +274,7 @@ const AddEditLocation = () => {
             borderTop: '1px solid #ddd',
             display: 'flex',
             justifyContent: 'space-between',
-            zIndex: 10, // Ensure it stays above other elements
+            zIndex: 10, 
           }}
         >
           <Button

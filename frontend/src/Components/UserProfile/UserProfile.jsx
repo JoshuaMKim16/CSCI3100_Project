@@ -29,8 +29,8 @@ const UserProfile = () => {
       return;
     }
 
-    // Retrieve the token from user or localStorage.
-    const token = user.token || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).token);
+  // Retrieve the token from user or localStorage.
+  const token = user.token || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).token);
 
     try {
       const response = await fetch(`http://localhost:3000/api/license/${user._id}`, {
@@ -108,7 +108,7 @@ const UserProfile = () => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center", // Vertically center all items in the navbar
+              alignItems: "center", 
               position: "relative",
             }}
           >
@@ -131,10 +131,10 @@ const UserProfile = () => {
             {/* Center Section (Navbar Items) */}
             <div
               style={{
-                position: "absolute", // Position absolutely relative to the toolbar
-                left: "50%", // Center horizontally
-                top: "50%", // Center vertically
-                transform: "translate(-50%, -50%)", // Adjust for exact center alignment
+                position: "absolute", 
+                left: "50%", 
+                top: "50%", 
+                transform: "translate(-50%, -50%)", 
                 display: "flex",
                 gap: "30px",
                 textAlign: "center",
@@ -143,7 +143,7 @@ const UserProfile = () => {
               {/* Home Navigation */}
               <Button
                 color="inherit"
-                onClick={() => navigate("/main")} // Navigate to /main
+                onClick={() => navigate("/main")} 
                 style={{
                   color: navbarFontColor,
                   fontSize: "18px",
@@ -156,7 +156,7 @@ const UserProfile = () => {
               {/* Tour Navigation */}
               <Button
                 color="inherit"
-                onClick={() => navigate("/tour")} // Navigate to /tour
+                onClick={() => navigate("/tour")} 
                 style={{
                   color: navbarFontColor,
                   fontSize: "18px",
@@ -169,7 +169,7 @@ const UserProfile = () => {
               {/* Forum Navigation */}
               <Button
                 color="inherit"
-                onClick={() => navigate("/forum")} // Navigate to /forum
+                onClick={() => navigate("/forum")} 
                 style={{
                   color: navbarFontColor,
                   fontSize: "18px",
@@ -218,7 +218,7 @@ const UserProfile = () => {
                   color: "skyblue",
                   fontFamily: "Poppins, sans-serif",
                   padding: "5px 15px",
-                  borderRadius: "5px", // Rounded edges
+                  borderRadius: "5px", 
                   fontSize: "14px",
                   fontWeight: "bold",
                 }}
@@ -228,15 +228,17 @@ const UserProfile = () => {
             </div>
           </Toolbar>
         </AppBar>
-
+        
+        {/* User profile picture */}
         <Grid container spacing={3} className="profile-header" sx={{ marginTop: '160px', width: '100%' }}>
           <Grid item md={3} className="profile-image-container">
             <img
-              src={user.picture || '/profile_none.png'} // Fallback for other images
+              src={user.picture || '/profile_none.png'} 
               className="profile-image"
             />
           </Grid>
 
+          {/* User profile details */}
           <Grid item md={9}>
             <Box sx={{ mb: 2 }}>
               <Typography variant="h5" sx={{ fontWeight: 'bold' }}>{user.name}</Typography>

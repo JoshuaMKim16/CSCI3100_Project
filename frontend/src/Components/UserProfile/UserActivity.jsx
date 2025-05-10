@@ -49,6 +49,7 @@ const UserActivity = () => {
     }
   }, [user]);
 
+  //in case user doesn't log in
   if (!user) {
     return (
       <Container sx={{ py: 5 }}>
@@ -82,7 +83,7 @@ const UserActivity = () => {
         height: '100vh',
         bgcolor: '#f0f8ff',
         fontFamily: 'Poppins, sans-serif',
-        overflow: 'auto', // Enable scrolling if content overflows
+        overflow: 'auto',
         position: 'relative',
       }}
     >
@@ -143,6 +144,7 @@ const UserActivity = () => {
               key={group.location._id || group.location.name}
               sx={{ display: 'flex', justifyContent: 'center' }}
             >
+              {/* Each card shows the name and comment posted of the location */}
               <Card
                 sx={{
                   mb: 4,

@@ -15,7 +15,6 @@ const LocationManagement = () => {
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
-  // Fetch locations from API
   const fetchLocations = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/api/locations', {
@@ -152,6 +151,7 @@ const LocationManagement = () => {
             overflow: 'hidden',
           }}
         >
+        {/* Table Header */}
         <TableContainer component={Paper} sx={{ overflow: 'auto' }}>
           <Table stickyHeader>
             <TableHead sx={{ backgroundColor: '#1976d2' }}>
@@ -164,6 +164,7 @@ const LocationManagement = () => {
               </TableRow>
             </TableHead>
 
+          {/* Table content and Action buttons */}
           <TableBody>
             {currentLocations.map((loc) => (
               <TableRow key={loc._id}>
@@ -205,25 +206,26 @@ const LocationManagement = () => {
         </Table>
       </TableContainer>
 
-<Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              p: { xs: 1, sm: 2 },
-              borderTop: '1px solid #e0e0e0',
-              mt: 2,
-              mb: { xs: 12, sm: 10 },
-            }}
-          >
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={(e, page) => setCurrentPage(page)}
-              variant="outlined"
-              shape="rounded"
-              color="primary"
-            />
+      {/* Pagination section */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          p: { xs: 1, sm: 2 },
+          borderTop: '1px solid #e0e0e0',
+          mt: 2,
+          mb: { xs: 12, sm: 10 },
+        }}
+      >
+      <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={(e, page) => setCurrentPage(page)}
+          variant="outlined"
+          shape="rounded"
+          color="primary"
+           />
           </Box>
         </Box>
       </Box>

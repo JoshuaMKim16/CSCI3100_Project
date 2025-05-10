@@ -26,7 +26,7 @@ const Start = () => {
     >
       {/* Video Background */}
       <video
-        ref={videoRef} // Attach the reference to the video element
+        ref={videoRef}
         autoPlay
         loop
         muted
@@ -37,7 +37,7 @@ const Start = () => {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          zIndex: -1, // Ensure the video stays behind everything else
+          zIndex: -1, 
         }}
       >
         <source src={require('./LogInVideo.mp4')} type="video/mp4" />

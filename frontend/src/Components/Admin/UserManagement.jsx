@@ -92,7 +92,7 @@ const UserManagement = () => {
           gap: 3,
         }}
       >
-        {/* Header & Search Section */}
+        {/* Header and Search Section */}
         <Box
           sx={{
             backgroundColor: 'white',
@@ -145,7 +145,7 @@ const UserManagement = () => {
           </Box>
         </Box>
 
-        {/* Table & Pagination Section */}
+        {/* Table for displaying users */}
         <Box
           sx={{
             backgroundColor: 'white',
@@ -157,27 +157,20 @@ const UserManagement = () => {
             overflow: 'hidden',
           }}
         >
+          {/* Table Header */}
           <TableContainer component={Paper} sx={{ overflow: 'auto' }}>
             <Table stickyHeader>
               <TableHead sx={{ backgroundColor: '#1976d2' }}>
                 <TableRow>
-                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
-                    Name
-                  </TableCell>
-                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
-                    Email
-                  </TableCell>
-                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
-                    Subscription
-                  </TableCell>
-                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
-                    Admin
-                  </TableCell>
-                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
-                    Actions
-                  </TableCell>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Name</TableCell>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Email</TableCell>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Subscription</TableCell>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Admin</TableCell>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Actions</TableCell>
                 </TableRow>
               </TableHead>
+
+              {/* Table content and Action buttons*/}
               <TableBody>
                 {currentUsers.map((user) => (
                   <TableRow key={user._id}>
@@ -218,6 +211,7 @@ const UserManagement = () => {
             </Table>
           </TableContainer>
 
+          {/* Pagination section */}
           <Box
             sx={{
               display: 'flex',
