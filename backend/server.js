@@ -21,6 +21,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Model imports
+const User = require('./models/user.model.js');
+const Location = require('./models/location.model.js');
+const Message = require('./models/message.model.js');
+
 const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@backenddb.vhwzsyd.mongodb.net/backendDB?retryWrites=true&w=majority&appName=BackendDB`;
 
 // Routes
