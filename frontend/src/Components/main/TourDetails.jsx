@@ -174,8 +174,8 @@ const TourDetails = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // Remove the user from local storage
-    navigate("/login"); // Navigate back to the login page
+    localStorage.removeItem("user"); 
+    navigate("/login"); 
   };
 
   useEffect(() => {

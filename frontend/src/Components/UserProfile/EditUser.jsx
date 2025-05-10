@@ -30,10 +30,8 @@ const EditUser = () => {
     };
 
     try {
-        // Retrieve token from localStorage (ensure user.token exists)
+        // Retrieve token from localStorage 
         const token = user.token || JSON.parse(localStorage.getItem('user')).token;
-      
-        // Prepare the user data for submission
         const userData = {
           name,
           email,

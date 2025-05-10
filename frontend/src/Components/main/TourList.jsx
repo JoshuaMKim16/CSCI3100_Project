@@ -17,9 +17,7 @@ import CloudIcon from "@mui/icons-material/Cloud";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import ChatbotFAB from "../utils/AIChatbot";
 
-// FakeCommentsCarousel Component
 const FakeCommentsCarousel = () => {
-  // Six fake comments
   const comments = [
     { name: "Joshua", comment: "I loved exploring these hidden gems!, and CSCI3100" },
     { name: "Esther", comment: "A perfect blend of tradition and modern marvels." },
@@ -29,15 +27,14 @@ const FakeCommentsCarousel = () => {
     { name: "Jake", comment: "Love being here! I don't want to leave" }
   ];
 
-  // We'll display 3 items at a time.
+  // Display 3 items at a time.
   const visibleCount = 3;
-  // The activeIndex represents the leftmost visible card
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Adjust card dimensions so that exactly 3 cards are visible.
-  const cardWidth = 300;       // Increased card width
-  const cardMargin = 10;       // Increased margin
-  const cardTotalWidth = cardWidth + cardMargin * 4.5; // Total width per card
+  // Adjust card dimensions.
+  const cardWidth = 300;      
+  const cardMargin = 10;     
+  const cardTotalWidth = cardWidth + cardMargin * 4.5; 
 
   useEffect(() => {
     const totalGroups = comments.length - visibleCount + 1;
@@ -50,7 +47,7 @@ const FakeCommentsCarousel = () => {
   return (
     <Box
       sx={{
-        width: `${cardTotalWidth * visibleCount * 1.15}px`, // Container width = 3 cards
+        width: `${cardTotalWidth * visibleCount * 1.15}px`, 
         overflow: "hidden",
         mx: "auto",
         my: 4,
@@ -239,9 +236,9 @@ const TourList = () => {
           <Grid
             item
             key={index}
-            xs={12}   // Full width on extra-small screens
-            sm={6}    // 2 per row on small screens
-            md={3}    // 4 per row on medium and up
+            xs={12}   
+            sm={6}   
+            md={3}   
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -469,8 +466,6 @@ const TourList = () => {
             </Typography>
           </Box>
         </Box>
-
-        {/* Fake Comments Carousel */}
         <FakeCommentsCarousel />
 
         {/* Render Categories */}
@@ -489,7 +484,7 @@ const TourList = () => {
           )}
         </Box>
 
-        {/* Skyblue Footer Section with inline Text & Button */}
+        {/* Footer Section */}
         <Box
           sx={{
             width: "100%",

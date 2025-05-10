@@ -1,10 +1,9 @@
-// /client/src/Components/utils/AuthContext.jsx
 import React, { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Try to load the user from localStorage (which may include the user_subscription/license key)
+  // Try to load the user from localStorage 
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;

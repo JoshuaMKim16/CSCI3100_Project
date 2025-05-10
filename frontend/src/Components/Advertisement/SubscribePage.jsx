@@ -1,4 +1,3 @@
-// SubscribePage.jsx
 import React, { useContext, useState } from 'react';
 import { Container, Row, Col, Button, Alert } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';

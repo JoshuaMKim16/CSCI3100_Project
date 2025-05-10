@@ -36,7 +36,6 @@ const AIChatbot = () => {
     setLoadingResponse(true);
 
     try {
-      // API call to your chatbot backend.
       const response = await fetch("http://localhost:3000/chat", {
         method: "POST",
         headers: {
@@ -50,7 +49,6 @@ const AIChatbot = () => {
       const data = await response.json();
       const answer = data.answer || "Sorry, I did not understand that.";
 
-      // Remove the placeholder.
       setMessages((prev) =>
         prev.filter((msg) => msg.text !== "Chatbot is thinking...")
       );
@@ -80,7 +78,7 @@ const AIChatbot = () => {
         sx={{
           flex: 1,
           overflowY: "auto",
-          overflowX: "hidden", // prevent horizontal scrolling
+          overflowX: "hidden", 
           p: 2,
           backgroundColor: "#f9f9f9",
           borderRadius: "8px",
@@ -166,7 +164,7 @@ const ChatbotFAB = () => {
 
   return (
     <>
-      {/* Floating Action Button positioned at the lower-right (with some offset) */}
+      {/* Floating Action Button */}
       <Fab
         color="primary"
         aria-label="chatbot"
@@ -192,7 +190,7 @@ const ChatbotFAB = () => {
             margin: 0,
             width: "350px",
             height: "500px",
-            overflow: "hidden", // Prevent extra scrolling
+            overflow: "hidden", 
           },
         }}
       >

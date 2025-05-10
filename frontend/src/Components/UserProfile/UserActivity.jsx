@@ -82,7 +82,7 @@ const UserActivity = () => {
         height: '100vh',
         bgcolor: '#f0f8ff',
         fontFamily: 'Poppins, sans-serif',
-        overflow: 'auto', // Enable scrolling if content overflows
+        overflow: 'auto', 
         position: 'relative',
       }}
     >

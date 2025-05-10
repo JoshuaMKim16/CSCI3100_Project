@@ -48,7 +48,7 @@ const TourCard = ({ location }) => {
     <Card
       sx={{
         width: 400,
-        height: 455, // Fixed card height
+        height: 455,
         display: 'flex',
         flexDirection: 'column',
         borderRadius: 2,
@@ -106,7 +106,6 @@ const TourCard = ({ location }) => {
             display: 'flex',
             alignItems: 'center',
             mb: 0.5,
-            // Allow wrapping instead of cutting off text
             whiteSpace: 'normal',
           }}
         >
@@ -119,7 +118,6 @@ const TourCard = ({ location }) => {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            // Allow wrapping instead of cutting off text
             whiteSpace: 'normal',
           }}
         >

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import TourCard from "./TourCard";
-import Loading from "../utils/Loading"; // Import the Loading component
+import Loading from "../utils/Loading"; 
 import hkBackground from "./hk_background.png";
 import {
   AppBar,
@@ -16,7 +16,6 @@ import {
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "../../App.css";
-// Import the chatbot component from utils folder
 import ChatbotFAB from "../utils/AIChatbot";
 
 const Tours = () => {
@@ -27,9 +26,9 @@ const Tours = () => {
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true); // State for loading
-  const [fadeOut, setFadeOut] = useState(false); // State for fade-out transition
-  const [fadeIn, setFadeIn] = useState(false); // State for fade-in transition
+  const [loading, setLoading] = useState(true); 
+  const [fadeOut, setFadeOut] = useState(false); 
+  const [fadeIn, setFadeIn] = useState(false); 
 
   const navigate = useNavigate();
   const tourSectionRef = useRef(null);
@@ -37,14 +36,14 @@ const Tours = () => {
   // Simulate a 1.5-second loading delay with both fade-out and fade-in
   useEffect(() => {
     const timer = setTimeout(() => {
-      setFadeOut(true); // Start fade-out effect
+      setFadeOut(true); 
       setTimeout(() => {
-        setLoading(false); // Hide loading screen
-        setFadeIn(true); // Start fade-in effect for the main content
-      }, 500); // Allow fade-out animation to complete before switching content
+        setLoading(false); 
+        setFadeIn(true); 
+      }, 500); 
     }, 1500);
 
-    return () => clearTimeout(timer); // Clean up the timer
+    return () => clearTimeout(timer); 
   }, []);
 
   // Fetch weather data
@@ -75,8 +74,8 @@ const Tours = () => {
 
   // Logout logic
   const handleLogout = () => {
-    localStorage.removeItem("user"); // Remove the user from local storage
-    navigate("/login"); // Navigate back to the login page
+    localStorage.removeItem("user"); 
+    navigate("/login"); 
   };
 
   // Fetch weather and location data
@@ -153,7 +152,7 @@ const Tours = () => {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center", // Vertically center all items in the navbar
+                alignItems: "center", 
               }}
             >
               {/* Left Section: TravelTailor Logo */}
@@ -186,7 +185,7 @@ const Tours = () => {
               >
                 <Button
                   color="inherit"
-                  onClick={() => navigate("/main")} // Navigate to /main
+                  onClick={() => navigate("/main")} 
                   style={{
                     color: navbarFontColor,
                     fontSize: "18px",
@@ -198,7 +197,7 @@ const Tours = () => {
 
                 <Button
                   color="inherit"
-                  onClick={() => navigate("/tour")} // Navigate to /tour
+                  onClick={() => navigate("/tour")} 
                   style={{
                     color: navbarFontColor,
                     fontSize: "18px",
@@ -210,7 +209,7 @@ const Tours = () => {
 
                 <Button
                   color="inherit"
-                  onClick={() => navigate("/forum")} // Navigate to /forum
+                  onClick={() => navigate("/forum")} 
                   style={{
                     color: navbarFontColor,
                     fontSize: "18px",
@@ -264,7 +263,7 @@ const Tours = () => {
                     color: "skyblue",
                     fontFamily: "Poppins, sans-serif",
                     padding: "5px 15px",
-                    borderRadius: "5px", // Rounded edges
+                    borderRadius: "5px",
                     fontSize: "14px",
                     fontWeight: "bold",
                   }}
@@ -359,7 +358,7 @@ const Tours = () => {
           </div>
         </div>
       )}
-      {/* Integrate the AI Chatbot FAB here so it appears on all pages */}
+      {/* Integrate the AI Chatbot FAB  */}
       <ChatbotFAB />
     </div>
   );

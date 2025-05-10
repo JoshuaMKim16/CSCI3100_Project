@@ -1,14 +1,13 @@
-// /client/src/Components/utils/AppLayout.jsx
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import AdvertisementModal from '../Advertisement/AdvertisementModal';  // Advertisement modal component
+import AdvertisementModal from '../Advertisement/AdvertisementModal';  
 import { AuthContext } from './AuthContext';
 
 const AppLayout = () => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
-  // For persistence of ad dismissal (this can be used for non‑licensed, trial users if needed)
+  // For persistence of ad dismissal 
   const initialAdDismissed = sessionStorage.getItem('adDismissed') === 'true';
   const initialNavigationCount = parseInt(sessionStorage.getItem('navigationCount'), 10) || 0;
 
@@ -46,9 +45,6 @@ const AppLayout = () => {
     sessionStorage.setItem('adDismissed', true);
     sessionStorage.setItem('navigationCount', 0);
   };
-
-  // The system assumes that having a valid license key stored in user.user_subscription 
-  // means that the user is licensed and can enjoy an ad‑free experience.
   const showAdModal = user && !user.user_subscription && !adDismissed;
 
   return (

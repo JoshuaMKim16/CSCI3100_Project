@@ -12,7 +12,7 @@ import ChatbotFAB from "../utils/AIChatbot";
 const ENDPOINT = "http://localhost:3000";
 let socket;
 
-// Function to generate a random username (e.g., User_abc123)
+// Function to generate a random username
 const generateRandomUsername = () => {
   const randomStr = Math.random().toString(36).substring(2, 8);
   return `User_${randomStr}`;
@@ -33,11 +33,9 @@ const LiveChat = () => {
     }
   };
 
-  // Connect to Socket.IO server and setup join/exit events
+  // Connect to Socket.IO server 
   useEffect(() => {
     socket = io(ENDPOINT);
-
-    // Listen for incoming messages and system notifications
     socket.on('chat message', (msg) => {
       setChat((prevChat) => [...prevChat, msg]);
     });
@@ -63,13 +61,13 @@ const LiveChat = () => {
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      handleBeforeUnload(); // Notify before unmount
+      handleBeforeUnload(); 
       window.removeEventListener('beforeunload', handleBeforeUnload);
       socket.disconnect();
     };
   }, [sender]);
 
-  // Auto-scroll when new messages arrive within the chat container
+  // Auto-scroll 
   useEffect(() => {
     scrollToBottom();
   }, [chat]);
@@ -88,18 +86,18 @@ const LiveChat = () => {
     }
   };
 
-  // Overall outer container style (no scroll for the whole page)
+  // Overall outer container style 
   const outerContainerStyles = {
     backgroundColor: "#fdfcfc",
-    height: "100vh", // Fixed height prevents page scrolling
-    overflow: "hidden", // Hides any overflow from the page
+    height: "100vh", 
+    overflow: "hidden", 
     fontFamily: "Poppins, sans-serif",
   };
 
   // Wrapper for the chat box
   const wrapperStyles = {
-    maxWidth: "1200px",       // Increase the overall width
-    height: "700px",          // Increase the overall height of chat box
+    maxWidth: "1200px",       
+    height: "700px",          
     margin: "0 auto",
     border: "1px solid #ccc",
     borderRadius: "10px",
@@ -110,11 +108,11 @@ const LiveChat = () => {
     position: "relative"
   };
 
-  // Chat container that supports internal scrolling for messages only
+  // Chat container that supports internal scrolling
   const chatContainerStyles = {
     flex: 1,
-    padding: "20px",        // Increased padding for larger area
-    overflowY: "auto",      // Auto-scroll within the chatbox
+    padding: "20px",       
+    overflowY: "auto",    
     backgroundColor: "#fdfcfc"
   };
 
@@ -291,7 +289,7 @@ const LiveChat = () => {
           {/* Chat messages */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {chat.map((msg, index) => {
-              // Check if the message is a system message by either flag or sender name
+              // Check if the message is a system message 
               if (msg.system || msg.sender === "System") {
                 return (
                   <div
@@ -349,7 +347,7 @@ const LiveChat = () => {
             placeholder="Type your message..."
             style={{
               flex: 1,
-              padding: "15px", // Increased padding for a larger input area
+              padding: "15px", 
               borderRadius: "25px",
               border: "1px solid #ccc",
               outline: "none",
@@ -361,7 +359,7 @@ const LiveChat = () => {
             type="submit"
             style={{
               marginLeft: "10px",
-              transform: "translateY(-5px)", // Moves the icon button upward slightly
+              transform: "translateY(-5px)",
               padding: "10px",
               border: "none",
               backgroundColor: "#358aff",

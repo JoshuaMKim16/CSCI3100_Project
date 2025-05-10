@@ -10,7 +10,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Carousel from 'react-material-ui-carousel';
 import Typography from '@mui/material/Typography';
-import hkBackground from "./hk_background.png"; // Fallback image
+import hkBackground from "./hk_background.png"; 
 import ChatbotFAB from "../utils/AIChatbot";
 
 const SearchPage = () => {
@@ -27,14 +27,13 @@ const SearchPage = () => {
 
   // Select 7 random locations for the carousel.
   const [carouselLocations, setCarouselLocations] = useState([]);
-  // Object to store pre-fetched image URLs for carousel locations.
   const [carouselImages, setCarouselImages] = useState({});
 
   const [hasSearched, setHasSearched] = useState(false);
 
   const navigate = useNavigate();
 
-  // Fetch all locations from the backend.
+  // Fetch all locations
   const fetchLocations = async () => {
     try {
       const response = await fetch('http://localhost:3000/api/locations');
@@ -50,7 +49,7 @@ const SearchPage = () => {
     fetchLocations();
   }, []);
 
-  // When locations change, randomly choose 7 locations for the carousel.
+  // Randomly choose 7 locations for the carousel.
   useEffect(() => {
     if (locations.length > 0) {
       const shuffled = [...locations].sort(() => Math.random() - 0.5);
@@ -72,7 +71,6 @@ const SearchPage = () => {
                 throw new Error('Fetching specific image failed');
               }
               const data = await response.json();
-              // Expect the API to return an object with secure_url property
               newImages[loc._id] = data.secure_url ? data.secure_url : hkBackground;
             } else {
               newImages[loc._id] = hkBackground;
@@ -303,7 +301,6 @@ const SearchPage = () => {
 
       {/* Main Content Wrapper */}
       <Box sx={{ position: 'relative', marginTop: '165px', width: '100%' }}>
-        {/* Carousel of Random Locations (Only 7 images will be displayed) */}
         {!hasSearched && carouselLocations.length > 0 && (
           <Box sx={{ width: '80%', margin: 'auto' }}>
             <h2 style={{ textAlign: 'center', marginBottom: '20px', color: 'lightblue' }}>
