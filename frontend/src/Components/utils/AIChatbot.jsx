@@ -136,7 +136,7 @@ const AIChatbot = () => {
           size="small"
           sx={{ flexGrow: 1 }}
           InputProps={{
-            sx: { fontSize: "1rem", height: "40px" }, // Bigger input height
+            sx: { fontSize: "1rem", height: "40px" }, 
           }}
         />
         {/* Smaller Send Button */}
@@ -147,7 +147,7 @@ const AIChatbot = () => {
             width: "50px",
             padding: "4px 6px",
             fontSize: "0.75rem",
-            height: "40px", // Adjust to match input height
+            height: "40px", 
           }}
         >
           Send

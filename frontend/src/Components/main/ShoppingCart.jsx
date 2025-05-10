@@ -15,7 +15,6 @@ import ChatbotFAB from "../utils/AIChatbot";
 import fallbackImage from "./hk_background2.jpg";
 import fallbackImage1 from "./hk_background1.jpg";
 
-
 // Simple throttle function to limit scroll event frequency
 const throttle = (func, limit) => {
   let lastFunc;
@@ -43,7 +42,7 @@ const ShoppingCart = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
-  // Decode JWT from the user object stored in localStorage (if it exists)
+  // Decode JWT from the user object stored in localStorage
   const getCurrentUserIdFromJWT = () => {
     try {
       const userData = localStorage.getItem('user');
@@ -76,12 +75,19 @@ const ShoppingCart = () => {
 
   const userId = getCurrentUserIdFromJWT();
   const cartKey = `shoppingCart_${userId}`;
-  const getSiteId = (item) => item.site_id || item.id;
+  // Updated getSiteId to prioritize _id for compatibility with TourDetails.jsx
+  const getSiteId = (item) => item._id || item.id || item.site_id;
 
   const [cartItems, setCartItems] = useState(() => {
     try {
       const savedCart = localStorage.getItem(cartKey);
-      return savedCart ? JSON.parse(savedCart) : [];
+      // Ensure cart items have startTime and endTime initialized
+      const parsedCart = savedCart ? JSON.parse(savedCart) : [];
+      return parsedCart.map(item => ({
+        ...item,
+        startTime: item.startTime || '',
+        endTime: item.endTime || ''
+      }));
     } catch (error) {
       console.error('Error parsing shoppingCart from localStorage:', error);
       return [];
@@ -111,47 +117,50 @@ const ShoppingCart = () => {
       const locationData = {};
       let hasNewFetches = false;
 
-      for (const item of cartItems) {
-        const id = getSiteId(item);
-        if (!fetchedSiteIds.current.has(id) && !locations[id]) {
-          try {
-            const response = await fetch(`http://localhost:3000/api/locations/${id}`);
-            if (response.ok) {
-              const data = await response.json();
-              locationData[id] = data;
-              fetchedSiteIds.current.add(id);
-              hasNewFetches = true;
+      // Fetch details for cart items loaded from localStorage
+      const itemsToFetch = cartItems.filter(
+        (item) => !fetchedSiteIds.current.has(getSiteId(item)) && !locations[getSiteId(item)]
+      );
 
-              const address = data.address;
-              if (address) {
-                try {
-                  const geocodeResponse = await fetch(
-                    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-                      address
-                    )}&key=${process.env.REACT_APP_MAP_APIKEY}`
-                  );
-                  const geocodeData = await geocodeResponse.json();
-                  if (geocodeData.status === 'OK') {
-                    const { lat, lng } = geocodeData.results[0].geometry.location;
-                    locationData[id].lat = lat;
-                    locationData[id].lng = lng;
-                    setIsMapLoaded(true);
-                    if (Object.keys(locationData).length === 1) {
-                      setMapCenter({ lat, lng });
-                    }
-                  } else {
-                    console.error(`Geocoding failed for address ${address}: ${geocodeData.status}`);
+      for (const item of itemsToFetch) {
+        const id = getSiteId(item);
+        try {
+          const response = await fetch(`http://localhost:3000/api/locations/${id}`);
+          if (response.ok) {
+            const data = await response.json();
+            locationData[id] = data;
+            fetchedSiteIds.current.add(id);
+            hasNewFetches = true;
+
+            const address = data.address;
+            if (address) {
+              try {
+                const geocodeResponse = await fetch(
+                  `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+                    address
+                  )}&key=${process.env.REACT_APP_MAP_APIKEY}`
+                );
+                const geocodeData = await geocodeResponse.json();
+                if (geocodeData.status === 'OK') {
+                  const { lat, lng } = geocodeData.results[0].geometry.location;
+                  locationData[id].lat = lat;
+                  locationData[id].lng = lng;
+                  setIsMapLoaded(true);
+                  if (Object.keys(locationData).length === 1) {
+                    setMapCenter({ lat, lng });
                   }
-                } catch (geocodeError) {
-                  console.error(`Error fetching geocoding data for address ${address}:`, geocodeError);
+                } else {
+                  console.error(`Geocoding failed for address ${address}: ${geocodeData.status}`);
                 }
+              } catch (geocodeError) {
+                console.error(`Error fetching geocoding data for address ${address}:`, geocodeError);
               }
-            } else {
-              console.error(`Failed to fetch location ${id}: ${response.status}`);
             }
-          } catch (error) {
-            console.error(`Error fetching location ${id}:`, error);
+          } else {
+            console.error(`Failed to fetch location ${id}: ${response.status}`);
           }
+        } catch (error) {
+          console.error(`Error fetching location ${id}:`, error);
         }
       }
 
@@ -160,10 +169,11 @@ const ShoppingCart = () => {
       }
     };
 
+    // Run fetch if there are cart items
     if (cartItems.length > 0) {
       fetchLocationDetails();
     }
-  }, []); // Empty dependency array to run only on page load
+  }, []); // Empty dependency array ensures this runs only on mount
 
   useEffect(() => {
     const fetchSpecificImage = async (id, pictureUrl) => {
@@ -314,7 +324,7 @@ const ShoppingCart = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [prevScrollPos]);
 
   return (
     <div
@@ -345,7 +355,6 @@ const ShoppingCart = () => {
           }}
         >
           <div style={{ display: 'flex', gap: '20px', textAlign: 'left' }}>
-            {/* Cursive TravelTailor Title in Top Left */}
             <div
               style={{
                 position: 'absolute',
@@ -478,7 +487,7 @@ const ShoppingCart = () => {
           left: 0,
           width: '100vw',
           height: 'calc(100% - 45vh)',
-          backgroundImage: `url(${require("./hk_background1.jpg")})`,
+          backgroundImage: `url(${fallbackImage1})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
