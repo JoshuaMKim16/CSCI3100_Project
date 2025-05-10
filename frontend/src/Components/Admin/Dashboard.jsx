@@ -43,6 +43,7 @@ const Dashboard = () => {
         }
       : { "Content-Type": "application/json" };
 
+    // Fetch Admin Profile
     const fetchAdminProfile = async () => {
       if (!adminId) return;
       try {
@@ -55,6 +56,7 @@ const Dashboard = () => {
       }
     };
 
+    // Fetch User Count
     const fetchUserCount = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/users`, { headers });
@@ -79,6 +81,7 @@ const Dashboard = () => {
       }
     };
 
+    // Fetch location count
     const fetchLocationCount = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/locations`, { headers });
@@ -103,6 +106,7 @@ const Dashboard = () => {
       }
     };
 
+    // Fetch comment count
     const fetchCommentCount = async () => {
       try {
         const response = await fetch(`${baseUrl}/api/comments`, { headers });

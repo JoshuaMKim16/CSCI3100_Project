@@ -296,7 +296,7 @@ const TourList = () => {
             <Box sx={{ display: "flex", gap: "20px", textAlign: "left" }}>
               <Typography
                 variant="h4"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/main")}
                 sx={{
                   fontFamily: "cursive",
                   fontSize: "32px",

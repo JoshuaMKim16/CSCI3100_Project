@@ -32,10 +32,9 @@ const AddEditLocation = () => {
 
   // Handle picture upload to Cloudinary
   const handlePictureUpload = async () => {
-    const cloudinaryUrl = 'http://localhost:3000/api/photos/upload'; // Cloudinary API endpoint
+    const cloudinaryUrl = 'http://localhost:3000/api/photos/upload';
     const formData = new FormData();
 
-    // Append each selected file to the FormData object
     pictures.forEach((file) => {
       formData.append('file', file);
     });
@@ -48,11 +47,10 @@ const AddEditLocation = () => {
         },
       });
 
-      // Check if response.data is an array or a single object
       if (Array.isArray(response.data)) {
-        return response.data.map((file) => file.secure_url); // Return array of URLs
+        return response.data.map((file) => file.secure_url);
       } else {
-        return [response.data.secure_url]; // Return single URL in an array
+        return [response.data.secure_url];
       }
     } catch (error) {
       console.error('Error uploading pictures to Cloudinary:', error);
@@ -60,14 +58,14 @@ const AddEditLocation = () => {
     }
   };
 
-  // Handle form submission
+  // Submit helper function
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form Data:', { name, address, price, type, coordinates, openingHours, description, pictures });
 
     setUploading(true);
     let uploadedPictures = [];
 
-    // Upload pictures to Cloudinary if any pictures are selected
     if (pictures.length > 0) {
       uploadedPictures = await handlePictureUpload();
       if (uploadedPictures.length === 0) {
@@ -77,30 +75,27 @@ const AddEditLocation = () => {
       }
     }
 
-    // Prepare location data for submission
     const locationData = {
       name,
       address,
       price,
       type: type.split(',').map((item) => item.trim()),
-      picture: uploadedPictures, // Store Cloudinary URLs
+      picture: uploadedPictures,
       location: coordinates.split(',').map((item) => parseFloat(item.trim())),
       opening_hour: openingHours.split(',').map((item) => parseInt(item.trim(), 10)),
-      description, // Add description to the location data
+      description,
     };
 
     console.log('Submitting location data:', locationData);
 
     try {
       if (locId) {
-        // Update an existing location
         await axios.put(
           `http://localhost:3000/api/locations/${locId}`,
           locationData,
           { headers: getAuthHeader() }
         );
       } else {
-        // Add a new location
         await axios.post('http://localhost:3000/api/locations', locationData, {
           headers: getAuthHeader(),
         });
@@ -114,7 +109,6 @@ const AddEditLocation = () => {
     }
   };
 
-  // Dropzone for drag-and-drop file upload
   const onDrop = (acceptedFiles) => {
     setPictures([...pictures, ...acceptedFiles]);
   };
@@ -146,9 +140,10 @@ const AddEditLocation = () => {
           height: '100%',
         }}
       >
-        {/* Scrollable form container */}
+        {/* Form container with a unique id */}
         <Box
           component="form"
+          id="locationForm"
           onSubmit={handleSubmit}
           sx={{
             backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -166,7 +161,6 @@ const AddEditLocation = () => {
             {locId ? 'Edit Location' : 'Add New Location'}
           </Typography>
           
-          {/* main content of the form */}
           <TextField
             label="Name"
             value={name}
@@ -224,7 +218,6 @@ const AddEditLocation = () => {
             sx={{ mb: 2 }}
           />
 
-          {/* Drag-and-drop file uploader */}
           <Box
             {...getRootProps()}
             sx={{
@@ -249,7 +242,6 @@ const AddEditLocation = () => {
             )}
           </Box>
 
-          {/* List of selected files */}
           {pictures.length > 0 && (
             <Box sx={{ mt: 2 }}>
               <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
@@ -275,11 +267,13 @@ const AddEditLocation = () => {
             display: 'flex',
             justifyContent: 'space-between',
             zIndex: 10, 
+            mt: 2,
           }}
         >
           <Button
             variant="contained"
             type="submit"
+            form="locationForm"  
             sx={{
               width: '48%',
               backgroundColor: 'skyblue',

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Typography, Box, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from '@mui/material';
 
+// for displyaing location informations
 const LocationManagement = () => {
   const [locations, setLocations] = useState([]);
   const [filterQuery, setFilterQuery] = useState('');

@@ -16,6 +16,7 @@ import {
   Pagination,
 } from '@mui/material';
 
+// For displyaing user informations
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [filterQuery, setFilterQuery] = useState('');

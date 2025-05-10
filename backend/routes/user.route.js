@@ -14,7 +14,7 @@ router.get("/:id", authenticateToken, getUser);
 router.post("/", signupUser);
 
 // update a user 
-router.put("/:id", authenticateToken, updateUser);
+router.put("/:id", updateUser);
 
 // delete a user 
 router.delete("/:id", authenticateToken, deleteUser);

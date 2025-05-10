@@ -125,7 +125,7 @@ const UserProfile = () => {
             <div style={{ display: 'flex', gap: '20px', textAlign: 'left' }}>
               <Typography
                 variant="h4"
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/main')}
                 style={{
                   fontFamily: 'cursive',
                   fontSize: '32px',

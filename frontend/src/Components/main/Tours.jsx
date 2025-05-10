@@ -164,7 +164,7 @@ const Tours = () => {
               >
                 <Typography
                   variant="h4"
-                  onClick={() => navigate("/")}
+                  onClick={() => navigate("/main")}
                   style={{
                     fontFamily: "cursive",
                     fontSize: "32px",
