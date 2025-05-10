@@ -90,7 +90,7 @@ const LocationManagement = () => {
         {/* Header and filter container */}
         <Box
           sx={{
-            backgroundColor: 'white',
+            backgroundcolor: 'black',
             p: { xs: 2, sm: 3 },
             borderRadius: 2,
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
@@ -143,7 +143,7 @@ const LocationManagement = () => {
       {/* Table for displaying locations */}
       <Box
           sx={{
-            backgroundColor: 'white',
+            backgroundcolor: 'black',
             borderRadius: 2,
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
             display: 'flex',
@@ -156,11 +156,11 @@ const LocationManagement = () => {
           <Table stickyHeader>
             <TableHead sx={{ backgroundColor: '#1976d2' }}>
                 <TableRow>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Name</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Address</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Price</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Categories</TableCell>
-                <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Name</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Address</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Price</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Categories</TableCell>
+                <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>Actions</TableCell>
               </TableRow>
             </TableHead>
 

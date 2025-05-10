@@ -134,7 +134,7 @@ const UserManagement = () => {
                 '&:hover': {
                   backgroundColor: 'skyblue',
                 },
-                color: 'white',
+                color: 'black',
                 whiteSpace: 'nowrap',
                 boxShadow: 'none',
                 padding: '15px 20px',
@@ -161,19 +161,19 @@ const UserManagement = () => {
             <Table stickyHeader>
               <TableHead sx={{ backgroundColor: '#1976d2' }}>
                 <TableRow>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
                     Name
                   </TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
                     Email
                   </TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
                     Subscription
                   </TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
                     Admin
                   </TableCell>
-                  <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>
+                  <TableCell sx={{ color: 'black', fontWeight: 'bold' }}>
                     Actions
                   </TableCell>
                 </TableRow>
@@ -195,7 +195,7 @@ const UserManagement = () => {
                           '&:hover': {
                             backgroundColor: 'skyblue',
                           },
-                          color: 'white',
+                          color: 'black',
                           boxShadow: 'none',
                           mr: 1,
                         }}
