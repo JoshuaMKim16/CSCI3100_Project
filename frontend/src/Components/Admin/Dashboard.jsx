@@ -263,7 +263,7 @@ const Dashboard = () => {
               gutterBottom
               sx={{ fontWeight: "bold" }}
             >
-              Users Over Time
+              New Users Over Time
             </Typography>
             <Box sx={{ width: "100%", height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -286,7 +286,7 @@ const Dashboard = () => {
               gutterBottom
               sx={{ fontWeight: "bold" }}
             >
-              Comments Over Time
+              New Comments Over Time
             </Typography>
             <Box sx={{ width: "100%", height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -309,7 +309,7 @@ const Dashboard = () => {
               gutterBottom
               sx={{ fontWeight: "bold" }}
             >
-              Locations Over Time
+              New Locations Over Time
             </Typography>
             <Box sx={{ width: "100%", height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
