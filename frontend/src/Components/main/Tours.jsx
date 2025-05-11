@@ -18,6 +18,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "../../App.css";
 import ChatbotFAB from "../utils/AIChatbot";
 
+// First page after log in / Main page
 const Tours = () => {
   const [touristAttractions, setTouristAttractions] = useState([]);
   const [museums, setMuseums] = useState([]);

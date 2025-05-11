@@ -1,6 +1,7 @@
 import React from "react";
 import { CircularProgress, Box, Typography } from "@mui/material";
 
+// Loading page
 const Loading = () => {
   return (
     <Box

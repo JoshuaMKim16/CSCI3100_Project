@@ -16,6 +16,7 @@ import './UserProfile.css';
 import bannerImage from './banner.jpg';
 import qrCodeImage from './qr_code.png';
 
+// Overall user profile displaying logic
 const UserProfile = () => {
   const { user, setUser } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');

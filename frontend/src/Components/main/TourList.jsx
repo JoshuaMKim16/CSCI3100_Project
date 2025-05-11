@@ -17,6 +17,7 @@ import CloudIcon from "@mui/icons-material/Cloud";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import ChatbotFAB from "../utils/AIChatbot";
 
+// Carousel for displaying comments
 const FakeCommentsCarousel = () => {
   const comments = [
     { name: "Joshua", comment: "I loved exploring these hidden gems!, and CSCI3100" },
@@ -108,6 +109,7 @@ const FakeCommentsCarousel = () => {
   );
 };
 
+// List of locations -> display three categories
 const TourList = () => {
   const [locations, setLocations] = useState([]);
   const [categories, setCategories] = useState({});

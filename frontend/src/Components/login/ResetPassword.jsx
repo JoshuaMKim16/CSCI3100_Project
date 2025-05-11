@@ -4,6 +4,7 @@ import Axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+// Reset password general logic
 const ResetPassword = () => {
   const location = useLocation();
   const navigate = useNavigate();

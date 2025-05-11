@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Box, TextField, Checkbox, FormControlLabel, Button, Typography } from '@mui/material';
 
+// Add or Edit user logic
 const AddEditUser = () => {
   const navigate = useNavigate();
   const locationState = useLocation().state;

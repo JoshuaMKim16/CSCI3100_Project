@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../utils/AuthContext';
 import './SubscribePage.css';
 
+// License Key generation logic
 function generateLicenseKey() {
   const segment = () => {
     let result = '';
@@ -17,6 +18,7 @@ function generateLicenseKey() {
   return `${segment()}-${segment()}-${segment()}-${segment()}`;
 }
 
+// Page subscription 
 const SubscribePage = () => {
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();

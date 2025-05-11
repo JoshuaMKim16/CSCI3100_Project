@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaMapMarkerAlt, FaTag } from 'react-icons/fa';
 
+// Individual card for each location
 const TourCard = ({ location }) => {
   const [specificImage, setSpecificImage] = useState(null);
   const [fetchError, setFetchError] = useState('');

@@ -6,6 +6,7 @@ import { AuthContext } from '../utils/AuthContext';
 import { Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+// Login overall Logic
 const Login = () => {
   const { setUser } = useContext(AuthContext);
   const [email, setEmail] = useState('');

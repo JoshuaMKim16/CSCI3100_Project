@@ -36,6 +36,7 @@ const throttle = (func, limit) => {
   };
 };
 
+// General Planner logic
 const ShoppingCart = () => {
   const navigate = useNavigate();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);

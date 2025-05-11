@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, Box, TextField, Button, Typography } from '@mui/material';
 import { AuthContext } from '../utils/AuthContext';
 
+// Edit User logic for general user
 const EditUser = () => {
   const navigate = useNavigate();
   const locationState = useLocation().state;

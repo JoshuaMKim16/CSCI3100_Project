@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Container, Box, TextField, Button, Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 
+// Add and Edit location logic
 const AddEditLocation = () => {
   const navigate = useNavigate();
   const locationState = useLocation().state;

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Start.css';
 import { AppBar, Toolbar, Box, Button } from '@mui/material';
 
+// Starting Page
 const Start = () => {
   const navigate = useNavigate();
   const videoRef = useRef(null); // Reference for the video element

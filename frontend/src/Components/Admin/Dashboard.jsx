@@ -19,6 +19,7 @@ import {
   Line,
 } from "recharts";
 
+// Admin Dashboard overall logic
 const Dashboard = () => {
   const [adminProfile, setAdminProfile] = useState(null);
   const [userCount, setUserCount] = useState(null);

@@ -11,6 +11,7 @@ import {
 import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 
+// Deepseek based AI Chatbot logic
 const AIChatbot = () => {
   const [messages, setMessages] = useState([
     {

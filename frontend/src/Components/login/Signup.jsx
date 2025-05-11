@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+// General signup logic
 const Signup = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');

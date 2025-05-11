@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdvertisementModal.css';
 
+// Overall Advertisement Modal Logic
 const AdvertisementModal = ({ onDismiss }) => {
   const [countdown, setCountdown] = useState(5);
   const navigate = useNavigate();

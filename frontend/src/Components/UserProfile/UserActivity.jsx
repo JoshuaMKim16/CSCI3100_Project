@@ -12,6 +12,7 @@ import {
 import { AuthContext } from '../utils/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+// Display user activity logic
 const UserActivity = () => {
   const { user } = useContext(AuthContext);
   const [activity, setActivity] = useState([]);
