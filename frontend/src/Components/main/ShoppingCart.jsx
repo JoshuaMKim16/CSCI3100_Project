@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Button } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import { useJsApiLoader, GoogleMap, MarkerF } from '@react-google-maps/api';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { jwtDecode } from 'jwt-decode';
@@ -41,7 +41,7 @@ const ShoppingCart = () => {
   const navigate = useNavigate();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   // Decode JWT from the user object stored in localStorage
   const getCurrentUserIdFromJWT = () => {
@@ -101,7 +101,6 @@ const ShoppingCart = () => {
   const fetchedImageIds = useRef(new Set());
 
   const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
   const mapRef = useRef(null);
 
   const containerStyle = {
@@ -109,10 +108,12 @@ const ShoppingCart = () => {
     height: '400px',
   };
 
+  // Save/update cart in localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem(cartKey, JSON.stringify(cartItems));
   }, [cartItems, cartKey]);
 
+  // Fetch location details when component mounts and when there are cart items
   useEffect(() => {
     const fetchLocationDetails = async () => {
       const locationData = {};
@@ -147,6 +148,7 @@ const ShoppingCart = () => {
                   locationData[id].lat = lat;
                   locationData[id].lng = lng;
                   setIsMapLoaded(true);
+                  // Set the map center to the first valid location
                   if (Object.keys(locationData).length === 1) {
                     setMapCenter({ lat, lng });
                   }
@@ -170,12 +172,12 @@ const ShoppingCart = () => {
       }
     };
 
-    // Run fetch if there are cart items
     if (cartItems.length > 0) {
       fetchLocationDetails();
     }
-  }, []); // Empty dependency array ensures this runs only on mount
+  }, []);
 
+  // Fetch specific images for locations
   useEffect(() => {
     const fetchSpecificImage = async (id, pictureUrl) => {
       if (!pictureUrl || fetchedImageIds.current.has(id)) return;
@@ -234,6 +236,7 @@ const ShoppingCart = () => {
 
   const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
+  // Timetable rendering functions
   const renderTimetable = () => {
     const timetable = daysOfWeek.map((day) => ({
       day,
@@ -243,6 +246,7 @@ const ShoppingCart = () => {
     cartItems.forEach((item) => {
       if (item.startTime && item.endTime) {
         const startDate = new Date(item.startTime);
+        // Adjust day index: JS getDay() gives 0 for Sunday
         const dayIndex = startDate.getDay() === 0 ? 6 : startDate.getDay() - 1;
         const id = getSiteId(item);
         const locationName = (locations[id] && locations[id].name) || `Site ${id}`;
@@ -273,7 +277,9 @@ const ShoppingCart = () => {
 
   const timetableData = renderTimetable();
   const hasEvents = timetableData.some((dayEntry) => dayEntry.events.length > 0);
+  const googleMapsLibraries = ['places'];
 
+  // Export to Excel handling function
   const handleExportExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Timetable');
@@ -327,6 +333,12 @@ const ShoppingCart = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [prevScrollPos]);
 
+  // Use the useJsApiLoader hook to load the Google Maps API only once - prevent unnecessary, multiple API calls
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_MAP_APIKEY,
+    libraries: googleMapsLibraries,
+  });
+
   return (
     <div
       style={{
@@ -338,6 +350,8 @@ const ShoppingCart = () => {
       }}
     >
       <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
+      
+      {/* Navbar Settings */}
       <AppBar
         position="fixed"
         style={{
@@ -496,6 +510,7 @@ const ShoppingCart = () => {
           zIndex: 1,
         }}
       />
+      {/* Shopping cart settings */}
       <section
         className="shopping-cart-page"
         style={{
@@ -668,32 +683,27 @@ const ShoppingCart = () => {
           </div>
         </Container>
       </section>
+
+      {/* Google Map settings */}
       <section className="map-section">
-        <LoadScript
-          googleMapsApiKey={process.env.REACT_APP_MAP_APIKEY}
-          libraries={['marker']}
-          onLoad={() => {
-            console.log('Google Maps API loaded');
-            setIsScriptLoaded(true);
-          }}
-          onError={(error) => console.error('Error loading Google Maps API:', error)}
-        >
-          {isScriptLoaded && isMapLoaded && (
-            <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
-              {Object.values(locations).map((locationItem) => {
-                if (locationItem.lat && locationItem.lng) {
-                  return (
-                    <MarkerF
-                      key={locationItem.id || locationItem._id}
-                      position={{ lat: locationItem.lat, lng: locationItem.lng }}
-                    />
-                  );
-                }
-                return null;
-              })}
-            </GoogleMap>
-          )}
-        </LoadScript>
+        {loadError && <div>Error loading map</div>}
+        {isLoaded ? (
+          <GoogleMap ref={mapRef} mapContainerStyle={containerStyle} center={mapCenter} zoom={16}>
+            {Object.values(locations).map((locationItem) => {
+              if (locationItem.lat && locationItem.lng) {
+                return (
+                  <MarkerF
+                    key={locationItem.id || locationItem._id}
+                    position={{ lat: locationItem.lat, lng: locationItem.lng }}
+                  />
+                );
+              }
+              return null;
+            })}
+          </GoogleMap>
+        ) : (
+          <div>Loading map...</div>
+        )}
       </section>
       <ChatbotFAB />
     </div>
