@@ -126,6 +126,7 @@ const TourList = () => {
     navigate("/login");
   };
 
+  // Fetch location informations
   const fetchLocations = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/locations");
@@ -142,7 +143,7 @@ const TourList = () => {
         });
       });
 
-      // Only take the first four items of each category.
+      // Only take the first four items of each category for ensuring overall stability of the application (random sometimes caused an error)
       setCategories({
         museum: (categorized["museum"] || []).slice(0, 4),
         tourist_attraction: (categorized["tourist_attraction"] || []).slice(0, 4),

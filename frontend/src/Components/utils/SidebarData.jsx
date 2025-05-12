@@ -3,6 +3,7 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 
+// General side bar logic, but most overriden by specific logic from individual files
 export const SidebarData = [
   {
     title: 'Home',

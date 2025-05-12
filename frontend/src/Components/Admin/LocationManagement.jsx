@@ -16,6 +16,7 @@ const LocationManagement = () => {
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
+  // Fetching location
   const fetchLocations = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/api/locations', {
@@ -31,6 +32,7 @@ const LocationManagement = () => {
     fetchLocations();
   }, []);
 
+  // Location delete
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this location?')) {
       try {
@@ -44,10 +46,12 @@ const LocationManagement = () => {
     }
   };
 
+  // Location edit
   const handleEdit = (locationData) => {
     navigate('/admin/locations/edit', { state: { location: locationData } });
   };
 
+  // Location search filter logic
   const filteredLocations = locations.filter(
     (loc) =>
       loc.name.toLowerCase().includes(filterQuery.toLowerCase()) ||

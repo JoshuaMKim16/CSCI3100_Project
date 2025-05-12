@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import AdvertisementModal from '../Advertisement/AdvertisementModal';  
 import { AuthContext } from './AuthContext';
 
+// For Advertisement control
 const AppLayout = () => {
   const { user } = useContext(AuthContext);
   const location = useLocation();
@@ -30,6 +31,7 @@ const AppLayout = () => {
     }
   }, [location.pathname, adDismissed]);
 
+  // Ad appears on every 10 navigations
   useEffect(() => {
     if (navigationCount >= 10) {
       setAdDismissed(false);

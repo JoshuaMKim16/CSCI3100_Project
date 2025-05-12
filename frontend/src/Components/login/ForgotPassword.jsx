@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress'; 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; 
 
+// Forgot Password logic with email verification code
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false); // Track loading state

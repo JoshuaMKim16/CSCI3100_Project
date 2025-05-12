@@ -16,6 +16,7 @@ const TourCard = ({ location }) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Fetch image of specific location from Cloudinary
   const fetchSpecificImage = async () => {
     try {
       const filename = location.picture[0].split('/').pop().split('.')[0];
@@ -46,6 +47,7 @@ const TourCard = ({ location }) => {
   };
 
   return (
+    // Individual location card design and configuration
     <Card
       sx={{
         width: 400,

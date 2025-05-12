@@ -9,6 +9,7 @@ import { Link, Outlet } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
+// For main Admin page
 const Admin = () => {
   const [isOpen, setIsOpen] = useState(false); 
 

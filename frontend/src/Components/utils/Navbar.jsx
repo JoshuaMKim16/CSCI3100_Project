@@ -6,6 +6,7 @@ import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 
+// Navbar general logic, but some features overriden by specific navbar settings on each file
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
 

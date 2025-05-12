@@ -18,6 +18,7 @@ const generateRandomUsername = () => {
   return `User_${randomStr}`;
 };
 
+// Overall live chatting logic
 const LiveChat = () => {
   const navigate = useNavigate();
   const [sender, setSender] = useState(generateRandomUsername());

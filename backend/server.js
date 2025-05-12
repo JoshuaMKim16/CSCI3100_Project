@@ -13,6 +13,7 @@ const cloudinaryRoutes = require('./routes/cloudinaryRoutes.js');
 const AIchatRoutes = require('./routes/AIchatRoutes.js');
 const adminRoute = require('./routes/admin.route.js');
 
+// .env file configuration
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -26,6 +27,7 @@ const User = require('./models/user.model.js');
 const Location = require('./models/location.model.js');
 const Message = require('./models/message.model.js');
 
+// MongoDB connection string
 const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@backenddb.vhwzsyd.mongodb.net/backendDB?retryWrites=true&w=majority&appName=BackendDB`;
 
 // Routes

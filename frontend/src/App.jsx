@@ -1,11 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+// LOGIN PAGE
 import Start from './Components/login/Start';
 import Signup from './Components/login/Signup';
 import Login from './Components/login/Login';
 import ForgotPassword from './Components/login/ForgotPassword';
 import ResetPassword from './Components/login/ResetPassword';
 
+// MAIN PAGE
 import SearchPage from './Components/main/SearchPage';
 import Tours from './Components/main/Tours'; // for main page
 import TourList from "./Components/main/TourList"; // for tour page
@@ -17,6 +20,7 @@ import EditUser from './Components/UserProfile/EditUser';
 import Chat from "./Components/main/LiveChat"; // for socket.io chatting
 import AIChat from "./Components/utils/AIChatbot"; // for AI Chatbot
 
+// ADMIN PAGE
 import Admin from './Components/Admin/Admin';
 import UserManagement from './Components/Admin/UserManagement';
 import AddEditUser from './Components/Admin/AddEditUser';
@@ -24,6 +28,7 @@ import LocationManagement from './Components/Admin/LocationManagement';
 import AddEditLocation from './Components/Admin/AddEditLocation';
 import Dashboard from './Components/Admin/Dashboard';
 
+// UTILS
 import ProtectedRoute from './Components/utils/ProtectedRoute';
 import ProtectedAdminRoute from './Components/utils/ProtectedAdminRoute';
 import { AuthProvider } from './Components/utils/AuthContext';

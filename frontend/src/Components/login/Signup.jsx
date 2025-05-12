@@ -25,6 +25,7 @@ const Signup = () => {
     }
   }, []);
 
+  // Submit/POST the information to the DB
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);

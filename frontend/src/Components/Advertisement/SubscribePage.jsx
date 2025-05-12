@@ -47,7 +47,9 @@ const SubscribePage = () => {
       }
 
       const updatedUser = await response.json();
+      // Update both the AuthContext and localStorage with the new user details
       setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       
       alert(`Subscription successful! Your license key is: ${licenseKey}`);
       navigate('/profile');

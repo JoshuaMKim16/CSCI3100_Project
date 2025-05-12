@@ -29,6 +29,7 @@ const UserManagement = () => {
     return { Authorization: `Bearer ${storedUser?.token}` };
   };
 
+  // User fetch 
   const fetchUsers = async () => {
     try {
       const { data } = await axios.get('http://localhost:3000/api/users', {
@@ -44,6 +45,7 @@ const UserManagement = () => {
     fetchUsers();
   }, []);
 
+  // User delete
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       try {
@@ -57,10 +59,12 @@ const UserManagement = () => {
     }
   };
 
+  // User edit
   const handleEdit = (user) => {
     navigate('/admin/users/edit', { state: { user } });
   };
 
+  // Filter user search results
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(filterQuery.toLowerCase()) ||

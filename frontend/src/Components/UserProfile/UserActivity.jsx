@@ -19,6 +19,7 @@ const UserActivity = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Fetching all comments from the user
   useEffect(() => {
     if (user && user._id) {
       const token =

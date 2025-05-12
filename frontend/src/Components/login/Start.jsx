@@ -142,7 +142,7 @@ const Start = () => {
           }}
         >
           TravelTailor delivers personalized travel planning with an itinerary builder,
-          location searches, and easy itinerary sharing--all in one!
+          location searches, and easy itinerary sharing-all in one!
         </p>
       </div>
     </div>

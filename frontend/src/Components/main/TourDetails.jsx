@@ -85,6 +85,7 @@ const TourDetails = () => {
     }
   }, [location]);
 
+  // Google Map API configuration
   useEffect(() => {
     if (!location?.address) return;
     const geocodeAddress = async () => {
@@ -113,7 +114,7 @@ const TourDetails = () => {
     setShowSidebar(false);
   };
 
-  // Handle 'google api already presented' error.
+  // For handling 'google api already presented' error
   class LoadScriptOnlyIfNeeded extends LoadScript {
     componentDidMount() {
       const cleaningUp = true;

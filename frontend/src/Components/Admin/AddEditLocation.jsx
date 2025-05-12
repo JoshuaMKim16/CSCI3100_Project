@@ -9,6 +9,7 @@ const AddEditLocation = () => {
   const navigate = useNavigate();
   const locationState = useLocation().state;
 
+  // Initialize form fields. If editing, prefill with the existing location data
   const [name, setName] = useState(locationState?.location?.name || '');
   const [address, setAddress] = useState(locationState?.location?.address || '');
   const [price, setPrice] = useState(locationState?.location?.price || '');
@@ -59,7 +60,7 @@ const AddEditLocation = () => {
     }
   };
 
-  // Submit helper function
+  // Submit helper function to upload pictures then send location data
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form Data:', { name, address, price, type, coordinates, openingHours, description, pictures });
@@ -110,6 +111,7 @@ const AddEditLocation = () => {
     }
   };
 
+  // useDropzone integration for file selection
   const onDrop = (acceptedFiles) => {
     setPictures([...pictures, ...acceptedFiles]);
   };
@@ -219,6 +221,7 @@ const AddEditLocation = () => {
             sx={{ mb: 2 }}
           />
 
+          {/* Dropzone for the picture upload */}
           <Box
             {...getRootProps()}
             sx={{

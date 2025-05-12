@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  // Does not allow duplicate emails
   email: {
     type: String,
     required: true,

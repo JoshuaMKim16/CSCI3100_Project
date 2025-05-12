@@ -26,16 +26,16 @@ const ResetPassword = () => {
       .then(response => {
         setLoading(false); // Stop loading spinner
         if (response.data.status) {
-          alert("Your password has been updated successfully!");
+          alert("Your password has been updated successfully!"); // Reset Password success
           navigate('/login');
         } else {
-          alert("The verification code is invalid or has expired. Please try again.");
+          alert("The verification code is invalid or has expired. Please try again."); // Failed due to invalid verification code
         }
       })
       .catch(err => {
         setLoading(false); // Stop loading spinner
         console.error(err);
-        alert("The verification code does not match. Please try again.");
+        alert("The verification code does not match. Please try again."); // Failed due to the wrong verification code
       });
   };
 

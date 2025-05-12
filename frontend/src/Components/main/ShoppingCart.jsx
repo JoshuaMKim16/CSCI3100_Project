@@ -134,6 +134,7 @@ const ShoppingCart = () => {
             fetchedSiteIds.current.add(id);
             hasNewFetches = true;
 
+            // For Google Map API handling
             const address = data.address;
             if (address) {
               try {
@@ -207,6 +208,7 @@ const ShoppingCart = () => {
     });
   }, [locations]);
 
+  // Remove the location from the planner
   const removeFromCart = (id) => {
     const updatedCart = cartItems.filter((item) => getSiteId(item) !== id);
     setCartItems(updatedCart);
@@ -220,6 +222,7 @@ const ShoppingCart = () => {
     fetchedImageIds.current.delete(id);
   };
 
+  // Setting the starting time
   const setStartingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, startTime: time } : item
@@ -227,6 +230,7 @@ const ShoppingCart = () => {
     setCartItems(updatedCart);
   };
 
+  // Setting the ending time
   const setEndingTime = (id, time) => {
     const updatedCart = cartItems.map((item) =>
       getSiteId(item) === id ? { ...item, endTime: time } : item

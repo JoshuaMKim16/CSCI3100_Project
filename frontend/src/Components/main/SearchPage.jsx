@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import hkBackground from "./hk_background.png"; 
 import ChatbotFAB from "../utils/AIChatbot";
 
+// Overall searchpage logic
 const SearchPage = () => {
   const { state } = useLocation();
   const initialQuery = state?.query || '';
@@ -20,7 +21,7 @@ const SearchPage = () => {
   const [locations, setLocations] = useState([]);
   const [filteredLocations, setFilteredLocations] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const resultsPerPage = 4;
+  const resultsPerPage = 4; // 4 results per page
 
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -49,7 +50,7 @@ const SearchPage = () => {
     fetchLocations();
   }, []);
 
-  // Randomly choose 7 locations for the carousel.
+  // Randomly choose 7 locations for the carousel
   useEffect(() => {
     if (locations.length > 0) {
       const shuffled = [...locations].sort(() => Math.random() - 0.5);
@@ -57,7 +58,7 @@ const SearchPage = () => {
     }
   }, [locations]);
 
-  // Fetch images only for these 7 carousel locations.
+  // Fetch images only for these 7 carousel locations to avoid unnecessary API over-fetching
   useEffect(() => {
     const fetchCarouselImages = async () => {
       const newImages = {};
@@ -65,8 +66,8 @@ const SearchPage = () => {
         carouselLocations.map(async (loc) => {
           try {
             if (loc.picture && loc.picture.length > 0) {
-              const filename = loc.picture[0].split('/').pop().split('.')[0];
-              const response = await fetch(`http://localhost:3000/api/photos/${filename}`);
+              const filename = loc.picture[0].split('/').pop().split('.')[0]; 
+              const response = await fetch(`http://localhost:3000/api/photos/${filename}`); // Fetch by filename from Cloudinary
               if (!response.ok) {
                 throw new Error('Fetching specific image failed');
               }
